@@ -52,7 +52,7 @@
 | 3 | 名称・パス・保存キーの差し替え | 済(下記) |
 | 4 | デザインの差し替え(赤基調・アイコン・タグライン削除) | 済 |
 | 5 | 班とチャンネルを A-LOGI の構成にする | 済 |
-| 6 | A-LOGI の Firebase につなぐ・デプロイ手順 | 未(**接続情報の受け取り待ち**) |
+| 6 | A-LOGI の Firebase につなぐ・デプロイ手順 | **作業中**(下の「ステップ6の実行記録」) |
 | 7 | 初期データ投入の手順書 | 未 |
 | 8 | 公開 | 未(南野さんの指示が出てから) |
 
@@ -116,8 +116,6 @@
   - **管理者**は班を持たない運用のため、選ばないままでも保存でき、その場合は班を変更しない
   - 班が設定済みの人の表示と保存、`firestore.rules`(`team: null` への自己変更は不可)は変えていない
   - エミュレーターで「未設定の乗務員」「設定済みの乗務員」「管理者」の3通りを確認済み
-
-**現在、判断待ちの項目は無い。** 次はステップ6(南野さんから `firebaseConfig`・VAPID 公開鍵・プロジェクトID を受け取ってから)。
 
 ### 画面の撮影方法(エミュレーター)
 
@@ -228,6 +226,44 @@ npm run test:rules
 
 テスト用の仮データ(各テストの `seed()`)には `team: 'team_e'` が残っている。ルールは班の値を検証しないため結果に影響しないが、
 A-LOGI版には無い班IDである(見た目の問題。直す場合は `badges.test.js` の `chat.team_e` も含め全ファイルで置き換える)。
+
+## ステップ6の実行記録(Firebase プロジェクトの作成〜デプロイ)
+
+会社PCでの手作業はせず、このPCから `firebase-tools` で行う取り決め(2026-10-14)。
+
+**絶対の条件**
+
+- HI-LINE 本番 `anzen-matomete-app` に対するコマンドは、参照も含めて一切実行しない(`projects:list` もプロジェクト一覧に含まれるため使わない)
+- `firebase` コマンドは毎回 `--project matomete-alogi` を明示する(`firebase use` の既定値に頼らない)
+- デプロイの直前には、宛先のプロジェクトIDを表示して確認してから実行する
+- サービスアカウントの鍵ファイルは作らない・保存しない
+- 接続情報を差し替えるまでは `.firebaserc` の既定値が HI-LINE版のままなので、**リポジトリの外の空のフォルダ**でコマンドを実行する
+
+**A-LOGI の Firebase プロジェクト**
+
+| 項目 | 値 |
+|---|---|
+| プロジェクトID | `matomete-alogi` |
+| プロジェクト番号 | `252853368767` |
+| ウェブアプリ | 「安全配送まとめてアプリ A-LOGI」 App ID `1:252853368767:web:435764e7010e643dfed30a` |
+| Storage バケット | `matomete-alogi.firebasestorage.app` |
+| 認証ドメイン | `matomete-alogi.firebaseapp.com` |
+| 所有アカウント | `hanyama54321@gmail.com`(このPCの firebase-tools にログイン済みだったもの) |
+
+Analytics は有効にしていないため、`firebaseConfig` に `measurementId` は無い(アプリは Analytics を使っていない)。
+
+**実行したコマンドと結果**(`firebase` = `node <リポジトリ>/node_modules/firebase-tools/lib/bin/firebase.js`、v15.23.0)
+
+| # | コマンド | 結果 |
+|---|---|---|
+| 1 | `firebase login:list` | `Logged in as hanyama54321@gmail.com`(ログイン済みのため、ブラウザでの承認は不要だった) |
+| 2 | `firebase projects:create matomete-alogi --display-name "matomete-alogi" --non-interactive` | 成功。プロジェクトID `matomete-alogi` が取れた |
+| 3 | `firebase apps:create WEB "安全配送まとめてアプリ A-LOGI" --project matomete-alogi --non-interactive` | 成功 |
+| 4 | `firebase apps:sdkconfig WEB 1:252853368767:web:435764e7010e643dfed30a --project matomete-alogi` | 成功。`firebaseConfig` を取得 |
+| 5 | `firebase firestore:databases:create "(default)" --location asia-northeast1 --project matomete-alogi --non-interactive` | **失敗(HTTP 403)**。新しいプロジェクトでは Cloud Firestore API がまだ有効になっていないため。データベースは作られていない。**ここで止めて南野さんに報告** |
+
+**まだ行っていないこと**: Firestore の作成、コンソールでの設定(Blaze・予算アラート・Storage・メール/パスワード認証・承認済みドメイン・VAPID 鍵)、
+リポジトリ内の接続情報の差し替え、ルール・インデックス・Functions のデプロイ。
 
 ## デプロイ手順
 
