@@ -1,14 +1,19 @@
-# matomete-app
+# matomete-alogi
+
+協力会社 A-LOGI 専用の「安全配送まとめてアプリ」。HI-LINE版 `matomete-app` の `v0.4.5` をもとに、
+独立したリポジトリ・独立した Firebase プロジェクトとして立ち上げたもの。機能は v0.4.5 と同じ。
+現在の進み具合と注意点は [HANDOFF.md](HANDOFF.md) を参照。
 
 ## ブランチ運用
 
-- `main`: **公開ブランチ**。GitHub Pages（`https://hanyama54321-cyber.github.io/matomete-app/`）はこのブランチのルートを配信している。v0.2以降、Firebase接続版が公開中。
-  - **このリポジトリは public**。コミットした内容はそのまま公開される。管理者コードやパスワード運用が書かれた配布物（マニュアル類）を置かないこと（理由は [HANDOFF.md](HANDOFF.md) 参照）。
-- `develop`: Firebase版（Firestore/Authentication連携）の開発ブランチ。バージョンアップリリースのタイミングで `main` へマージする。
+- `main`: **公開ブランチ**。GitHub Pages（`https://hanyama54321-cyber.github.io/matomete-alogi/`）はこのブランチのルートを配信する（初回公開は A-0.1.0）。
+  - **このリポジトリは public**。コミットした内容はそのまま公開される。乗務員名簿・パスワード・鍵ファイル、管理者コードやパスワード運用が書かれた配布物（マニュアル類）を置かないこと（理由は [HANDOFF.md](HANDOFF.md) 参照）。
+- `develop`: 開発ブランチ。リリースのタイミングで `main` へマージする。
+- 版番号は `A-x.y.z`（HI-LINE版の `v0.x.y` とは別系統）。タグも同じ名前で付ける。
 
 ## リリース手順（develop → main）
 
-Firebase版を正式リリースする際は、以下の順で実施する。　
+リリースする際は、以下の順で実施する。
 
 > **共通の約束**
 > - マージは必ず `--no-ff`（`main` に各リリースのマージコミットを残すため）
@@ -17,7 +22,7 @@ Firebase版を正式リリースする際は、以下の順で実施する。　
 > - 途中で問題が出たら止めて報告する。自己判断で切り戻さない
 
 1. **事前確認（develop上で）**
-   - Step 1〜7 で作成した確認手順（ログインテスト、パスワード変更、ユーザー管理、Firestoreルールのプレイグラウンド検証）を一通り再実施
+   - ログイン、パスワード変更、乗務員マスタ、班の選択、各タブの表示を一通り確認
    - **ルールテストを回帰確認として実行し、全passを確認**（`firestore.rules` を変更していない場合も実施する）
      ```
      export PATH="/c/Program Files/Eclipse Adoptium/jre-21.0.11.10-hotspot/bin:$PATH"
@@ -26,17 +31,18 @@ Firebase版を正式リリースする際は、以下の順で実施する。　
    - **`index.html` のインラインscriptを構文チェック**（CSSの構造を変えた場合は、ブラウザのCSSOMでルール総数と並びも確認する。セレクタ欠落や `}` の過不足は構文チェックでは検出できない）
    - `APP_VERSION` と `CHANGELOG` が今回の版になっていることを確認
    - **新着判定の仕組みを変えていない限り `BADGE_EPOCH` は更新しない。** マージ前に `git diff <前の版タグ> develop -- index.html` で差分が無いことを確認する
-   - `seed.html` は `.gitignore` で除外済み（GitHub Pagesには公開されない）。本番用デモユーザーがFirestoreに投入済みであることを確認
+   - `seed.html` は `.gitignore` で除外済み（GitHub Pagesには公開されない）。初期データ（管理者・班・チャンネル・乗務員）がFirestoreに投入済みであることを確認
    - Firebase Authenticationの「承認済みドメイン」に `hanyama54321-cyber.github.io` が追加済みであることを確認
    - Firebase Authenticationの「ユーザーアクション → 作成（サインアップ）」が**無効化**されていることを確認（seed.html実行後に戻し忘れていないか）
    - Firestoreのセキュリティルールが `firestore.rules` の内容で公開済みであることを確認
 
 2. **ロールバック用タグを、マージ前の `main` 先端に作成**
 
-   切り戻し先を確定させてからマージする。命名は `v<今の本番版>-pre-<変更の要約>`。
+   切り戻し先を確定させてからマージする。命名は `<今の本番版>-pre-<変更の要約>`。
+   **初回公開（A-0.1.0）は `main` が取り込み直後の状態（HI-LINE版の中身のまま）なので、この手順は飛ばす。**
    ```
-   git tag -a v0.4.1-pre-onclick-sweep <main先端> -m "v0.4.2リリース前のmain先端(ロールバック用)"
-   git push origin v0.4.1-pre-onclick-sweep
+   git tag -a A-0.1.0-pre-xxxx <main先端> -m "A-0.1.1リリース前のmain先端(ロールバック用)"
+   git push origin A-0.1.0-pre-xxxx
    ```
 
 3. **マージ（`--no-ff`）**
@@ -47,28 +53,28 @@ Firebase版を正式リリースする際は、以下の順で実施する。　
    git pull --ff-only origin main
    git merge --no-ff --no-commit develop     # コンフリクトが出たら止めて相談
    git diff --name-only --diff-filter=U      # 空であることを確認
-   git commit                                 # メッセージは "Release vX.Y.Z: 概要"
+   git commit                                 # メッセージは "Release A-X.Y.Z: 概要"
    git diff develop main --stat               # 空＝内容一致 を確認
    git push origin main
    ```
 
 4. **版タグを作成**
    ```
-   git tag -a v0.4.2 -m "v0.4.2: 概要"
-   git push origin v0.4.2
+   git tag -a A-0.1.0 -m "A-0.1.0: 概要"
+   git push origin A-0.1.0
    ```
 
 5. **公開後確認**
    - **GitHub Pages の反映を待つ**（30〜90秒。キャッシュを避けてクエリを付けて取得する）
      ```
-     curl -s "https://hanyama54321-cyber.github.io/matomete-app/index.html?cb=$RANDOM" | grep -o "const APP_VERSION = '[^']*'"
+     curl -s "https://hanyama54321-cyber.github.io/matomete-alogi/index.html?cb=$RANDOM" | grep -o "const APP_VERSION = '[^']*'"
      ```
    - ブラウザで開き、**バージョン表記が今回の版**であること・`hasFirebase` が `true` であること・コンソールエラーが無いことをライブ確認
-   - `https://hanyama54321-cyber.github.io/matomete-app/` から実際にログイン（乗務員コード + パスワード）できることを確認
-   - 管理者アカウント（AAAAA/BBBBB/CCCCC）・乗務員アカウントそれぞれで表示が正しいことを確認
-   - **配布物4点の記述がこの版と合っているか突き合わせる**（リポジトリ外にあり自動追随しない）
-     - 管理者向け運用マニュアル / ドライバー用ガイド / 早見表 / 全社展開のご案内（Slides）
-     - 観点: バージョン表記 ／「今後の予定」に実装済みの機能が残っていないか ／ 撤去した機能の説明が残っていないか ／ 画面図解と実物の見た目
+   - `https://hanyama54321-cyber.github.io/matomete-alogi/` から実際にログイン（乗務員コード + パスワード）できることを確認
+   - 管理者アカウント（AAAAA/BBBBB/CCCCC）・乗務員アカウント（40000番台）それぞれで表示が正しいことを確認
+   - **HI-LINE版（`https://hanyama54321-cyber.github.io/matomete-app/`）が今までどおり動いていることを確認**（同じドメインで配信しているため）
+   - **A-LOGI 向けの配布物（案内・マニュアル類）がある場合は、記述がこの版と合っているか突き合わせる**（リポジトリ外にあり自動追随しない）
+     - 観点: バージョン表記 ／ 画面図解と実物の見た目（配色・アイコン・班名）
      - ずれていれば別途更新する（**リリース自体はブロックしない**）
 
 6. **実機確認（依頼者が実施）**
