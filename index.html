@@ -71,8 +71,9 @@ const FCM_VAPID_KEY = 'BCd2jTEyxVABwbdktFURmnKhXr0gSvIYxI0rorVPMGcko6gW6zHx_W67Z
   --danger: #D93A3F;
   --safe: #1F9D55;
   --purple: #7C3AED;
-  --amber: #B36F00;   /* 色分け用の琥珀色。A-LOGI版では --primary が赤になり --danger と見分けられないため、
-                        色で意味を分ける箇所(カテゴリ「業務」・KYT難易度「中」)は --primary ではなくこちらを使う */
+  --amber: #9A5F00;   /* 色分け用の琥珀色。A-LOGI版では --primary が赤になり --danger と見分けられないため、
+                        色で意味を分ける箇所(カテゴリ「業務」・KYT難易度「中」・便利リンク「天気情報」)は
+                        --primary ではなくこちらを使う。白地の文字色としてコントラスト比 5.24(4.5以上)になる値 */
   --text: #2B1B1E;
   --text-sub: #6E5A5E;
   --text-muted: #7F6B6F;
@@ -2804,7 +2805,7 @@ const linksData = [
       { name:"i-highway", desc:"高速道路交通情報", url:"https://www.i-highway.jp/", icon:"🛤️" },
       { name:"NEXCO 中日本", desc:"高速道路・ETC情報", url:"https://www.c-nexco.co.jp/", icon:"🏎️" },
     ]},
-  { category:"天気情報", categoryEn:"WEATHER", icon:"⛅", color:"var(--primary)",
+  { category:"天気情報", categoryEn:"WEATHER", icon:"⛅", color:"var(--amber)",
     links:[
       { name:"Yahoo!天気", desc:"天気予報・雨雲レーダー", url:"https://weather.yahoo.co.jp/weather/", icon:"☀️" },
       { name:"気象庁", desc:"公式天気・警報情報", url:"https://www.jma.go.jp/", icon:"🌩️" },
