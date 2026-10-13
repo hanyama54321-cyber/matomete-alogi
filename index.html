@@ -2027,7 +2027,7 @@ header {
       <div class="login-field">
         <label for="login-code">乗務員コード（5桁）</label>
         <input id="login-code" type="text" inputmode="text" autocomplete="username"
-               maxlength="5" placeholder="例: 10168" required
+               maxlength="5" placeholder="例: 40001" required
                pattern="[A-Za-z0-9]{5}" title="英数字5桁で入力してください">
       </div>
       <div class="login-field">
@@ -2114,17 +2114,17 @@ header {
       </button>
       <!-- ユーザーアバター（タップでユーザーメニュー） -->
       <button id="avatar-btn" class="avatar" style="border:none;cursor:pointer;position:relative" onclick="toggleUserMenu()">
-        <span id="avatar-text">南</span>
+        <span id="avatar-text">乗</span>
       </button>
     </div>
 
     <!-- ユーザーメニュー -->
     <div id="user-menu" class="user-menu hidden">
       <div class="user-menu-header">
-        <div class="user-menu-av" id="um-avatar-icon">南</div>
+        <div class="user-menu-av" id="um-avatar-icon">乗</div>
         <div style="min-width:0">
-          <div class="user-menu-name" id="um-name">南野</div>
-          <div class="user-menu-meta" id="um-meta">D班（小笠原班） · D-12</div>
+          <div class="user-menu-name" id="um-name">乗務員A</div>
+          <div class="user-menu-meta" id="um-meta">昼班 · A-01</div>
         </div>
       </div>
       <button class="user-menu-item" onclick="openProfileEdit()">
@@ -2190,10 +2190,10 @@ header {
         🛠 モード切替（開発用）
       </div>
       <button class="role-menu-item" onclick="setRole('driver')">
-        <div class="role-menu-av" style="background:#5B8FE0">南</div>
+        <div class="role-menu-av" style="background:#5B8FE0">乗</div>
         <div style="flex:1">
           <div style="font-weight:700;font-size:13px;color:var(--navy)">ドライバーモード</div>
-          <div style="font-size:11px;color:var(--text-muted);margin-top:1px">南野 / 小笠原班 / O-12</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:1px">乗務員A / 昼班 / A-01</div>
         </div>
         <span id="role-check-driver" style="color:var(--primary);font-size:14px">✓</span>
       </button>
@@ -2201,7 +2201,7 @@ header {
         <div class="role-menu-av" style="background:linear-gradient(135deg,#FFB300,#FF8F00)">管</div>
         <div style="flex:1">
           <div style="font-weight:700;font-size:13px;color:var(--navy)">管理者モード</div>
-          <div style="font-size:11px;color:var(--text-muted);margin-top:1px">田中センター長</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:1px">管理者</div>
         </div>
         <span id="role-check-manager" style="color:var(--primary);font-size:14px;visibility:hidden">✓</span>
       </button>
@@ -2690,21 +2690,22 @@ function recalcTeamCounts() {
   });
 }
 
-// ユーザー一覧（既読率計算に使用）／ team は teams[].id（team_a〜team_i）を参照
+// ユーザー一覧（既読率計算に使用）／ team は teams[].id（team_a・team_b）を参照。
+// 画面確認用の仮データ。実在の氏名・乗務員コードは入れないこと(このファイルは公開される)
 const users = [
-  { id:'u01', name:'南野',   team:'team_d', driverNo:'D-12', role:'driver' },
-  { id:'u02', name:'佐藤',   team:'team_e', driverNo:'E-08', role:'driver' },
-  { id:'u03', name:'鈴木',   team:'team_c', driverNo:'C-05', role:'driver' },
-  { id:'u04', name:'高橋',   team:'team_h', driverNo:'H-11', role:'driver' },
-  { id:'u05', name:'伊藤',   team:'team_a', driverNo:'A-03', role:'driver' },
-  { id:'u06', name:'渡辺',   team:'team_g', driverNo:'G-07', role:'driver' },
-  { id:'u07', name:'山本',   team:'team_e', driverNo:'E-21', role:'driver' },
-  { id:'u08', name:'中村',   team:'team_b', driverNo:'B-14', role:'driver' },
-  { id:'u09', name:'小林',   team:'team_f', driverNo:'F-04', role:'driver' },
-  { id:'u10', name:'土井',   team:'team_g', driverNo:'G-02', role:'driver' },
-  { id:'u11', name:'熊谷',   team:'team_h', driverNo:'H-01', role:'driver' },
-  { id:'u12', name:'安田',   team:'team_i', driverNo:'I-01', role:'driver' },
-  { id:'mgr', name:'田中',   team:null,     driverNo:'—',    role:'manager' },
+  { id:'u01', name:'乗務員A', team:'team_a', driverNo:'A-01', role:'driver' },
+  { id:'u02', name:'乗務員B', team:'team_a', driverNo:'A-02', role:'driver' },
+  { id:'u03', name:'乗務員C', team:'team_a', driverNo:'A-03', role:'driver' },
+  { id:'u04', name:'乗務員D', team:'team_a', driverNo:'A-04', role:'driver' },
+  { id:'u05', name:'乗務員E', team:'team_a', driverNo:'A-05', role:'driver' },
+  { id:'u06', name:'乗務員F', team:'team_a', driverNo:'A-06', role:'driver' },
+  { id:'u07', name:'乗務員G', team:'team_b', driverNo:'B-01', role:'driver' },
+  { id:'u08', name:'乗務員H', team:'team_b', driverNo:'B-02', role:'driver' },
+  { id:'u09', name:'乗務員I', team:'team_b', driverNo:'B-03', role:'driver' },
+  { id:'u10', name:'乗務員J', team:'team_b', driverNo:'B-04', role:'driver' },
+  { id:'u11', name:'乗務員K', team:'team_b', driverNo:'B-05', role:'driver' },
+  { id:'u12', name:'乗務員L', team:'team_b', driverNo:'B-06', role:'driver' },
+  { id:'mgr', name:'管理者',  team:null,     driverNo:'—',    role:'manager' },
 ];
 recalcTeamCounts();
 
@@ -8277,7 +8278,7 @@ function toggleDriverCreateForm() {
     el.innerHTML = `
       <div class="form-group">
         <label class="form-label">乗務員コード（5桁）</label>
-        <input id="um-new-code" class="input-field" maxlength="5" placeholder="例: 10234">
+        <input id="um-new-code" class="input-field" maxlength="5" placeholder="例: 40001">
       </div>
       <div class="form-group">
         <label class="form-label">氏名</label>
