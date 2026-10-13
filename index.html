@@ -77,14 +77,16 @@ const FCM_VAPID_KEY = 'BCd2jTEyxVABwbdktFURmnKhXr0gSvIYxI0rorVPMGcko6gW6zHx_W67Z
   --grad: linear-gradient(135deg, #8E0E1E 0%, #C8102E 45%, #EF4B5A 100%);
 
   /* 新着・未読ドット(v0.4.1)。個別のクラスに数値を直書きせずここへ集約する。
-     色は「新着=赤」「未読=青」で使い分ける: 周知タブには赤い必読ピル(.must-read-badge)が
-     あるため、未読まで赤にすると赤が「未読」と「必読」の2つの意味を持ち、
-     ドライバーが必ず読むべきものを見分けにくくなる。 */
+     A-LOGI版は赤基調のため、HI-LINE版の「新着=赤(#FF3B30)」のままだと赤いボタンや選択中の
+     表示に埋もれる。そこで新着は黄色にし、白い背景の上でも見えるよう濃色のリングで縁取る。
+     未読は --primary(A-LOGI版では赤)のまま、リングも白のまま。同じカード内の必読ピル
+     (.must-read-badge)も赤になるため、見分けやすさは実機確認で判断する。 */
   --badge-dot: 10px;                    /* タブの新着マーク・周知タブ各行の未読ドット */
   --badge-dot-bell: 12px;               /* ヘッダーのベル。実機確認の結果10px→12pxへ(v0.4.2) */
-  --badge-ring: 2px;                    /* 背景色で縁取るリングの太さ */
-  --badge-color: #FF3B30;               /* 新着(赤) */
-  --badge-color-unread: var(--primary); /* 未読(青) */
+  --badge-ring: 2px;                    /* 縁取るリングの太さ */
+  --badge-color: #FFD54F;               /* 新着(黄) */
+  --badge-ring-color: #3A0A12;          /* 新着マーク(.bell-dot / .nav-badge)のリング。--navy と同じ濃色 */
+  --badge-color-unread: var(--primary); /* 未読(赤) */
 }
 
 /* ===== リセット ===== */
@@ -179,7 +181,7 @@ header {
      borderだと指定幅の内側に食い込み、赤い芯が実測5.3pxまで縮んでいた。
      box-shadowは要素の外側に描画されるので、指定値がそのまま芯の直径になり、
      レイアウトにも影響しない。祖先に overflow:hidden が無いことは確認済み。 */
-  box-shadow: 0 0 0 var(--badge-ring) var(--surface);
+  box-shadow: 0 0 0 var(--badge-ring) var(--badge-ring-color);
   animation: badge-dot-pulse .6s ease-in-out 2;
 }
 /* 通知センターの行(v0.4)。専用クラスのみで構成し、既存の共有クラスは使わない */
@@ -279,7 +281,7 @@ header {
   width: var(--badge-dot); height: var(--badge-dot);
   border-radius: 50%;
   background: var(--badge-color);
-  box-shadow: 0 0 0 var(--badge-ring) var(--surface);   /* 理由は .bell-dot 参照 */
+  box-shadow: 0 0 0 var(--badge-ring) var(--badge-ring-color);   /* 理由は .bell-dot 参照 */
   animation: badge-dot-pulse .6s ease-in-out 2;
 }
 /* チャンネルチップの新着表示(v0.4)。色( danger 系 )に加えて
@@ -419,8 +421,8 @@ header {
 .ann-item.pinned { border-left: 3px solid var(--primary); }
 .ann-item.read { opacity: .72; }
 /* 周知一覧の未読ドット(v0.4.1でインラインstyleから切り出し)。
-   サイズとリングは .bell-dot / .nav-badge と共通変数を参照するが、色は青のまま。
-   赤は同じカード内の .must-read-badge(必読)が使っているため意味を衝突させない。
+   サイズとリングの太さは .bell-dot / .nav-badge と共通変数を参照するが、色は --primary、
+   リングは白(--surface)のまま(新着マークの黄色+濃色リングとは別系統)。
    pulseは付けない(理由は badge-dot-pulse のコメント参照)。 */
 .ann-unread-dot {
   display: inline-block;
