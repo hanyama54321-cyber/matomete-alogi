@@ -4,7 +4,7 @@
 
   通知受信専用の最小構成。fetchハンドラは書かない(オフラインキャッシュは導入しない)。
   GitHub Pagesのサブパス配信のため、登録側(index.html)で
-  navigator.serviceWorker.register('firebase-messaging-sw.js', { scope: '/matomete-app/' })
+  navigator.serviceWorker.register('firebase-messaging-sw.js', { scope: '/matomete-alogi/' })
   のようにscopeを明示すること。
 */
 

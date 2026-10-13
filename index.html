@@ -3621,7 +3621,7 @@ async function registerFcmTokenIfPossible() {
   if (Notification.permission !== 'granted') return;
   if (!FCM_VAPID_KEY) { console.warn('FCM_VAPID_KEY未設定のためトークン登録をスキップします'); return; }
   try {
-    const reg = await navigator.serviceWorker.register('firebase-messaging-sw.js', { scope: '/matomete-app/' });
+    const reg = await navigator.serviceWorker.register('firebase-messaging-sw.js', { scope: '/matomete-alogi/' });
     const token = await firebase.messaging().getToken({ vapidKey: FCM_VAPID_KEY, serviceWorkerRegistration: reg });
     if (token) await upsertFcmToken(token);
   } catch (e) {
@@ -3635,7 +3635,7 @@ async function refreshFcmTokenIfNeeded() {
   if (!fbUser || !canShowNotifyOptIn() || !fcmSupported()) return;
   if (Notification.permission !== 'granted' || !FCM_VAPID_KEY) return;
   try {
-    const reg = await navigator.serviceWorker.register('firebase-messaging-sw.js', { scope: '/matomete-app/' });
+    const reg = await navigator.serviceWorker.register('firebase-messaging-sw.js', { scope: '/matomete-alogi/' });
     const token = await firebase.messaging().getToken({ vapidKey: FCM_VAPID_KEY, serviceWorkerRegistration: reg });
     if (!token) return;
     const tokenId = await sha256Hex(token);
@@ -7170,7 +7170,7 @@ function toggleFbShare(checked) {
 async function subscribeAnonReportIfPossible(reportId) {
   if (!fcmSupported() || Notification.permission !== 'granted' || !FCM_VAPID_KEY) return;
   try {
-    const reg = await navigator.serviceWorker.register('firebase-messaging-sw.js', { scope: '/matomete-app/' });
+    const reg = await navigator.serviceWorker.register('firebase-messaging-sw.js', { scope: '/matomete-alogi/' });
     const token = await firebase.messaging().getToken({ vapidKey: FCM_VAPID_KEY, serviceWorkerRegistration: reg });
     if (!token) return;
     await fbFunctions.httpsCallable('subscribeToReport')({ reportId, token });
