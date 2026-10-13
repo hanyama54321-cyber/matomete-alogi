@@ -81,14 +81,14 @@ const FCM_VAPID_KEY = 'BCd2jTEyxVABwbdktFURmnKhXr0gSvIYxI0rorVPMGcko6gW6zHx_W67Z
   /* 新着・未読ドット(v0.4.1)。個別のクラスに数値を直書きせずここへ集約する。
      A-LOGI版は赤基調のため、HI-LINE版の「新着=赤(#FF3B30)」のままだと赤いボタンや選択中の
      表示に埋もれる。そこで新着は黄色にし、白い背景の上でも見えるよう濃色のリングで縁取る。
-     未読は --primary(A-LOGI版では赤)のまま、リングも白のまま。同じカード内の必読ピル
-     (.must-read-badge)も赤になるため、見分けやすさは実機確認で判断する。 */
+     未読は --navy(ダークワイン)、リングは白のまま。HI-LINE版と同じ --primary にすると赤になり、
+     同じカード内の赤い必読ピル(.must-read-badge)と色で見分けられなくなるため。 */
   --badge-dot: 10px;                    /* タブの新着マーク・周知タブ各行の未読ドット */
   --badge-dot-bell: 12px;               /* ヘッダーのベル。実機確認の結果10px→12pxへ(v0.4.2) */
   --badge-ring: 2px;                    /* 縁取るリングの太さ */
   --badge-color: #FFD54F;               /* 新着(黄) */
   --badge-ring-color: #3A0A12;          /* 新着マーク(.bell-dot / .nav-badge)のリング。--navy と同じ濃色 */
-  --badge-color-unread: var(--primary); /* 未読(赤) */
+  --badge-color-unread: var(--navy);    /* 未読(ダークワイン) */
 }
 
 /* ===== リセット ===== */
@@ -423,8 +423,9 @@ header {
 .ann-item.pinned { border-left: 3px solid var(--primary); }
 .ann-item.read { opacity: .72; }
 /* 周知一覧の未読ドット(v0.4.1でインラインstyleから切り出し)。
-   サイズとリングの太さは .bell-dot / .nav-badge と共通変数を参照するが、色は --primary、
+   サイズとリングの太さは .bell-dot / .nav-badge と共通変数を参照するが、色は --navy、
    リングは白(--surface)のまま(新着マークの黄色+濃色リングとは別系統)。
+   赤は同じカード内の .must-read-badge(必読)が使っているため意味を衝突させない。
    pulseは付けない(理由は badge-dot-pulse のコメント参照)。 */
 .ann-unread-dot {
   display: inline-block;
