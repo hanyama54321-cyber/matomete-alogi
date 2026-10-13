@@ -1,6 +1,6 @@
 {
-  "name": "安全配送 まとめてアプリ",
-  "short_name": "まとめてアプリ",
+  "name": "安全配送まとめてアプリ A-LOGI",
+  "short_name": "まとめてA-LOGI",
   "description": "配送センター向け業務支援ポータル",
   "start_url": "/matomete-alogi/",
   "scope": "/matomete-alogi/",

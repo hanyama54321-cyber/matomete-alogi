@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  安全配送 まとめてアプリ (Safety Delivery Matomete App)
+  安全配送 まとめてアプリ A-LOGI版 (Safety Delivery Matomete App for A-LOGI)
   © 2026 南野. All rights reserved.
   Unauthorized copying or redistribution of this file is strictly prohibited.
 -->
@@ -14,7 +14,7 @@
      短くなり、画面下端にページ背景色の帯が残る問題があった(v0.3.2で実測により特定)。
      defaultではWebビューがステータスバーの下から始まり、この帯が発生しない -->
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="まとめてアプリ">
+<meta name="apple-mobile-web-app-title" content="まとめてA-LOGI">
 <meta name="theme-color" content="#0D3D9E">
 <meta name="description" content="配送センター向け業務支援ポータル">
 <meta name="author" content="南野">
@@ -26,7 +26,7 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2096%2096%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g1%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230D3D9E%22/%3E%3Cstop%20offset%3D%2245%25%22%20stop-color%3D%22%231A56C4%22/%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%233F8CEF%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2220%22%20fill%3D%22url%28%23g1%29%22/%3E%3Cpath%20d%3D%22M-2%2012%20H16%20L22%206%20H46%22%20stroke%3D%22white%22%20stroke-width%3D%221%22%20stroke-opacity%3D%22.28%22%20fill%3D%22none%22/%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%2212%22%20r%3D%221.5%22%20fill%3D%22white%22%20fill-opacity%3D%22.5%22/%3E%3Ccircle%20cx%3D%2246%22%20cy%3D%226%22%20r%3D%221.2%22%20fill%3D%22white%22%20fill-opacity%3D%22.5%22/%3E%3Cpath%20d%3D%22M54%204%20H70%20L78%2014%20H98%22%20stroke%3D%22white%22%20stroke-width%3D%221%22%20stroke-opacity%3D%22.28%22%20fill%3D%22none%22/%3E%3Ccircle%20cx%3D%2270%22%20cy%3D%224%22%20r%3D%221.5%22%20fill%3D%22white%22%20fill-opacity%3D%22.5%22/%3E%3Ccircle%20cx%3D%2278%22%20cy%3D%2214%22%20r%3D%221.2%22%20fill%3D%22white%22%20fill-opacity%3D%22.5%22/%3E%3Cpath%20d%3D%22M-2%2092%20H14%20L22%2084%20H40%22%20stroke%3D%22white%22%20stroke-width%3D%221%22%20stroke-opacity%3D%22.28%22%20fill%3D%22none%22/%3E%3Ccircle%20cx%3D%2214%22%20cy%3D%2292%22%20r%3D%221.5%22%20fill%3D%22white%22%20fill-opacity%3D%22.5%22/%3E%3Ccircle%20cx%3D%2240%22%20cy%3D%2284%22%20r%3D%221.2%22%20fill%3D%22white%22%20fill-opacity%3D%22.5%22/%3E%3Cpath%20d%3D%22M52%2092%20H70%20L78%2086%20H98%22%20stroke%3D%22white%22%20stroke-width%3D%221%22%20stroke-opacity%3D%22.28%22%20fill%3D%22none%22/%3E%3Ccircle%20cx%3D%2270%22%20cy%3D%2292%22%20r%3D%221.5%22%20fill%3D%22white%22%20fill-opacity%3D%22.5%22/%3E%3Ccircle%20cx%3D%2278%22%20cy%3D%2286%22%20r%3D%221.2%22%20fill%3D%22white%22%20fill-opacity%3D%22.5%22/%3E%3Crect%20x%3D%224%22%20y%3D%2220%22%20width%3D%2256%22%20height%3D%2256%22%20rx%3D%224%22%20fill%3D%22white%22/%3E%3Cpath%20d%3D%22M60%2030%20L78%2030%20L90%2046%20L90%2076%20L60%2076%20Z%22%20fill%3D%22white%22/%3E%3Cpath%20d%3D%22M62%2032%20L77%2032%20L86%2046%20L62%2046%20Z%22%20fill%3D%22%231A56C4%22/%3E%3Cg%20fill%3D%22%231A56C4%22%3E%3Crect%20x%3D%2210%22%20y%3D%2226%22%20width%3D%2211%22%20height%3D%2244%22%20rx%3D%222%22/%3E%3Crect%20x%3D%2243%22%20y%3D%2226%22%20width%3D%2211%22%20height%3D%2244%22%20rx%3D%222%22/%3E%3Crect%20x%3D%2210%22%20y%3D%2242%22%20width%3D%2244%22%20height%3D%2212%22/%3E%3C/g%3E%3Ccircle%20cx%3D%2222%22%20cy%3D%2282%22%20r%3D%229%22%20fill%3D%22%2313294B%22/%3E%3Ccircle%20cx%3D%2222%22%20cy%3D%2282%22%20r%3D%224%22%20fill%3D%22white%22/%3E%3Ccircle%20cx%3D%2222%22%20cy%3D%2282%22%20r%3D%221.5%22%20fill%3D%22%2313294B%22/%3E%3Ccircle%20cx%3D%2272%22%20cy%3D%2282%22%20r%3D%229%22%20fill%3D%22%2313294B%22/%3E%3Ccircle%20cx%3D%2272%22%20cy%3D%2282%22%20r%3D%224%22%20fill%3D%22white%22/%3E%3Ccircle%20cx%3D%2272%22%20cy%3D%2282%22%20r%3D%221.5%22%20fill%3D%22%2313294B%22/%3E%3Ccircle%20cx%3D%2287%22%20cy%3D%2264%22%20r%3D%222.2%22%20fill%3D%22%23FFD54F%22/%3E%3C/svg%3E">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 
-<title>安全配送 まとめてアプリ</title>
+<title>安全配送まとめてアプリ A-LOGI</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 
 <!-- ===== Firebase SDK (compat版) ===== -->
@@ -2020,7 +2020,7 @@ header {
 <!-- ===== ログイン画面 (Firebase認証) ===== -->
 <div id="login-screen" style="display:none">
   <div class="login-card">
-    <div class="login-title">安全配送 まとめてアプリ</div>
+    <div class="login-title">安全配送 まとめてアプリ A-LOGI</div>
     <div class="login-sub">SAFETY DELIVERY PORTAL</div>
     <div id="login-error" class="login-error" style="display:none"></div>
     <form id="login-form" onsubmit="handleLogin(event)">
@@ -2098,7 +2098,7 @@ header {
         <div class="logo-title">安全配送 まとめてアプリ</div>
         <div style="display:flex;align-items:center;gap:5px">
           <div class="logo-sub">SAFETY DELIVERY</div>
-          <span id="version-badge" style="font-size:7px;font-weight:700;background:rgba(26,86,196,.1);color:var(--primary);border:1px solid rgba(26,86,196,.25);border-radius:3px;padding:1px 4px;letter-spacing:.02em;line-height:1.6;white-space:nowrap">Ver.0.2</span>
+          <span id="version-badge" style="font-size:7px;font-weight:700;background:rgba(26,86,196,.1);color:var(--primary);border:1px solid rgba(26,86,196,.25);border-radius:3px;padding:1px 4px;letter-spacing:.02em;line-height:1.6;white-space:nowrap">Ver.A-0.1.0</span>
         </div>
       </div>
     </div>
@@ -2147,7 +2147,7 @@ header {
         <span class="um-icon">ℹ️</span>
         <div style="flex:1">
           <div style="font-weight:700">このアプリについて</div>
-          <div id="um-version-subtitle" style="font-size:11px;color:var(--text-muted);margin-top:1px">Ver. 0.2 · 安全配送まとめてアプリ</div>
+          <div id="um-version-subtitle" style="font-size:11px;color:var(--text-muted);margin-top:1px">Ver. A-0.1.0 · 安全配送まとめてアプリ A-LOGI</div>
         </div>
       </button>
       <button id="um-user-mgmt-btn" class="user-menu-item hidden" onclick="openUserManagement()">
@@ -2628,7 +2628,7 @@ header {
 // ヘッダーバッジ・ユーザーメニュー・アプリ情報画面・利用状況計測(sessions.appVersion)は
 // すべてこの定数を参照する(#version-badge/#um-version-subtitleへは初期化処理でJSから反映、
 // アプリ情報画面・recordSession()は関数内で直接参照)
-const APP_VERSION = '0.4.5';
+const APP_VERSION = 'A-0.1.0';
 
 /* ===== データ ===== */
 
@@ -4021,20 +4021,10 @@ async function saveNotifPrefs() {
   }
 }
 
-// 更新履歴。git履歴・HANDOFF.md・TECH_DEBT.mdから裏の取れる範囲で記録する(過去分を遡って捏造しない)
+// 更新履歴(画面の「このアプリについて」に出る)。A-LOGI版の版番号(A-x.y.z)は HI-LINE版(matomete-app)とは
+// 別系統のため、派生元 v0.4.5 までの履歴はここに載せない(経緯は matomete-app 側の記録を参照)
 const CHANGELOG = [
-  { version: '0.4.5', items: ['周知の絞り込みボタンが画面外に出ていたのを修正(管理者表示)', '使われなくなった処理を整理'] },
-  { version: '0.4.4', items: ['周知の初期表示コンテンツ(サンプル掲示6件)を削除', '報告のステータスで絞り込むボタンが画面外に出ていたのを修正'] },
-  { version: '0.4.3', items: ['チャットに日付の区切りを表示(今日・昨日・日付)'] },
-  { version: '0.4.2', items: ['タグ・KYTの選択肢・班名に引用符が含まれると反応しなくなる不具合を修正', 'タグ名・KYTの選択肢に < や & が含まれるときの表示崩れを修正', 'ヘッダーのベルの点をさらに大きく調整', '未使用のスタイル定義を整理'] },
-  { version: '0.4.1', items: ['手順書のタイトル・説明が保存できない不具合を修正', '新着・未読の点を大きくし、縁取りを追加'] },
-  { version: '0.4', items: ['通知センターを追加(ヘッダーのベル)', '各タブに新着マークを追加', '報告の回答に既読を追加(投稿者・管理者の双方向)'] },
-  { version: '0.3.2', items: ['iOS PWA standalone表示の白帯を解消(ステータスバー設定を変更)', '診断オーバーレイを追加(バージョン表記を3回タップ)'] },
-  { version: '0.3.1', items: ['iOS PWA standalone表示のタブバー下白帯を修正', '周知の「反応」機能(未接続)を削除', '通知ベル・固定バッジ等の未実装表示を撤去'] },
-  { version: '0.3', items: ['プッシュ通知(FCM)を追加', '通知設定を実データ化', '旧通知機構(アプリ起動中のみ)を廃止'] },
-  { version: '0.2.2〜0.2.3', items: ['PWA standalone表示の不具合修正(ボトムナビ固定・スクロール)'] },
-  { version: '0.2.1', items: ['利用状況計測(DAU/WAU/MAU)を実装'] },
-  { version: '0.2', items: ['Firestore移行・乗務員マスタ・周知タブ等を本公開'] },
+  { version: 'A-0.1.0', items: ['初版(安全配送まとめてアプリ v0.4.5 をもとに作成)'] },
 ];
 
 function openAppInfo() {
@@ -4047,7 +4037,7 @@ function openAppInfo() {
       </div>
       <div class="modal-body" style="text-align:center;padding-bottom:8px">
         <div style="font-size:48px;margin:20px 0 12px">🚚</div>
-        <div style="font-weight:700;font-size:18px;color:var(--navy);margin-bottom:4px">安全配送 まとめてアプリ</div>
+        <div style="font-weight:700;font-size:18px;color:var(--navy);margin-bottom:4px">安全配送 まとめてアプリ A-LOGI</div>
         <div style="font-size:12px;letter-spacing:.18em;color:var(--primary);font-weight:700;margin-bottom:20px">SAFETY DELIVERY PORTAL</div>
         <div class="divider"></div>
         ${[
@@ -4067,7 +4057,7 @@ function openAppInfo() {
           <div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px">更新履歴</div>
           ${CHANGELOG.map(c => `
             <div style="margin-bottom:8px">
-              <div style="font-size:12px;font-weight:700;color:var(--primary)">v${escHtml(c.version)}</div>
+              <div style="font-size:12px;font-weight:700;color:var(--primary)">${escHtml(c.version)}</div>
               <ul style="margin:2px 0 0 18px;padding:0;font-size:11px;color:var(--text-sub);line-height:1.6">
                 ${c.items.map(i => `<li>${escHtml(i)}</li>`).join('')}
               </ul>
@@ -8912,7 +8902,7 @@ async function diagCopy() {
 /* ===== 初期化 ===== */
 // ヘッダーバッジ・ユーザーメニューのバージョン表記をAPP_VERSION定数から反映(静的HTML直書きの値は初期表示用フォールバック)
 document.getElementById('version-badge').textContent = 'Ver.' + APP_VERSION;
-document.getElementById('um-version-subtitle').textContent = 'Ver. ' + APP_VERSION + ' · 安全配送まとめてアプリ';
+document.getElementById('um-version-subtitle').textContent = 'Ver. ' + APP_VERSION + ' · 安全配送まとめてアプリ A-LOGI';
 renderAnn();
 renderChannelChips();
 renderChat();
