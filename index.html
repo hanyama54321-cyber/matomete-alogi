@@ -2157,7 +2157,7 @@ header {
         <span class="um-icon">🚚</span>
         <div style="flex:1">
           <div style="font-weight:700">班編成管理</div>
-          <div style="font-size:11px;color:var(--text-muted);margin-top:1px">班長名・呼称の編集（管理者のみ）</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:1px">呼称の編集（管理者のみ）</div>
         </div>
         <span style="font-size:12px;color:var(--text-muted)">›</span>
       </button>
@@ -2627,30 +2627,23 @@ const APP_VERSION = 'A-0.1.0';
 /* ===== データ ===== */
 
 // ユーザー一覧（既読率計算に使用）
-/* ===== 班マスター（9班体制） =====
+/* ===== 班マスター（A-LOGI版: 昼班・夜班の2班） =====
    Firestore スキーマ: teams/{teamId}
-     - code        : 'A'〜'I'（恒久的な班コード。変更しない）
-     - leaderName  : 班長氏名（異動時にこの値だけ更新すればアプリ全体の表示に反映される）
-     - label       : 班の呼称（現在の班長名ベース。team_i のみ機能名）
-     - displayName : UI表示用文字列（下のmapで自動生成）
-   ※ team_id 自体（team_a〜team_i）は恒久キー。班長交代があっても id は変更しない。
-      表示だけを変えたい場合は leaderName / label を更新するだけでよい。 */
+     - code        : 'A' / 'B'（恒久的な班コード。画面には出さない。変更しない）
+     - leaderName  : 常に null（A-LOGI版の班は班長名を持たない。HI-LINE版とスキーマをそろえるため残している）
+     - label       : 班の呼称（「昼班」「夜班」）
+     - displayName : UI表示用文字列。呼称と同じ（「A班（昼班）」のような表示にはしない）
+   ※ team_id 自体（team_a・team_b）は恒久キー。呼称を変えても id は変更しない。
+      表示だけを変えたい場合は label / displayName を更新する（班編成管理の画面から変更できる）。 */
 // teams はログイン時に attachTeamsListener() で Firestore(teams コレクション)を
 // onSnapshotミラーする。初期値はリスナー着信前のフォールバック表示用モック。
 let teams = [
-  { id:'all',    code:null, leaderName:null,   label:'全員' },
-  { id:'team_a', code:'A',  leaderName:'中尾',  label:'中尾班' },
-  { id:'team_b', code:'B',  leaderName:'阿部',  label:'阿部班' },
-  { id:'team_c', code:'C',  leaderName:'利部',  label:'利部班' },
-  { id:'team_d', code:'D',  leaderName:'小笠原', label:'小笠原班' },
-  { id:'team_e', code:'E',  leaderName:'佐藤',  label:'佐藤班' },
-  { id:'team_f', code:'F',  leaderName:'小林',  label:'小林班' },
-  { id:'team_g', code:'G',  leaderName:'土井',  label:'土井班' },
-  { id:'team_h', code:'H',  leaderName:'熊谷',  label:'熊谷班' },
-  { id:'team_i', code:'I',  leaderName:null,   label:'安全指導班' },
+  { id:'all',    code:null, leaderName:null, label:'全員' },
+  { id:'team_a', code:'A',  leaderName:null, label:'昼班' },
+  { id:'team_b', code:'B',  leaderName:null, label:'夜班' },
 ].map(t => ({
   ...t,
-  displayName: t.id === 'all' ? '全員' : `${t.code}班（${t.label}）`,
+  displayName: t.label, // seed-teams.js・saveTeamEdit() と同じく、表示名は呼称そのまま
   count: 0, // recalcTeamCounts() で users から動的算出
 }));
 let teamsUnsub = null;    // teamsコレクションリスナーのunsubscribe
@@ -2761,7 +2754,7 @@ let kytExpandedCode = null;       // 管理者ダッシュボードのアコー�
 /* ===== チャットメッセージ（Firestore接続） =====
    Firestore スキーマ: channels/{channelId}/messages/{messageId}
      senderUid / senderName / senderRole / text / createdAt / deleted / deletedBy / deletedAt
-   channelId は 'general' | 'safety' | teams[].id（'team_a'〜'team_i'）
+   channelId は 'general' | 'safety' | teams[].id（'team_a'・'team_b'）
    chatMessages は現在開いているチャンネルの onSnapshot 結果をそのまま保持する */
 let chatMessages = [];               // 現在のチャンネルのメッセージ(Firestoreからリアルタイム反映)
 let currentChannel = 'general';
@@ -3027,10 +3020,10 @@ async function recordSession() {
 // state/badgesが未作成のユーザーを初期化するときの足切り値としてのみ使われる)。
 const BADGE_EPOCH = new Date('2026-07-30T03:30:00+09:00');
 
-// チャンネル別の最終閲覧時刻を持つ対象。'general'/'safety' + 9班(team_a〜team_i)
+// チャンネル別の最終閲覧時刻を持つ対象。'general'/'safety' + 2班(team_a・team_b)
 const BADGE_CHANNEL_IDS = [
   'general', 'safety',
-  'team_a', 'team_b', 'team_c', 'team_d', 'team_e', 'team_f', 'team_g', 'team_h', 'team_i',
+  'team_a', 'team_b',
 ];
 
 let badgeState = null;        // users/{code}/state/badges のミラー
@@ -3703,8 +3696,8 @@ function closeUserMenu() {
 function openProfileEdit() {
   closeUserMenu();
   if (!fbUser) return;
-  // team_i(安全指導班)を含む全班を選択肢にする。'未設定'は一般ユーザーには出さない
-  // (firestore.rulesのteam自己更新ホワイトリストがteam_a〜team_iのみでnullを許可しないため)
+  // 全班(昼班・夜班)を選択肢にする。'未設定'は一般ユーザーには出さない
+  // (firestore.rulesのteam自己更新ホワイトリストがteam_a・team_bのみでnullを許可しないため)
   const teamOptions = teams.filter(t => t.id !== 'all');
   openModal(`
     <div class="modal-card">
@@ -5786,7 +5779,7 @@ function switchCh(id, name) {
 
 /* ===== チャット：管理者機能 ===== */
 
-// チャンネルIDは 'general'/'safety'（全員向け）または teams[].id（'team_a'〜'team_i'）
+// チャンネルIDは 'general'/'safety'（全員向け）または teams[].id（'team_a'・'team_b'）
 // そのままteamIdとして扱えるため、固定マッピング辞書は不要
 function getChannelMembers(channelId) {
   const teamId = (channelId === 'general' || channelId === 'safety') ? 'all' : channelId;
@@ -5794,9 +5787,9 @@ function getChannelMembers(channelId) {
 }
 
 // チャンネルチップを teams マスターから動的生成
-// 全チャンネル（固定2つ＋9班）をボタンとして並べ、.wrap で折り返し表示する
+// 全チャンネル（固定2つ＋2班の計4つ）をボタンとして並べ、.wrap で折り返し表示する
 // （横スクロールにせず、どの班も1タップで直接切替できるようにする）
-// 班長交代・班の増減があっても teams 配列を更新するだけでチップに反映される
+// 呼称の変更・班の増減があっても teams 配列を更新するだけでチップに反映される
 function renderChannelChips() {
   const host = document.getElementById('channel-chips');
   if (!host) return;
@@ -7171,7 +7164,7 @@ async function submitFb() {
 
   const isAnon = st.fbAnonymous;
   const senderName = fbUser.name;
-  // 報告書上の所属表示は「投稿時点」のスナップショットとして固定保存する（班長交代後も過去記録は変えない）
+  // 報告書上の所属表示は「投稿時点」のスナップショットとして固定保存する（班の呼称を変えた後も過去記録は変えない）
   const senderTeam = getTeam(fbUser.team).displayName;
   const visibility = st.fbShareRequested ? 'pending_public' : 'private';
 
@@ -8473,7 +8466,8 @@ async function changeUserRole(code) {
 /* ===== 班編成管理（管理者のみ） =====
    teamsは既にattachTeamsListener()による生きたミラーなので、個別フェッチ不要。
    保存後はonSnapshotで自動的に全画面(チャット・プロフィール・この画面自身)へ反映される。
-   team_a〜team_hは班長名(leaderName)を、team_i(安全指導班)は個人班長を持たないため呼称(label)を直接編集する。 */
+   A-LOGI版の班(昼班・夜班)は班長名を持たないため、どの班も呼称(label)を直接編集する。
+   表示名(displayName)は呼称そのまま。HI-LINE版の「A班（○○班）」のように班コードを前に付けない。 */
 
 function openTeamManagement() {
   closeUserMenu();
@@ -8496,20 +8490,17 @@ function renderTeamManagementList() {
   const rows = teams.filter(t => t.id !== 'all');
   if (rows.length === 0) return `<p style="font-size:13px;color:var(--text-muted)">班データがありません</p>`;
 
-  return rows.map(t => {
-    const isFunctionalTeam = t.id === 'team_i'; // 個人班長を持たない機能班
-    return `
+  return rows.map(t => `
       <div class="card" style="margin-bottom:8px;padding:12px">
-        <div style="font-weight:700;color:var(--navy);margin-bottom:8px">${escHtml(t.code)}班 — 現在: ${escHtml(t.displayName || t.label || '')}</div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:8px">現在: ${escHtml(t.displayName || t.label || '')}</div>
         <div class="form-group" style="margin-bottom:8px">
-          <label class="form-label">${isFunctionalTeam ? '呼称' : '班長名'}</label>
-          <input id="tm-input-${t.id}" class="input-field" value="${escHtml(isFunctionalTeam ? (t.label || '') : (t.leaderName || ''))}"
-                 placeholder="${isFunctionalTeam ? '例: 安全指導班' : '例: 中尾'}">
+          <label class="form-label">呼称</label>
+          <input id="tm-input-${t.id}" class="input-field" value="${escHtml(t.label || '')}"
+                 placeholder="例: 昼班">
         </div>
         <button class="btn btn-primary" style="width:100%" onclick="saveTeamEdit('${t.id}')">保存する</button>
       </div>
-    `;
-  }).join('');
+    `).join('');
 }
 
 async function saveTeamEdit(teamId) {
@@ -8526,15 +8517,14 @@ async function saveTeamEdit(teamId) {
     return;
   }
 
-  // seed-teams.js と同じ計算式で label/displayName を再構成する(以後の乖離を防ぐ)
-  const isFunctionalTeam = teamId === 'team_i';
-  const leaderName = isFunctionalTeam ? null : value;
-  const label = isFunctionalTeam ? value : `${value}班`;
-  const displayName = `${team.code}班（${label}）`;
+  // seed-teams.js と同じ形で保存する(以後の乖離を防ぐ): 呼称=表示名、班長名は持たない
+  const leaderName = null;
+  const label = value;
+  const displayName = value;
 
   try {
     await fbDb.collection('teams').doc(teamId).update({ leaderName, label, displayName });
-    showToast(`✓ ${team.code}班の表示を更新しました`);
+    showToast(`✓ ${label}の表示を更新しました`);
     // teamsローカル配列はonSnapshotで追って更新されるが、モーダルは即時反映のため明示的に再描画
     document.getElementById('tm-list').innerHTML = renderTeamManagementList();
   } catch (err) {
@@ -8730,7 +8720,7 @@ fbAuth.onAuthStateChanged(async (user) => {
     // KYT(シナリオ本体)も同様に全ロール共通でログイン時から購読を開始する
     attachKytScenariosListener();
 
-    // teams(9班マスター)も同様に全ロール共通でログイン時から購読を開始する
+    // teams(班マスター)も同様に全ロール共通でログイン時から購読を開始する
     attachTeamsListener();
     refreshUserMenuHeader();
 
