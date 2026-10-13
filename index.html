@@ -3700,6 +3700,10 @@ function openProfileEdit() {
   // 全班(昼班・夜班)を選択肢にする。'未設定'は一般ユーザーには出さない
   // (firestore.rulesのteam自己更新ホワイトリストがteam_a・team_bのみでnullを許可しないため)
   const teamOptions = teams.filter(t => t.id !== 'all');
+  // 班が未設定の人には「選択してください」を初期表示にする。これが無いと選択欄に先頭の班(昼班)が
+  // 表示され、そのまま保存すると本人が選んでいない班に入ってしまう(A-LOGI版は本人が班を選ぶ運用)。
+  // 一度ほかを選ぶと戻せない選択肢(disabled)。班が設定済みの人には出さない
+  const needsTeamChoice = !fbUser.team;
   openModal(`
     <div class="modal-card">
       <div class="modal-header">
@@ -3717,8 +3721,10 @@ function openProfileEdit() {
         <div class="form-group">
           <label class="form-label">所属班</label>
           <select id="prof-team" class="input-field">
+            ${needsTeamChoice ? '<option value="" selected disabled>選択してください</option>' : ''}
             ${teamOptions.map(t => `<option value="${t.id}" ${t.id === fbUser.team ? 'selected' : ''}>${escHtml(t.displayName)}</option>`).join('')}
           </select>
+          ${needsTeamChoice && fbUser.role !== 'admin' ? '<p style="font-size:11px;color:var(--danger);font-weight:700;margin-top:4px">所属班を選んでから保存してください</p>' : ''}
           <p style="font-size:11px;color:var(--text-muted);margin-top:4px">所属班を変更すると、班チャンネルの閲覧範囲が切り替わります</p>
         </div>
 
@@ -3783,6 +3789,13 @@ async function saveProfile() {
   const pwNew   = document.getElementById('prof-pw-new')?.value || '';
   const pwConf  = document.getElementById('prof-pw-confirm')?.value || '';
   const newTeam = document.getElementById('prof-team')?.value || fbUser.team;
+
+  // 班が未設定の乗務員は、昼班・夜班のどちらかを選ぶまで何も保存させない(パスワード欄に入力があっても同じ)。
+  // 管理者は班を持たない運用のため、未選択のままでも保存できる(その場合 newTeam は未設定のままで、班は変更されない)
+  if (!fbUser.team && fbUser.role !== 'admin' && !newTeam) {
+    showToast('⚠️ 所属班を選択してください');
+    return;
+  }
 
   if (pwNew) {
     if (pwNew.length < 5) { showToast('⚠️ 新しいパスワードは5文字以上'); return; }
