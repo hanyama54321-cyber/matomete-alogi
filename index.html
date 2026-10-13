@@ -3610,7 +3610,7 @@ async function upsertFcmToken(token, tokenIdArg) {
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     lastSeenAt: firebase.firestore.FieldValue.serverTimestamp(),
   }, { merge: true });
-  localStorage.setItem('fbFcmTokenId', tokenId);
+  localStorage.setItem('alogi_fbFcmTokenId', tokenId);
 }
 
 // 通知許可済み(Notification.permission==='granted')の場合に、SW登録→トークン取得→
@@ -3639,7 +3639,7 @@ async function refreshFcmTokenIfNeeded() {
     const token = await firebase.messaging().getToken({ vapidKey: FCM_VAPID_KEY, serviceWorkerRegistration: reg });
     if (!token) return;
     const tokenId = await sha256Hex(token);
-    const storedTokenId = localStorage.getItem('fbFcmTokenId');
+    const storedTokenId = localStorage.getItem('alogi_fbFcmTokenId');
     if (storedTokenId === tokenId) {
       await fbDb.collection('users').doc(fbUser.code).collection('tokens').doc(tokenId)
         .update({ lastSeenAt: firebase.firestore.FieldValue.serverTimestamp() }).catch(() => {});
@@ -3657,8 +3657,8 @@ async function refreshFcmTokenIfNeeded() {
 // ログアウト時にこの端末のトークンドキュメントを削除し、deleteToken()を呼ぶ。
 // 忘れると、同じ端末を別の乗務員が使った場合に前の利用者宛の通知が届いてしまう(最優先要件)
 async function deleteFcmTokenForThisDevice() {
-  const tokenId = localStorage.getItem('fbFcmTokenId');
-  localStorage.removeItem('fbFcmTokenId');
+  const tokenId = localStorage.getItem('alogi_fbFcmTokenId');
+  localStorage.removeItem('alogi_fbFcmTokenId');
   if (tokenId && fbUser) {
     try {
       await fbDb.collection('users').doc(fbUser.code).collection('tokens').doc(tokenId).delete();
@@ -3998,7 +3998,7 @@ async function updateNotifTokenStatus() {
   await registerFcmTokenIfPossible();
   const el = document.getElementById('notif-token-status');
   if (!el) return; // モーダルが既に閉じられていた場合は何もしない
-  const tokenId = localStorage.getItem('fbFcmTokenId');
+  const tokenId = localStorage.getItem('alogi_fbFcmTokenId');
   el.textContent = tokenId
     ? '✓ 通知を受け取れる状態です'
     : '⚠️ この端末では通知を受け取れない可能性があります(通信環境を確認し、再度お試しください)';
@@ -7283,9 +7283,12 @@ async function submitFb() {
 
 // 匿名投稿の自分の報告ID(localStorage)を追跡する。サーバー側に投稿者を紐付けるフィールドは
 // 一切持たないため、この端末のlocalStorageのみが「自分の匿名報告」を辿る手段になる。
+// キー名の接頭辞 alogi_ は外さないこと。HI-LINE版(/matomete-app/)と同じドメインで配信されるため
+// localStorageを共有しており、同名キーだと1台で両方を使う人の記録を互いに上書きしてしまう
+// (FCMトークンIDの 'alogi_fbFcmTokenId' も同じ理由)。
 function getAnonReportIds() {
   try {
-    return JSON.parse(localStorage.getItem('fbMyAnonReportIds') || '[]');
+    return JSON.parse(localStorage.getItem('alogi_fbMyAnonReportIds') || '[]');
   } catch (e) {
     return [];
   }
@@ -7294,7 +7297,7 @@ function getAnonReportIds() {
 function saveAnonReportIdLocally(id) {
   const ids = getAnonReportIds();
   ids.unshift(id);
-  localStorage.setItem('fbMyAnonReportIds', JSON.stringify(ids.slice(0, 200)));
+  localStorage.setItem('alogi_fbMyAnonReportIds', JSON.stringify(ids.slice(0, 200)));
 }
 
 function resetFb() {
