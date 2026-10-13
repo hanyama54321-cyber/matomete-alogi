@@ -262,6 +262,13 @@ Analytics は有効にしていないため、`firebaseConfig` に `measurementI
 | 4 | `firebase apps:sdkconfig WEB 1:252853368767:web:435764e7010e643dfed30a --project matomete-alogi` | 成功。`firebaseConfig` を取得 |
 | 5 | `firebase firestore:databases:create "(default)" --location asia-northeast1 --project matomete-alogi --non-interactive` | **失敗(HTTP 403)**。新しいプロジェクトでは Cloud Firestore API がまだ有効になっていないため。データベースは作られていない。**ここで止めて南野さんに報告** |
 
+| 6 | `firebase firestore:databases:get "(default)" --project matomete-alogi`、`firebase firestore:databases:list --project matomete-alogi`(南野さんからコンソール作業の完了連絡を受けたあとの確認。数分おいて計4回) | **すべて HTTP 403**(Cloud Firestore API が未有効)。#5 と同じ状態のまま |
+| 7 | 公開エンドポイントでの確認(ウェブ用の公開 API キーを使った読み取りのみ): Firestore の REST / Auth の `getProjectConfig` / Storage バケットの一覧 | Firestore=`SERVICE_DISABLED`、Auth=`CONFIGURATION_NOT_FOUND`、Storage バケット `matomete-alogi.firebasestorage.app`=404。**3つとも、プロジェクトID `matomete-alogi` には設定が入っていない** |
+
+**⚠️ 2026-10-14 時点の食い違い**: 南野さんからは「コンソール作業はすべて `matomete-alogi` で完了」と連絡があったが、プロジェクトID `matomete-alogi` には
+Firestore・認証・Storage のいずれも設定されていない。表示名が同じ別のプロジェクト(IDが違うもの)で作業した可能性がある。
+どのプロジェクトIDで作業したかを南野さんに確認中。**確認が取れるまで、接続情報の差し替えとデプロイは行わない。** VAPID 公開鍵もまだ受け取っていない。
+
 **まだ行っていないこと**: Firestore の作成、コンソールでの設定(Blaze・予算アラート・Storage・メール/パスワード認証・承認済みドメイン・VAPID 鍵)、
 リポジトリ内の接続情報の差し替え、ルール・インデックス・Functions のデプロイ。
 
