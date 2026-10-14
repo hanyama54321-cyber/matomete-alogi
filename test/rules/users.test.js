@@ -102,13 +102,19 @@ test('adminはユーザーを新規作成できる', async () => {
 test('一般ユーザーは自分のteamを単独更新できる(所属班の自己変更)', async () => {
   await seed();
   const db = authedContext(testEnv, 'D12').firestore();
-  await assertSucceeds(db.collection('users').doc('D12').update({ team: 'team_i' }));
+  await assertSucceeds(db.collection('users').doc('D12').update({ team: 'team_b' }));
 });
 
 test('一般ユーザーはteamをホワイトリスト外の値に変更できない', async () => {
   await seed();
   const db = authedContext(testEnv, 'D12').firestore();
   await assertFails(db.collection('users').doc('D12').update({ team: '本部' }));
+});
+
+test('一般ユーザーはteamをA-LOGI版に無い班ID(team_c)に変更できない(許可リストはteam_a・team_bのみ)', async () => {
+  await seed();
+  const db = authedContext(testEnv, 'D12').firestore();
+  await assertFails(db.collection('users').doc('D12').update({ team: 'team_c' }));
 });
 
 test('一般ユーザーはteamをnullに変更できない(ホワイトリストにnullは含まない)', async () => {
@@ -120,13 +126,13 @@ test('一般ユーザーはteamをnullに変更できない(ホワイトリス�
 test('一般ユーザーはteamとroleを同時更新できない(hasOnly([\'team\'])単独のみ許可)', async () => {
   await seed();
   const db = authedContext(testEnv, 'D12').firestore();
-  await assertFails(db.collection('users').doc('D12').update({ team: 'team_i', role: 'admin' }));
+  await assertFails(db.collection('users').doc('D12').update({ team: 'team_b', role: 'admin' }));
 });
 
 test('一般ユーザーは他ユーザーのteamを更新できない', async () => {
   await seed();
   const db = authedContext(testEnv, 'D12').firestore();
-  await assertFails(db.collection('users').doc('ADM1').update({ team: 'team_i' }));
+  await assertFails(db.collection('users').doc('ADM1').update({ team: 'team_b' }));
 });
 
 test('一般ユーザーは自分のlastActiveDateを単独更新できる(利用状況計測)', async () => {
@@ -138,7 +144,7 @@ test('一般ユーザーは自分のlastActiveDateを単独更新できる(利�
 test('一般ユーザーはlastActiveDateと他フィールドを同時更新できない', async () => {
   await seed();
   const db = authedContext(testEnv, 'D12').firestore();
-  await assertFails(db.collection('users').doc('D12').update({ lastActiveDate: '2026-07-22', team: 'team_i' }));
+  await assertFails(db.collection('users').doc('D12').update({ lastActiveDate: '2026-07-22', team: 'team_b' }));
 });
 
 test('一般ユーザーは他ユーザーのlastActiveDateを更新できない', async () => {
@@ -159,7 +165,7 @@ test('一般ユーザーはnotifyPrefsと他フィールドを同時更新でき
   await seed();
   const db = authedContext(testEnv, 'D12').firestore();
   await assertFails(
-    db.collection('users').doc('D12').update({ notifyPrefs: { mustReadAnnouncement: false }, team: 'team_i' })
+    db.collection('users').doc('D12').update({ notifyPrefs: { mustReadAnnouncement: false }, team: 'team_b' })
   );
 });
 
@@ -191,6 +197,6 @@ test('adminは対象ユーザーのnotifyPrefsを含む任意更新ができる'
   await seed();
   const db = authedContext(testEnv, 'ADM1').firestore();
   await assertSucceeds(
-    db.collection('users').doc('D12').update({ notifyPrefs: { mustReadAnnouncement: false }, team: 'team_i' })
+    db.collection('users').doc('D12').update({ notifyPrefs: { mustReadAnnouncement: false }, team: 'team_b' })
   );
 });

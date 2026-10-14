@@ -4,7 +4,7 @@
 
   通知受信専用の最小構成。fetchハンドラは書かない(オフラインキャッシュは導入しない)。
   GitHub Pagesのサブパス配信のため、登録側(index.html)で
-  navigator.serviceWorker.register('firebase-messaging-sw.js', { scope: '/matomete-app/' })
+  navigator.serviceWorker.register('firebase-messaging-sw.js', { scope: '/matomete-alogi/' })
   のようにscopeを明示すること。
 */
 
@@ -17,13 +17,12 @@ const SW_VERSION = 'sw-1';
 // この設定はindex.htmlのfirebaseConfigと同期させること。
 // SWはindex.html側の変数を参照できないため、値を変更したら両方直す必要がある
 const firebaseConfig = {
-  apiKey: "AIzaSyBDEk7luVCDDJooPwG6BU0r1qX8GROc6rY",
-  authDomain: "anzen-matomete-app.firebaseapp.com",
-  projectId: "anzen-matomete-app",
-  storageBucket: "anzen-matomete-app.firebasestorage.app",
-  messagingSenderId: "163103621501",
-  appId: "1:163103621501:web:53410bbe65778f5d154c14",
-  measurementId: "G-FQKRCR30BY"
+  apiKey: "AIzaSyBnsA1HjJaqIxTqZVoJf6PYSxI8kiLs__c",
+  authDomain: "matomete-alogi.firebaseapp.com",
+  projectId: "matomete-alogi",
+  storageBucket: "matomete-alogi.firebasestorage.app",
+  messagingSenderId: "252853368767",
+  appId: "1:252853368767:web:435764e7010e643dfed30a"
 };
 
 firebase.initializeApp(firebaseConfig);

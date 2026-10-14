@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  安全配送 まとめてアプリ (Safety Delivery Matomete App)
+  安全配送 まとめてアプリ A-LOGI版 (Safety Delivery Matomete App for A-LOGI)
   © 2026 南野. All rights reserved.
   Unauthorized copying or redistribution of this file is strictly prohibited.
 -->
@@ -14,8 +14,8 @@
      短くなり、画面下端にページ背景色の帯が残る問題があった(v0.3.2で実測により特定)。
      defaultではWebビューがステータスバーの下から始まり、この帯が発生しない -->
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="まとめてアプリ">
-<meta name="theme-color" content="#0D3D9E">
+<meta name="apple-mobile-web-app-title" content="まとめてA-LOGI">
+<meta name="theme-color" content="#8E0E1E">
 <meta name="description" content="配送センター向け業務支援ポータル">
 <meta name="author" content="南野">
 <meta name="copyright" content="© 2026 南野. All rights reserved.">
@@ -23,10 +23,10 @@
 <!-- アイコン・マニフェスト -->
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-180.png">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2096%2096%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g1%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%230D3D9E%22/%3E%3Cstop%20offset%3D%2245%25%22%20stop-color%3D%22%231A56C4%22/%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%233F8CEF%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2220%22%20fill%3D%22url%28%23g1%29%22/%3E%3Cpath%20d%3D%22M-2%2012%20H16%20L22%206%20H46%22%20stroke%3D%22white%22%20stroke-width%3D%221%22%20stroke-opacity%3D%22.28%22%20fill%3D%22none%22/%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%2212%22%20r%3D%221.5%22%20fill%3D%22white%22%20fill-opacity%3D%22.5%22/%3E%3Ccircle%20cx%3D%2246%22%20cy%3D%226%22%20r%3D%221.2%22%20fill%3D%22white%22%20fill-opacity%3D%22.5%22/%3E%3Cpath%20d%3D%22M54%204%20H70%20L78%2014%20H98%22%20stroke%3D%22white%22%20stroke-width%3D%221%22%20stroke-opacity%3D%22.28%22%20fill%3D%22none%22/%3E%3Ccircle%20cx%3D%2270%22%20cy%3D%224%22%20r%3D%221.5%22%20fill%3D%22white%22%20fill-opacity%3D%22.5%22/%3E%3Ccircle%20cx%3D%2278%22%20cy%3D%2214%22%20r%3D%221.2%22%20fill%3D%22white%22%20fill-opacity%3D%22.5%22/%3E%3Cpath%20d%3D%22M-2%2092%20H14%20L22%2084%20H40%22%20stroke%3D%22white%22%20stroke-width%3D%221%22%20stroke-opacity%3D%22.28%22%20fill%3D%22none%22/%3E%3Ccircle%20cx%3D%2214%22%20cy%3D%2292%22%20r%3D%221.5%22%20fill%3D%22white%22%20fill-opacity%3D%22.5%22/%3E%3Ccircle%20cx%3D%2240%22%20cy%3D%2284%22%20r%3D%221.2%22%20fill%3D%22white%22%20fill-opacity%3D%22.5%22/%3E%3Cpath%20d%3D%22M52%2092%20H70%20L78%2086%20H98%22%20stroke%3D%22white%22%20stroke-width%3D%221%22%20stroke-opacity%3D%22.28%22%20fill%3D%22none%22/%3E%3Ccircle%20cx%3D%2270%22%20cy%3D%2292%22%20r%3D%221.5%22%20fill%3D%22white%22%20fill-opacity%3D%22.5%22/%3E%3Ccircle%20cx%3D%2278%22%20cy%3D%2286%22%20r%3D%221.2%22%20fill%3D%22white%22%20fill-opacity%3D%22.5%22/%3E%3Crect%20x%3D%224%22%20y%3D%2220%22%20width%3D%2256%22%20height%3D%2256%22%20rx%3D%224%22%20fill%3D%22white%22/%3E%3Cpath%20d%3D%22M60%2030%20L78%2030%20L90%2046%20L90%2076%20L60%2076%20Z%22%20fill%3D%22white%22/%3E%3Cpath%20d%3D%22M62%2032%20L77%2032%20L86%2046%20L62%2046%20Z%22%20fill%3D%22%231A56C4%22/%3E%3Cg%20fill%3D%22%231A56C4%22%3E%3Crect%20x%3D%2210%22%20y%3D%2226%22%20width%3D%2211%22%20height%3D%2244%22%20rx%3D%222%22/%3E%3Crect%20x%3D%2243%22%20y%3D%2226%22%20width%3D%2211%22%20height%3D%2244%22%20rx%3D%222%22/%3E%3Crect%20x%3D%2210%22%20y%3D%2242%22%20width%3D%2244%22%20height%3D%2212%22/%3E%3C/g%3E%3Ccircle%20cx%3D%2222%22%20cy%3D%2282%22%20r%3D%229%22%20fill%3D%22%2313294B%22/%3E%3Ccircle%20cx%3D%2222%22%20cy%3D%2282%22%20r%3D%224%22%20fill%3D%22white%22/%3E%3Ccircle%20cx%3D%2222%22%20cy%3D%2282%22%20r%3D%221.5%22%20fill%3D%22%2313294B%22/%3E%3Ccircle%20cx%3D%2272%22%20cy%3D%2282%22%20r%3D%229%22%20fill%3D%22%2313294B%22/%3E%3Ccircle%20cx%3D%2272%22%20cy%3D%2282%22%20r%3D%224%22%20fill%3D%22white%22/%3E%3Ccircle%20cx%3D%2272%22%20cy%3D%2282%22%20r%3D%221.5%22%20fill%3D%22%2313294B%22/%3E%3Ccircle%20cx%3D%2287%22%20cy%3D%2264%22%20r%3D%222.2%22%20fill%3D%22%23FFD54F%22/%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2096%2096%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g1%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%238E0E1E%22/%3E%3Cstop%20offset%3D%2245%25%22%20stop-color%3D%22%23C8102E%22/%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23EF4B5A%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20rx%3D%2220%22%20fill%3D%22url%28%23g1%29%22/%3E%3Crect%20x%3D%224%22%20y%3D%2220%22%20width%3D%2256%22%20height%3D%2256%22%20rx%3D%224%22%20fill%3D%22%23FFFFFF%22/%3E%3Cpath%20d%3D%22M60%2030%20L78%2030%20L90%2046%20L90%2076%20L60%2076%20Z%22%20fill%3D%22%23FFFFFF%22/%3E%3Cpath%20d%3D%22M62%2032%20L77%2032%20L86%2046%20L62%2046%20Z%22%20fill%3D%22%23C8102E%22/%3E%3Cpath%20d%3D%22M26.5%2026.5%20H37.5%20L53.5%2069.5%20H42.4%20L38.9%2060%20H25.1%20L21.6%2069.5%20H10.5%20Z%20M32%2038.5%20L35.9%2050%20H28.1%20Z%22%20fill%3D%22%23C8102E%22%20fill-rule%3D%22evenodd%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%221%22%20stroke-linejoin%3D%22round%22/%3E%3Ccircle%20cx%3D%2222%22%20cy%3D%2282%22%20r%3D%229%22%20fill%3D%22%233A0A12%22/%3E%3Ccircle%20cx%3D%2272%22%20cy%3D%2282%22%20r%3D%229%22%20fill%3D%22%233A0A12%22/%3E%3C/svg%3E">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 
-<title>安全配送 まとめてアプリ</title>
+<title>安全配送まとめてアプリ A-LOGI</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 
 <!-- ===== Firebase SDK (compat版) ===== -->
@@ -38,13 +38,12 @@
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-functions-compat.js"></script>
 <script>
 const firebaseConfig = {
-  apiKey: "AIzaSyBDEk7luVCDDJooPwG6BU0r1qX8GROc6rY",
-  authDomain: "anzen-matomete-app.firebaseapp.com",
-  projectId: "anzen-matomete-app",
-  storageBucket: "anzen-matomete-app.firebasestorage.app",
-  messagingSenderId: "163103621501",
-  appId: "1:163103621501:web:53410bbe65778f5d154c14",
-  measurementId: "G-FQKRCR30BY"
+  apiKey: "AIzaSyBnsA1HjJaqIxTqZVoJf6PYSxI8kiLs__c",
+  authDomain: "matomete-alogi.firebaseapp.com",
+  projectId: "matomete-alogi",
+  storageBucket: "matomete-alogi.firebasestorage.app",
+  messagingSenderId: "252853368767",
+  appId: "1:252853368767:web:435764e7010e643dfed30a"
 };
 // この設定はfirebase-messaging-sw.jsのfirebaseConfigと同期させること。
 // SW側はこの変数を参照できず、値を変更したら両方直す必要がある
@@ -57,34 +56,39 @@ const fbFunctions = firebase.app().functions('asia-northeast1');
 // FCM Web Push用VAPID公開鍵(Firebase Console → プロジェクト設定 → Cloud Messaging →
 // ウェブ構成 → 鍵ペアの生成、で取得。公開鍵のためリポジトリに含めてよい)。
 // getToken({ vapidKey })に渡す唯一の参照元。ここ以外に直書きしないこと
-const FCM_VAPID_KEY = 'BCd2jTEyxVABwbdktFURmnKhXr0gSvIYxI0rorVPMGcko6gW6zHx_W67ZNPc7VWiC8MIOOWWGdi44nuKKynkZiY';
+const FCM_VAPID_KEY = 'BLopNP5-qviVPzWL7D13Uky4GCl6JFsLH-6WBkcybR_teOc0fNSaZITT746Bdya9IQg3DTG-gdNQMvTp6a1C4rw';
 </script>
 <style>
 /* ===== テーマ変数 ===== */
 :root {
   --bg: #F6F4EE;
   --surface: #FFFFFF;
-  --surface2: #EFF4FB;
-  --border: #E1E7F0;
-  --primary: #1A56C4;
-  --navy: #13294B;
+  --surface2: #FBEFF0;
+  --border: #F0DEE0;
+  --primary: #C8102E;
+  --navy: #3A0A12;
   --danger: #D93A3F;
   --safe: #1F9D55;
   --purple: #7C3AED;
-  --text: #1C2940;
-  --text-sub: #5F6E85;
-  --text-muted: #9AA7BA;
-  --grad: linear-gradient(135deg, #0D3D9E 0%, #1A56C4 45%, #3F8CEF 100%);
+  --amber: #9A5F00;   /* 色分け用の琥珀色。A-LOGI版では --primary が赤になり --danger と見分けられないため、
+                        色で意味を分ける箇所(カテゴリ「業務」・KYT難易度「中」・便利リンク「天気情報」)は
+                        --primary ではなくこちらを使う。白地の文字色としてコントラスト比 5.24(4.5以上)になる値 */
+  --text: #2B1B1E;
+  --text-sub: #6E5A5E;
+  --text-muted: #7F6B6F;
+  --grad: linear-gradient(135deg, #8E0E1E 0%, #C8102E 45%, #EF4B5A 100%);
 
   /* 新着・未読ドット(v0.4.1)。個別のクラスに数値を直書きせずここへ集約する。
-     色は「新着=赤」「未読=青」で使い分ける: 周知タブには赤い必読ピル(.must-read-badge)が
-     あるため、未読まで赤にすると赤が「未読」と「必読」の2つの意味を持ち、
-     ドライバーが必ず読むべきものを見分けにくくなる。 */
+     A-LOGI版は赤基調のため、HI-LINE版の「新着=赤(#FF3B30)」のままだと赤いボタンや選択中の
+     表示に埋もれる。そこで新着は黄色にし、白い背景の上でも見えるよう濃色のリングで縁取る。
+     未読は --navy(ダークワイン)、リングは白のまま。HI-LINE版と同じ --primary にすると赤になり、
+     同じカード内の赤い必読ピル(.must-read-badge)と色で見分けられなくなるため。 */
   --badge-dot: 10px;                    /* タブの新着マーク・周知タブ各行の未読ドット */
   --badge-dot-bell: 12px;               /* ヘッダーのベル。実機確認の結果10px→12pxへ(v0.4.2) */
-  --badge-ring: 2px;                    /* 背景色で縁取るリングの太さ */
-  --badge-color: #FF3B30;               /* 新着(赤) */
-  --badge-color-unread: var(--primary); /* 未読(青) */
+  --badge-ring: 2px;                    /* 縁取るリングの太さ */
+  --badge-color: #FFD54F;               /* 新着(黄) */
+  --badge-ring-color: #3A0A12;          /* 新着マーク(.bell-dot / .nav-badge)のリング。--navy と同じ濃色 */
+  --badge-color-unread: var(--navy);    /* 未読(ダークワイン) */
 }
 
 /* ===== リセット ===== */
@@ -179,7 +183,7 @@ header {
      borderだと指定幅の内側に食い込み、赤い芯が実測5.3pxまで縮んでいた。
      box-shadowは要素の外側に描画されるので、指定値がそのまま芯の直径になり、
      レイアウトにも影響しない。祖先に overflow:hidden が無いことは確認済み。 */
-  box-shadow: 0 0 0 var(--badge-ring) var(--surface);
+  box-shadow: 0 0 0 var(--badge-ring) var(--badge-ring-color);
   animation: badge-dot-pulse .6s ease-in-out 2;
 }
 /* 通知センターの行(v0.4)。専用クラスのみで構成し、既存の共有クラスは使わない */
@@ -279,7 +283,7 @@ header {
   width: var(--badge-dot); height: var(--badge-dot);
   border-radius: 50%;
   background: var(--badge-color);
-  box-shadow: 0 0 0 var(--badge-ring) var(--surface);   /* 理由は .bell-dot 参照 */
+  box-shadow: 0 0 0 var(--badge-ring) var(--badge-ring-color);   /* 理由は .bell-dot 参照 */
   animation: badge-dot-pulse .6s ease-in-out 2;
 }
 /* チャンネルチップの新着表示(v0.4)。色( danger 系 )に加えて
@@ -316,7 +320,7 @@ header {
   border-radius: 14px;
   padding: 16px;
   margin-bottom: 12px;
-  box-shadow: 0 1px 3px rgba(19,41,75,.05);
+  box-shadow: 0 1px 3px rgba(58,10,18,.05);
 }
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
@@ -385,7 +389,7 @@ header {
   color: white;
   padding: 18px;
   margin-bottom: 16px;
-  box-shadow: 0 4px 14px rgba(13,61,158,.25);
+  box-shadow: 0 4px 14px rgba(142,14,30,.25);
 }
 .circuit-svg {
   position: absolute;
@@ -413,13 +417,14 @@ header {
   border-radius: 14px;
   padding: 16px;
   margin-bottom: 12px;
-  box-shadow: 0 1px 3px rgba(19,41,75,.05);
+  box-shadow: 0 1px 3px rgba(58,10,18,.05);
   cursor: pointer;
 }
 .ann-item.pinned { border-left: 3px solid var(--primary); }
 .ann-item.read { opacity: .72; }
 /* 周知一覧の未読ドット(v0.4.1でインラインstyleから切り出し)。
-   サイズとリングは .bell-dot / .nav-badge と共通変数を参照するが、色は青のまま。
+   サイズとリングの太さは .bell-dot / .nav-badge と共通変数を参照するが、色は --navy、
+   リングは白(--surface)のまま(新着マークの黄色+濃色リングとは別系統)。
    赤は同じカード内の .must-read-badge(必読)が使っているため意味を衝突させない。
    pulseは付けない(理由は badge-dot-pulse のコメント参照)。 */
 .ann-unread-dot {
@@ -438,7 +443,7 @@ header {
   border: 1px solid var(--border);
   border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(19,41,75,.05);
+  box-shadow: 0 1px 3px rgba(58,10,18,.05);
 }
 .chat-header {
   padding: 11px 14px;
@@ -512,7 +517,7 @@ header {
   padding: 14px;
   cursor: pointer;
   display: flex; flex-direction: column; gap: 8px;
-  box-shadow: 0 1px 3px rgba(19,41,75,.05);
+  box-shadow: 0 1px 3px rgba(58,10,18,.05);
 }
 
 /* ===== KYT ===== */
@@ -527,7 +532,7 @@ header {
   border: 1.5px solid var(--border);
   background: var(--surface);
 }
-.kyt-option.sel { border-color: var(--primary); background: rgba(26,86,196,.06); }
+.kyt-option.sel { border-color: var(--primary); background: rgba(200,16,46,.06); }
 .kyt-option.correct { border-color: var(--safe); background: rgba(31,157,85,.07); cursor: default; }
 .kyt-option.wrong { border-color: var(--danger); background: rgba(217,58,63,.07); cursor: default; }
 .kyt-option.neutral-after { cursor: default; }
@@ -556,7 +561,7 @@ header {
   padding: 14px;
   display: flex; flex-direction: column; gap: 6px;
   min-height: 90px;
-  box-shadow: 0 1px 3px rgba(19,41,75,.05);
+  box-shadow: 0 1px 3px rgba(58,10,18,.05);
 }
 .link-card:active { opacity: .8; }
 
@@ -567,8 +572,8 @@ header {
 }
 .fb-receipt-num {
   display: inline-block;
-  background: linear-gradient(135deg, rgba(13,61,158,.08), rgba(63,140,239,.08));
-  border: 1px solid rgba(26,86,196,.18);
+  background: linear-gradient(135deg, rgba(142,14,30,.08), rgba(239,75,90,.08));
+  border: 1px solid rgba(200,16,46,.18);
   color: var(--primary);
   border-radius: 999px;
   padding: 6px 16px;
@@ -606,7 +611,7 @@ header {
 }
 .fb-thanks-line:last-child { margin-bottom: 0; }
 .fb-next-steps {
-  background: linear-gradient(135deg, rgba(31,157,85,.06), rgba(63,140,239,.06));
+  background: linear-gradient(135deg, rgba(31,157,85,.06), rgba(239,75,90,.06));
   border: 1px solid rgba(31,157,85,.2);
   border-radius: 12px;
   padding: 14px 16px;
@@ -691,7 +696,7 @@ header {
   position: absolute;
   cursor: pointer;
   inset: 0;
-  background: #C9D1DD;
+  background: #D8CACC;
   border-radius: 999px;
   transition: background .2s;
 }
@@ -815,7 +820,7 @@ header {
   font-weight: 700;
   padding: 2px 7px;
   border-radius: 999px;
-  background: rgba(63,140,239,.14);
+  background: rgba(239,75,90,.14);
   color: var(--primary);
 }
 .report-category-tag {
@@ -937,7 +942,7 @@ header {
   gap: 6px; text-align: center;
   opacity: .6;
   position: relative; overflow: hidden;
-  box-shadow: 0 1px 3px rgba(19,41,75,.05);
+  box-shadow: 0 1px 3px rgba(58,10,18,.05);
 }
 .game-lock {
   position: absolute;
@@ -957,7 +962,7 @@ header {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 14px;
-  box-shadow: 0 8px 24px rgba(19,41,75,.15);
+  box-shadow: 0 8px 24px rgba(58,10,18,.15);
   min-width: 240px;
   z-index: 300;
   overflow: hidden;
@@ -965,7 +970,7 @@ header {
 .user-menu-header {
   padding: 16px;
   display: flex; align-items: center; gap: 12px;
-  background: linear-gradient(135deg, rgba(13,61,158,.04), rgba(63,140,239,.04));
+  background: linear-gradient(135deg, rgba(142,14,30,.04), rgba(239,75,90,.04));
   border-bottom: 1px solid var(--border);
 }
 .user-menu-av {
@@ -1037,8 +1042,8 @@ header {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  background: rgba(26,86,196,.06);
-  border: 1px solid rgba(26,86,196,.15);
+  background: rgba(200,16,46,.06);
+  border: 1px solid rgba(200,16,46,.15);
   border-radius: 6px;
   padding: 4px 9px;
   font-size: 12px;
@@ -1047,14 +1052,14 @@ header {
   cursor: pointer;
   transition: background .15s;
 }
-.reach-mini-public:hover { background: rgba(26,86,196,.1); }
+.reach-mini-public:hover { background: rgba(200,16,46,.1); }
 .role-menu {
   position: absolute;
   top: 50px; right: 16px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(19,41,75,.15);
+  box-shadow: 0 6px 20px rgba(58,10,18,.15);
   min-width: 220px;
   z-index: 200;
   overflow: hidden;
@@ -1072,7 +1077,7 @@ header {
 }
 .role-menu-item:last-child { border-bottom: none; }
 .role-menu-item:active { background: var(--surface2); }
-.role-menu-item.current { background: rgba(26,86,196,.06); }
+.role-menu-item.current { background: rgba(200,16,46,.06); }
 .role-menu-av {
   width: 32px; height: 32px;
   border-radius: 50%;
@@ -1105,7 +1110,7 @@ header {
   width: 100%;
   justify-content: center;
   min-height: 48px;
-  box-shadow: 0 3px 10px rgba(13,61,158,.2);
+  box-shadow: 0 3px 10px rgba(142,14,30,.2);
   margin-bottom: 14px;
 }
 
@@ -1130,9 +1135,9 @@ header {
   min-height: 38px;
 }
 .ann-action-btn.primary {
-  background: rgba(26,86,196,.08);
+  background: rgba(200,16,46,.08);
   color: var(--primary);
-  border-color: rgba(26,86,196,.3);
+  border-color: rgba(200,16,46,.3);
 }
 .ann-action-btn.danger {
   background: rgba(217,58,63,.08);
@@ -1155,7 +1160,7 @@ header {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(19,41,75,.55);
+  background: rgba(58,10,18,.55);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   z-index: 1000;
@@ -1256,7 +1261,7 @@ header {
 .seg-btn.active {
   background: var(--surface);
   color: var(--primary);
-  box-shadow: 0 1px 3px rgba(19,41,75,.08);
+  box-shadow: 0 1px 3px rgba(58,10,18,.08);
 }
 
 .priority-row {
@@ -1283,7 +1288,7 @@ header {
 }
 .prio-btn.active.normal {
   border-color: var(--primary);
-  background: rgba(26,86,196,.08);
+  background: rgba(200,16,46,.08);
   color: var(--primary);
 }
 .prio-btn.active.low {
@@ -1328,7 +1333,7 @@ header {
   padding: 20px;
   margin-bottom: 16px;
   display: flex; align-items: center; gap: 18px;
-  box-shadow: 0 4px 14px rgba(13,61,158,.25);
+  box-shadow: 0 4px 14px rgba(142,14,30,.25);
 }
 .reach-donut {
   width: 96px; height: 96px;
@@ -1364,7 +1369,7 @@ header {
   border-radius: 10px;
   padding: 12px 8px;
   text-align: center;
-  box-shadow: 0 1px 3px rgba(19,41,75,.04);
+  box-shadow: 0 1px 3px rgba(58,10,18,.04);
 }
 .reach-stat-num {
   font-size: 24px; font-weight: 700;
@@ -1401,7 +1406,7 @@ header {
   border-radius: 12px;
   overflow: hidden;
   margin-bottom: 12px;
-  box-shadow: 0 1px 3px rgba(19,41,75,.05);
+  box-shadow: 0 1px 3px rgba(58,10,18,.05);
 }
 .user-list-header {
   background: var(--surface2);
@@ -1555,9 +1560,9 @@ header {
 .tag-pill::before { content: '#'; opacity: .55; margin-right: 1px; }
 .tag-pill:active,
 .tag-pill.active {
-  background: rgba(26,86,196,.1);
+  background: rgba(200,16,46,.1);
   color: var(--primary);
-  border-color: rgba(26,86,196,.3);
+  border-color: rgba(200,16,46,.3);
 }
 .tag-input-wrap {
   background: var(--surface);
@@ -1571,7 +1576,7 @@ header {
 .tag-input-wrap:focus-within { border-color: var(--primary); }
 .tag-chip-edit {
   display: inline-flex; align-items: center; gap: 4px;
-  background: rgba(26,86,196,.1);
+  background: rgba(200,16,46,.1);
   color: var(--primary);
   font-size: 12px; font-weight: 600;
   padding: 4px 4px 4px 9px;
@@ -1718,8 +1723,8 @@ header {
 
 /* ===== タグスレッド ===== */
 .thread-banner {
-  background: linear-gradient(135deg, rgba(26,86,196,.08), rgba(63,140,239,.04));
-  border: 1px solid rgba(26,86,196,.2);
+  background: linear-gradient(135deg, rgba(200,16,46,.08), rgba(239,75,90,.04));
+  border: 1px solid rgba(200,16,46,.2);
   border-radius: 10px;
   padding: 10px 14px;
   margin-bottom: 12px;
@@ -1837,7 +1842,7 @@ header {
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 32px 24px;
-  box-shadow: 0 8px 32px rgba(13,41,75,.08);
+  box-shadow: 0 8px 32px rgba(58,10,18,.08);
 }
 .login-title {
   font-size: 18px;
@@ -1890,7 +1895,7 @@ header {
   cursor: pointer;
   margin-top: 8px;
 }
-.login-btn:disabled { background: #A9B7CE; cursor: not-allowed; }
+.login-btn:disabled { background: #C7B1B4; cursor: not-allowed; }
 .login-error {
   background: rgba(217,58,63,.08);
   border: 1px solid rgba(217,58,63,.3);
@@ -1967,8 +1972,8 @@ header {
        xmlns="http://www.w3.org/2000/svg">
     <defs>
       <linearGradient id="wmGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#0D3D9E" stop-opacity="0.045"/>
-        <stop offset="100%" stop-color="#3F8CEF" stop-opacity="0.028"/>
+        <stop offset="0%" stop-color="#8E0E1E" stop-opacity="0.045"/>
+        <stop offset="100%" stop-color="#EF4B5A" stop-opacity="0.028"/>
       </linearGradient>
     </defs>
 
@@ -2008,26 +2013,26 @@ header {
       <text x="-120" y="848" font-size="9"  font-weight="500" letter-spacing="3" fill="url(#wmGrad)" opacity="0.7">MINAMINŌ  ·  SAFETY DELIVERY PORTAL  ·  MINAMINŌ  ·  SAFETY DELIVERY PORTAL</text>
     </g>
 
-    <!-- 中央: 大きな透かし「H.」イニシャル -->
+    <!-- 中央: 大きな透かし「A.」イニシャル -->
     <text x="195" y="445" text-anchor="middle" dominant-baseline="middle"
           font-family="Georgia, 'Times New Roman', serif"
           font-size="180" font-weight="700"
-          fill="#0D3D9E" fill-opacity="0.018"
-          letter-spacing="-4">H.</text>
+          fill="#8E0E1E" fill-opacity="0.018"
+          letter-spacing="-4">A.</text>
   </svg>
 </div>
 
 <!-- ===== ログイン画面 (Firebase認証) ===== -->
 <div id="login-screen" style="display:none">
   <div class="login-card">
-    <div class="login-title">安全配送 まとめてアプリ</div>
+    <div class="login-title">安全配送 まとめてアプリ A-LOGI</div>
     <div class="login-sub">SAFETY DELIVERY PORTAL</div>
     <div id="login-error" class="login-error" style="display:none"></div>
     <form id="login-form" onsubmit="handleLogin(event)">
       <div class="login-field">
         <label for="login-code">乗務員コード（5桁）</label>
         <input id="login-code" type="text" inputmode="text" autocomplete="username"
-               maxlength="5" placeholder="例: 10168" required
+               maxlength="5" placeholder="例: 40001" required
                pattern="[A-Za-z0-9]{5}" title="英数字5桁で入力してください">
       </div>
       <div class="login-field">
@@ -2050,47 +2055,37 @@ header {
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 96 96">
 <!--
   ============================================================
-  安全配送まとめてアプリ — App Icon v3
-  © 2026 南野 / 株式会社HI-LINE
-  Created : 2026-06-25  Version : v3.0
-  Author  : 南野（HaNyaMa）  Project : anzen-matomete-app
+  A-LOGI版 安全配送まとめてアプリ — App Icon v1
+  Base    : 安全配送まとめてアプリ App Icon v3（H → A、配色を赤系へ）
+  (c) 2026 南野 / 株式会社HI-LINE
+  Created : 2026-10-07
   License : Internal use only — All rights reserved.
   ============================================================
 -->
-          <defs>
-            <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#0D3D9E"/>
-              <stop offset="45%" stop-color="#1A56C4"/>
-              <stop offset="100%" stop-color="#3F8CEF"/>
-            </linearGradient>
-          </defs>
+          <defs><linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8E0E1E"/><stop offset="45%" stop-color="#C8102E"/><stop offset="100%" stop-color="#EF4B5A"/></linearGradient></defs>
           <rect width="96" height="96" rx="20" fill="url(#logoGrad)"/>
-          <path d="M-2 12 H16 L22 6 H46" stroke="white" stroke-width="1" stroke-opacity=".28" fill="none"/>
-          <circle cx="16" cy="12" r="1.5" fill="white" fill-opacity=".5"/>
-          <circle cx="46" cy="6" r="1.2" fill="white" fill-opacity=".5"/>
-          <path d="M54 4 H70 L78 14 H98" stroke="white" stroke-width="1" stroke-opacity=".28" fill="none"/>
-          <circle cx="70" cy="4" r="1.5" fill="white" fill-opacity=".5"/>
-          <circle cx="78" cy="14" r="1.2" fill="white" fill-opacity=".5"/>
-          <path d="M-2 92 H14 L22 84 H40" stroke="white" stroke-width="1" stroke-opacity=".28" fill="none"/>
-          <circle cx="14" cy="92" r="1.5" fill="white" fill-opacity=".5"/>
-          <circle cx="40" cy="84" r="1.2" fill="white" fill-opacity=".5"/>
-          <path d="M52 92 H70 L78 86 H98" stroke="white" stroke-width="1" stroke-opacity=".28" fill="none"/>
-          <circle cx="70" cy="92" r="1.5" fill="white" fill-opacity=".5"/>
-          <circle cx="78" cy="86" r="1.2" fill="white" fill-opacity=".5"/>
-          <rect x="4" y="20" width="56" height="56" rx="4" fill="white"/>
-          <path d="M60 30 L78 30 L90 46 L90 76 L60 76 Z" fill="white"/>
-          <path d="M62 32 L77 32 L86 46 L62 46 Z" fill="#1A56C4"/>
-          <g fill="#1A56C4">
-            <rect x="10" y="26" width="11" height="44" rx="2"/>
-            <rect x="43" y="26" width="11" height="44" rx="2"/>
-            <rect x="10" y="42" width="44" height="12"/>
-          </g>
-          <circle cx="22" cy="82" r="9" fill="#13294B"/>
-          <circle cx="22" cy="82" r="4" fill="white"/>
-          <circle cx="22" cy="82" r="1.5" fill="#13294B"/>
-          <circle cx="72" cy="82" r="9" fill="#13294B"/>
-          <circle cx="72" cy="82" r="4" fill="white"/>
-          <circle cx="72" cy="82" r="1.5" fill="#13294B"/>
+          <path d="M-2 12 H16 L22 6 H46" stroke="#FFFFFF" stroke-width="1" stroke-opacity="0.28" fill="none"/>
+          <path d="M54 4 H70 L78 14 H98" stroke="#FFFFFF" stroke-width="1" stroke-opacity="0.28" fill="none"/>
+          <path d="M-2 92 H14 L22 84 H40" stroke="#FFFFFF" stroke-width="1" stroke-opacity="0.28" fill="none"/>
+          <path d="M52 92 H70 L78 86 H98" stroke="#FFFFFF" stroke-width="1" stroke-opacity="0.28" fill="none"/>
+          <circle cx="16" cy="12" r="1.5" fill="#FFFFFF" fill-opacity="0.5"/>
+          <circle cx="46" cy="6" r="1.2" fill="#FFFFFF" fill-opacity="0.5"/>
+          <circle cx="70" cy="4" r="1.5" fill="#FFFFFF" fill-opacity="0.5"/>
+          <circle cx="78" cy="14" r="1.2" fill="#FFFFFF" fill-opacity="0.5"/>
+          <circle cx="14" cy="92" r="1.5" fill="#FFFFFF" fill-opacity="0.5"/>
+          <circle cx="40" cy="84" r="1.2" fill="#FFFFFF" fill-opacity="0.5"/>
+          <circle cx="70" cy="92" r="1.5" fill="#FFFFFF" fill-opacity="0.5"/>
+          <circle cx="78" cy="86" r="1.2" fill="#FFFFFF" fill-opacity="0.5"/>
+          <rect x="4" y="20" width="56" height="56" rx="4" fill="#FFFFFF"/>
+          <path d="M60 30 L78 30 L90 46 L90 76 L60 76 Z" fill="#FFFFFF"/>
+          <path d="M62 32 L77 32 L86 46 L62 46 Z" fill="#C8102E"/>
+          <path d="M26.5 26.5 H37.5 L53.5 69.5 H42.4 L38.9 60 H25.1 L21.6 69.5 H10.5 Z M32 38.5 L35.9 50 H28.1 Z" fill="#C8102E" fill-rule="evenodd" stroke="#C8102E" stroke-width="1" stroke-linejoin="round"/>
+          <circle cx="22" cy="82" r="9" fill="#3A0A12"/>
+          <circle cx="22" cy="82" r="4" fill="#FFFFFF"/>
+          <circle cx="22" cy="82" r="1.5" fill="#3A0A12"/>
+          <circle cx="72" cy="82" r="9" fill="#3A0A12"/>
+          <circle cx="72" cy="82" r="4" fill="#FFFFFF"/>
+          <circle cx="72" cy="82" r="1.5" fill="#3A0A12"/>
           <circle cx="87" cy="64" r="2.2" fill="#FFD54F"/>
         </svg>
       </div>
@@ -2098,7 +2093,7 @@ header {
         <div class="logo-title">安全配送 まとめてアプリ</div>
         <div style="display:flex;align-items:center;gap:5px">
           <div class="logo-sub">SAFETY DELIVERY</div>
-          <span id="version-badge" style="font-size:7px;font-weight:700;background:rgba(26,86,196,.1);color:var(--primary);border:1px solid rgba(26,86,196,.25);border-radius:3px;padding:1px 4px;letter-spacing:.02em;line-height:1.6;white-space:nowrap">Ver.0.2</span>
+          <span id="version-badge" style="font-size:7px;font-weight:700;background:rgba(200,16,46,.1);color:var(--primary);border:1px solid rgba(200,16,46,.25);border-radius:3px;padding:1px 4px;letter-spacing:.02em;line-height:1.6;white-space:nowrap">Ver.A-0.1.0</span>
         </div>
       </div>
     </div>
@@ -2114,17 +2109,17 @@ header {
       </button>
       <!-- ユーザーアバター（タップでユーザーメニュー） -->
       <button id="avatar-btn" class="avatar" style="border:none;cursor:pointer;position:relative" onclick="toggleUserMenu()">
-        <span id="avatar-text">南</span>
+        <span id="avatar-text">乗</span>
       </button>
     </div>
 
     <!-- ユーザーメニュー -->
     <div id="user-menu" class="user-menu hidden">
       <div class="user-menu-header">
-        <div class="user-menu-av" id="um-avatar-icon">南</div>
+        <div class="user-menu-av" id="um-avatar-icon">乗</div>
         <div style="min-width:0">
-          <div class="user-menu-name" id="um-name">南野</div>
-          <div class="user-menu-meta" id="um-meta">D班（小笠原班） · D-12</div>
+          <div class="user-menu-name" id="um-name">乗務員A</div>
+          <div class="user-menu-meta" id="um-meta">昼班 · A-01</div>
         </div>
       </div>
       <button class="user-menu-item" onclick="openProfileEdit()">
@@ -2147,7 +2142,7 @@ header {
         <span class="um-icon">ℹ️</span>
         <div style="flex:1">
           <div style="font-weight:700">このアプリについて</div>
-          <div id="um-version-subtitle" style="font-size:11px;color:var(--text-muted);margin-top:1px">Ver. 0.2 · 安全配送まとめてアプリ</div>
+          <div id="um-version-subtitle" style="font-size:11px;color:var(--text-muted);margin-top:1px">Ver. A-0.1.0 · 安全配送まとめてアプリ A-LOGI</div>
         </div>
       </button>
       <button id="um-user-mgmt-btn" class="user-menu-item hidden" onclick="openUserManagement()">
@@ -2162,7 +2157,7 @@ header {
         <span class="um-icon">🚚</span>
         <div style="flex:1">
           <div style="font-weight:700">班編成管理</div>
-          <div style="font-size:11px;color:var(--text-muted);margin-top:1px">班長名・呼称の編集（管理者のみ）</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:1px">呼称の編集（管理者のみ）</div>
         </div>
         <span style="font-size:12px;color:var(--text-muted)">›</span>
       </button>
@@ -2190,10 +2185,10 @@ header {
         🛠 モード切替（開発用）
       </div>
       <button class="role-menu-item" onclick="setRole('driver')">
-        <div class="role-menu-av" style="background:#5B8FE0">南</div>
+        <div class="role-menu-av" style="background:#D9535E">乗</div>
         <div style="flex:1">
           <div style="font-weight:700;font-size:13px;color:var(--navy)">ドライバーモード</div>
-          <div style="font-size:11px;color:var(--text-muted);margin-top:1px">南野 / 小笠原班 / O-12</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:1px">乗務員A / 昼班 / A-01</div>
         </div>
         <span id="role-check-driver" style="color:var(--primary);font-size:14px">✓</span>
       </button>
@@ -2201,7 +2196,7 @@ header {
         <div class="role-menu-av" style="background:linear-gradient(135deg,#FFB300,#FF8F00)">管</div>
         <div style="flex:1">
           <div style="font-weight:700;font-size:13px;color:var(--navy)">管理者モード</div>
-          <div style="font-size:11px;color:var(--text-muted);margin-top:1px">田中センター長</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:1px">管理者</div>
         </div>
         <span id="role-check-manager" style="color:var(--primary);font-size:14px;visibility:hidden">✓</span>
       </button>
@@ -2280,7 +2275,7 @@ header {
       </div>
 
       <!-- メンバー一覧モーダル -->
-      <div id="ch-members-modal" class="modal-overlay hidden" onclick="if(event.target===this)closeChannelMembers()" style="position:fixed;inset:0;background:rgba(19,41,75,.55);z-index:1100;display:flex;align-items:flex-end;justify-content:center">
+      <div id="ch-members-modal" class="modal-overlay hidden" onclick="if(event.target===this)closeChannelMembers()" style="position:fixed;inset:0;background:rgba(58,10,18,.55);z-index:1100;display:flex;align-items:flex-end;justify-content:center">
         <div class="modal-card" style="background:var(--surface);width:100%;max-width:600px;max-height:75vh;border-radius:18px 18px 0 0;display:flex;flex-direction:column;overflow:hidden">
           <div class="modal-header">
             <div class="modal-title">👥 <span id="ch-members-title">メンバー一覧</span></div>
@@ -2517,7 +2512,6 @@ header {
           <p style="font-size:14px;color:var(--text-sub);margin-bottom:16px;line-height:1.8">ゲームコーナーは現在開発中です。<br>公開時にお知らせを受け取りますか？</p>
           <button id="game-notif-btn" class="btn btn-primary" style="width:100%" onclick="registerGameNotif()">🔔 公開通知を受け取る</button>
           <div id="game-notif-ok" class="hidden" style="margin-top:12px;color:var(--safe);font-size:13px;font-weight:700">✓ 登録しました！公開をお楽しみに。</div>
-          <p style="font-size:11px;color:var(--text-muted);margin-top:12px;letter-spacing:.28em">未来を、共に。</p>
         </div>
       </div>
 
@@ -2628,35 +2622,28 @@ header {
 // ヘッダーバッジ・ユーザーメニュー・アプリ情報画面・利用状況計測(sessions.appVersion)は
 // すべてこの定数を参照する(#version-badge/#um-version-subtitleへは初期化処理でJSから反映、
 // アプリ情報画面・recordSession()は関数内で直接参照)
-const APP_VERSION = '0.4.5';
+const APP_VERSION = 'A-0.1.0';
 
 /* ===== データ ===== */
 
 // ユーザー一覧（既読率計算に使用）
-/* ===== 班マスター（9班体制） =====
+/* ===== 班マスター（A-LOGI版: 昼班・夜班の2班） =====
    Firestore スキーマ: teams/{teamId}
-     - code        : 'A'〜'I'（恒久的な班コード。変更しない）
-     - leaderName  : 班長氏名（異動時にこの値だけ更新すればアプリ全体の表示に反映される）
-     - label       : 班の呼称（現在の班長名ベース。team_i のみ機能名）
-     - displayName : UI表示用文字列（下のmapで自動生成）
-   ※ team_id 自体（team_a〜team_i）は恒久キー。班長交代があっても id は変更しない。
-      表示だけを変えたい場合は leaderName / label を更新するだけでよい。 */
+     - code        : 'A' / 'B'（恒久的な班コード。画面には出さない。変更しない）
+     - leaderName  : 常に null（A-LOGI版の班は班長名を持たない。HI-LINE版とスキーマをそろえるため残している）
+     - label       : 班の呼称（「昼班」「夜班」）
+     - displayName : UI表示用文字列。呼称と同じ（「A班（昼班）」のような表示にはしない）
+   ※ team_id 自体（team_a・team_b）は恒久キー。呼称を変えても id は変更しない。
+      表示だけを変えたい場合は label / displayName を更新する（班編成管理の画面から変更できる）。 */
 // teams はログイン時に attachTeamsListener() で Firestore(teams コレクション)を
 // onSnapshotミラーする。初期値はリスナー着信前のフォールバック表示用モック。
 let teams = [
-  { id:'all',    code:null, leaderName:null,   label:'全員' },
-  { id:'team_a', code:'A',  leaderName:'中尾',  label:'中尾班' },
-  { id:'team_b', code:'B',  leaderName:'阿部',  label:'阿部班' },
-  { id:'team_c', code:'C',  leaderName:'利部',  label:'利部班' },
-  { id:'team_d', code:'D',  leaderName:'小笠原', label:'小笠原班' },
-  { id:'team_e', code:'E',  leaderName:'佐藤',  label:'佐藤班' },
-  { id:'team_f', code:'F',  leaderName:'小林',  label:'小林班' },
-  { id:'team_g', code:'G',  leaderName:'土井',  label:'土井班' },
-  { id:'team_h', code:'H',  leaderName:'熊谷',  label:'熊谷班' },
-  { id:'team_i', code:'I',  leaderName:null,   label:'安全指導班' },
+  { id:'all',    code:null, leaderName:null, label:'全員' },
+  { id:'team_a', code:'A',  leaderName:null, label:'昼班' },
+  { id:'team_b', code:'B',  leaderName:null, label:'夜班' },
 ].map(t => ({
   ...t,
-  displayName: t.id === 'all' ? '全員' : `${t.code}班（${t.label}）`,
+  displayName: t.label, // seed-teams.js・saveTeamEdit() と同じく、表示名は呼称そのまま
   count: 0, // recalcTeamCounts() で users から動的算出
 }));
 let teamsUnsub = null;    // teamsコレクションリスナーのunsubscribe
@@ -2690,28 +2677,29 @@ function recalcTeamCounts() {
   });
 }
 
-// ユーザー一覧（既読率計算に使用）／ team は teams[].id（team_a〜team_i）を参照
+// ユーザー一覧（既読率計算に使用）／ team は teams[].id（team_a・team_b）を参照。
+// 画面確認用の仮データ。実在の氏名・乗務員コードは入れないこと(このファイルは公開される)
 const users = [
-  { id:'u01', name:'南野',   team:'team_d', driverNo:'D-12', role:'driver' },
-  { id:'u02', name:'佐藤',   team:'team_e', driverNo:'E-08', role:'driver' },
-  { id:'u03', name:'鈴木',   team:'team_c', driverNo:'C-05', role:'driver' },
-  { id:'u04', name:'高橋',   team:'team_h', driverNo:'H-11', role:'driver' },
-  { id:'u05', name:'伊藤',   team:'team_a', driverNo:'A-03', role:'driver' },
-  { id:'u06', name:'渡辺',   team:'team_g', driverNo:'G-07', role:'driver' },
-  { id:'u07', name:'山本',   team:'team_e', driverNo:'E-21', role:'driver' },
-  { id:'u08', name:'中村',   team:'team_b', driverNo:'B-14', role:'driver' },
-  { id:'u09', name:'小林',   team:'team_f', driverNo:'F-04', role:'driver' },
-  { id:'u10', name:'土井',   team:'team_g', driverNo:'G-02', role:'driver' },
-  { id:'u11', name:'熊谷',   team:'team_h', driverNo:'H-01', role:'driver' },
-  { id:'u12', name:'安田',   team:'team_i', driverNo:'I-01', role:'driver' },
-  { id:'mgr', name:'田中',   team:null,     driverNo:'—',    role:'manager' },
+  { id:'u01', name:'乗務員A', team:'team_a', driverNo:'A-01', role:'driver' },
+  { id:'u02', name:'乗務員B', team:'team_a', driverNo:'A-02', role:'driver' },
+  { id:'u03', name:'乗務員C', team:'team_a', driverNo:'A-03', role:'driver' },
+  { id:'u04', name:'乗務員D', team:'team_a', driverNo:'A-04', role:'driver' },
+  { id:'u05', name:'乗務員E', team:'team_a', driverNo:'A-05', role:'driver' },
+  { id:'u06', name:'乗務員F', team:'team_a', driverNo:'A-06', role:'driver' },
+  { id:'u07', name:'乗務員G', team:'team_b', driverNo:'B-01', role:'driver' },
+  { id:'u08', name:'乗務員H', team:'team_b', driverNo:'B-02', role:'driver' },
+  { id:'u09', name:'乗務員I', team:'team_b', driverNo:'B-03', role:'driver' },
+  { id:'u10', name:'乗務員J', team:'team_b', driverNo:'B-04', role:'driver' },
+  { id:'u11', name:'乗務員K', team:'team_b', driverNo:'B-05', role:'driver' },
+  { id:'u12', name:'乗務員L', team:'team_b', driverNo:'B-06', role:'driver' },
+  { id:'mgr', name:'管理者',  team:null,     driverNo:'—',    role:'manager' },
 ];
 recalcTeamCounts();
 
 // カテゴリ（タグ）定義
 const annCategories = [
   { id:'safety',  label:'安全',  color:'var(--danger)' },
-  { id:'work',    label:'業務',  color:'var(--primary)' },
+  { id:'work',    label:'業務',  color:'var(--amber)' },
   { id:'hr',      label:'人事',  color:'var(--safe)' },
   { id:'system',  label:'設備',  color:'var(--purple)' },
   { id:'other',   label:'その他', color:'var(--text-sub)' },
@@ -2766,7 +2754,7 @@ let kytExpandedCode = null;       // 管理者ダッシュボードのアコー�
 /* ===== チャットメッセージ（Firestore接続） =====
    Firestore スキーマ: channels/{channelId}/messages/{messageId}
      senderUid / senderName / senderRole / text / createdAt / deleted / deletedBy / deletedAt
-   channelId は 'general' | 'safety' | teams[].id（'team_a'〜'team_i'）
+   channelId は 'general' | 'safety' | teams[].id（'team_a'・'team_b'）
    chatMessages は現在開いているチャンネルの onSnapshot 結果をそのまま保持する */
 let chatMessages = [];               // 現在のチャンネルのメッセージ(Firestoreからリアルタイム反映)
 let currentChannel = 'general';
@@ -2816,7 +2804,7 @@ const linksData = [
       { name:"i-highway", desc:"高速道路交通情報", url:"https://www.i-highway.jp/", icon:"🛤️" },
       { name:"NEXCO 中日本", desc:"高速道路・ETC情報", url:"https://www.c-nexco.co.jp/", icon:"🏎️" },
     ]},
-  { category:"天気情報", categoryEn:"WEATHER", icon:"⛅", color:"var(--primary)",
+  { category:"天気情報", categoryEn:"WEATHER", icon:"⛅", color:"var(--amber)",
     links:[
       { name:"Yahoo!天気", desc:"天気予報・雨雲レーダー", url:"https://weather.yahoo.co.jp/weather/", icon:"☀️" },
       { name:"気象庁", desc:"公式天気・警報情報", url:"https://www.jma.go.jp/", icon:"🌩️" },
@@ -2863,7 +2851,7 @@ const st = {
 };
 
 /* ===== ヘルパー ===== */
-const diffColor = { '低':'var(--safe)', '中':'var(--primary)', '高':'var(--danger)' };
+const diffColor = { '低':'var(--safe)', '中':'var(--amber)', '高':'var(--danger)' };
 
 const getCat   = id => annCategories.find(c => c.id === id) || annCategories[4];
 const getTeam  = id => teams.find(t => t.id === id) || teams[0];
@@ -3032,10 +3020,10 @@ async function recordSession() {
 // state/badgesが未作成のユーザーを初期化するときの足切り値としてのみ使われる)。
 const BADGE_EPOCH = new Date('2026-07-30T03:30:00+09:00');
 
-// チャンネル別の最終閲覧時刻を持つ対象。'general'/'safety' + 9班(team_a〜team_i)
+// チャンネル別の最終閲覧時刻を持つ対象。'general'/'safety' + 2班(team_a・team_b)
 const BADGE_CHANNEL_IDS = [
   'general', 'safety',
-  'team_a', 'team_b', 'team_c', 'team_d', 'team_e', 'team_f', 'team_g', 'team_h', 'team_i',
+  'team_a', 'team_b',
 ];
 
 let badgeState = null;        // users/{code}/state/badges のミラー
@@ -3610,7 +3598,7 @@ async function upsertFcmToken(token, tokenIdArg) {
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     lastSeenAt: firebase.firestore.FieldValue.serverTimestamp(),
   }, { merge: true });
-  localStorage.setItem('fbFcmTokenId', tokenId);
+  localStorage.setItem('alogi_fbFcmTokenId', tokenId);
 }
 
 // 通知許可済み(Notification.permission==='granted')の場合に、SW登録→トークン取得→
@@ -3621,7 +3609,7 @@ async function registerFcmTokenIfPossible() {
   if (Notification.permission !== 'granted') return;
   if (!FCM_VAPID_KEY) { console.warn('FCM_VAPID_KEY未設定のためトークン登録をスキップします'); return; }
   try {
-    const reg = await navigator.serviceWorker.register('firebase-messaging-sw.js', { scope: '/matomete-app/' });
+    const reg = await navigator.serviceWorker.register('firebase-messaging-sw.js', { scope: '/matomete-alogi/' });
     const token = await firebase.messaging().getToken({ vapidKey: FCM_VAPID_KEY, serviceWorkerRegistration: reg });
     if (token) await upsertFcmToken(token);
   } catch (e) {
@@ -3635,11 +3623,11 @@ async function refreshFcmTokenIfNeeded() {
   if (!fbUser || !canShowNotifyOptIn() || !fcmSupported()) return;
   if (Notification.permission !== 'granted' || !FCM_VAPID_KEY) return;
   try {
-    const reg = await navigator.serviceWorker.register('firebase-messaging-sw.js', { scope: '/matomete-app/' });
+    const reg = await navigator.serviceWorker.register('firebase-messaging-sw.js', { scope: '/matomete-alogi/' });
     const token = await firebase.messaging().getToken({ vapidKey: FCM_VAPID_KEY, serviceWorkerRegistration: reg });
     if (!token) return;
     const tokenId = await sha256Hex(token);
-    const storedTokenId = localStorage.getItem('fbFcmTokenId');
+    const storedTokenId = localStorage.getItem('alogi_fbFcmTokenId');
     if (storedTokenId === tokenId) {
       await fbDb.collection('users').doc(fbUser.code).collection('tokens').doc(tokenId)
         .update({ lastSeenAt: firebase.firestore.FieldValue.serverTimestamp() }).catch(() => {});
@@ -3657,8 +3645,8 @@ async function refreshFcmTokenIfNeeded() {
 // ログアウト時にこの端末のトークンドキュメントを削除し、deleteToken()を呼ぶ。
 // 忘れると、同じ端末を別の乗務員が使った場合に前の利用者宛の通知が届いてしまう(最優先要件)
 async function deleteFcmTokenForThisDevice() {
-  const tokenId = localStorage.getItem('fbFcmTokenId');
-  localStorage.removeItem('fbFcmTokenId');
+  const tokenId = localStorage.getItem('alogi_fbFcmTokenId');
+  localStorage.removeItem('alogi_fbFcmTokenId');
   if (tokenId && fbUser) {
     try {
       await fbDb.collection('users').doc(fbUser.code).collection('tokens').doc(tokenId).delete();
@@ -3708,9 +3696,13 @@ function closeUserMenu() {
 function openProfileEdit() {
   closeUserMenu();
   if (!fbUser) return;
-  // team_i(安全指導班)を含む全班を選択肢にする。'未設定'は一般ユーザーには出さない
-  // (firestore.rulesのteam自己更新ホワイトリストがteam_a〜team_iのみでnullを許可しないため)
+  // 全班(昼班・夜班)を選択肢にする。'未設定'は一般ユーザーには出さない
+  // (firestore.rulesのteam自己更新ホワイトリストがteam_a・team_bのみでnullを許可しないため)
   const teamOptions = teams.filter(t => t.id !== 'all');
+  // 班が未設定の人には「選択してください」を初期表示にする。これが無いと選択欄に先頭の班(昼班)が
+  // 表示され、そのまま保存すると本人が選んでいない班に入ってしまう(A-LOGI版は本人が班を選ぶ運用)。
+  // 一度ほかを選ぶと戻せない選択肢(disabled)。班が設定済みの人には出さない
+  const needsTeamChoice = !fbUser.team;
   openModal(`
     <div class="modal-card">
       <div class="modal-header">
@@ -3728,8 +3720,10 @@ function openProfileEdit() {
         <div class="form-group">
           <label class="form-label">所属班</label>
           <select id="prof-team" class="input-field">
+            ${needsTeamChoice ? '<option value="" selected disabled>選択してください</option>' : ''}
             ${teamOptions.map(t => `<option value="${t.id}" ${t.id === fbUser.team ? 'selected' : ''}>${escHtml(t.displayName)}</option>`).join('')}
           </select>
+          ${needsTeamChoice && fbUser.role !== 'admin' ? '<p style="font-size:11px;color:var(--danger);font-weight:700;margin-top:4px">所属班を選んでから保存してください</p>' : ''}
           <p style="font-size:11px;color:var(--text-muted);margin-top:4px">所属班を変更すると、班チャンネルの閲覧範囲が切り替わります</p>
         </div>
 
@@ -3794,6 +3788,13 @@ async function saveProfile() {
   const pwNew   = document.getElementById('prof-pw-new')?.value || '';
   const pwConf  = document.getElementById('prof-pw-confirm')?.value || '';
   const newTeam = document.getElementById('prof-team')?.value || fbUser.team;
+
+  // 班が未設定の乗務員は、昼班・夜班のどちらかを選ぶまで何も保存させない(パスワード欄に入力があっても同じ)。
+  // 管理者は班を持たない運用のため、未選択のままでも保存できる(その場合 newTeam は未設定のままで、班は変更されない)
+  if (!fbUser.team && fbUser.role !== 'admin' && !newTeam) {
+    showToast('⚠️ 所属班を選択してください');
+    return;
+  }
 
   if (pwNew) {
     if (pwNew.length < 5) { showToast('⚠️ 新しいパスワードは5文字以上'); return; }
@@ -3998,7 +3999,7 @@ async function updateNotifTokenStatus() {
   await registerFcmTokenIfPossible();
   const el = document.getElementById('notif-token-status');
   if (!el) return; // モーダルが既に閉じられていた場合は何もしない
-  const tokenId = localStorage.getItem('fbFcmTokenId');
+  const tokenId = localStorage.getItem('alogi_fbFcmTokenId');
   el.textContent = tokenId
     ? '✓ 通知を受け取れる状態です'
     : '⚠️ この端末では通知を受け取れない可能性があります(通信環境を確認し、再度お試しください)';
@@ -4021,20 +4022,10 @@ async function saveNotifPrefs() {
   }
 }
 
-// 更新履歴。git履歴・HANDOFF.md・TECH_DEBT.mdから裏の取れる範囲で記録する(過去分を遡って捏造しない)
+// 更新履歴(画面の「このアプリについて」に出る)。A-LOGI版の版番号(A-x.y.z)は HI-LINE版(matomete-app)とは
+// 別系統のため、派生元 v0.4.5 までの履歴はここに載せない(経緯は matomete-app 側の記録を参照)
 const CHANGELOG = [
-  { version: '0.4.5', items: ['周知の絞り込みボタンが画面外に出ていたのを修正(管理者表示)', '使われなくなった処理を整理'] },
-  { version: '0.4.4', items: ['周知の初期表示コンテンツ(サンプル掲示6件)を削除', '報告のステータスで絞り込むボタンが画面外に出ていたのを修正'] },
-  { version: '0.4.3', items: ['チャットに日付の区切りを表示(今日・昨日・日付)'] },
-  { version: '0.4.2', items: ['タグ・KYTの選択肢・班名に引用符が含まれると反応しなくなる不具合を修正', 'タグ名・KYTの選択肢に < や & が含まれるときの表示崩れを修正', 'ヘッダーのベルの点をさらに大きく調整', '未使用のスタイル定義を整理'] },
-  { version: '0.4.1', items: ['手順書のタイトル・説明が保存できない不具合を修正', '新着・未読の点を大きくし、縁取りを追加'] },
-  { version: '0.4', items: ['通知センターを追加(ヘッダーのベル)', '各タブに新着マークを追加', '報告の回答に既読を追加(投稿者・管理者の双方向)'] },
-  { version: '0.3.2', items: ['iOS PWA standalone表示の白帯を解消(ステータスバー設定を変更)', '診断オーバーレイを追加(バージョン表記を3回タップ)'] },
-  { version: '0.3.1', items: ['iOS PWA standalone表示のタブバー下白帯を修正', '周知の「反応」機能(未接続)を削除', '通知ベル・固定バッジ等の未実装表示を撤去'] },
-  { version: '0.3', items: ['プッシュ通知(FCM)を追加', '通知設定を実データ化', '旧通知機構(アプリ起動中のみ)を廃止'] },
-  { version: '0.2.2〜0.2.3', items: ['PWA standalone表示の不具合修正(ボトムナビ固定・スクロール)'] },
-  { version: '0.2.1', items: ['利用状況計測(DAU/WAU/MAU)を実装'] },
-  { version: '0.2', items: ['Firestore移行・乗務員マスタ・周知タブ等を本公開'] },
+  { version: 'A-0.1.0', items: ['初版(安全配送まとめてアプリ v0.4.5 をもとに作成)'] },
 ];
 
 function openAppInfo() {
@@ -4047,7 +4038,7 @@ function openAppInfo() {
       </div>
       <div class="modal-body" style="text-align:center;padding-bottom:8px">
         <div style="font-size:48px;margin:20px 0 12px">🚚</div>
-        <div style="font-weight:700;font-size:18px;color:var(--navy);margin-bottom:4px">安全配送 まとめてアプリ</div>
+        <div style="font-weight:700;font-size:18px;color:var(--navy);margin-bottom:4px">安全配送 まとめてアプリ A-LOGI</div>
         <div style="font-size:12px;letter-spacing:.18em;color:var(--primary);font-weight:700;margin-bottom:20px">SAFETY DELIVERY PORTAL</div>
         <div class="divider"></div>
         ${[
@@ -4067,7 +4058,7 @@ function openAppInfo() {
           <div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px">更新履歴</div>
           ${CHANGELOG.map(c => `
             <div style="margin-bottom:8px">
-              <div style="font-size:12px;font-weight:700;color:var(--primary)">v${escHtml(c.version)}</div>
+              <div style="font-size:12px;font-weight:700;color:var(--primary)">${escHtml(c.version)}</div>
               <ul style="margin:2px 0 0 18px;padding:0;font-size:11px;color:var(--text-sub);line-height:1.6">
                 ${c.items.map(i => `<li>${escHtml(i)}</li>`).join('')}
               </ul>
@@ -4077,7 +4068,6 @@ function openAppInfo() {
         <p style="margin-top:18px;font-size:12px;color:var(--text-muted);letter-spacing:.04em">
           © 2026 南野. All rights reserved.
         </p>
-        <p style="margin-top:24px;font-size:11px;letter-spacing:.32em;color:var(--primary);font-weight:700">未来を、共に。</p>
       </div>
     </div>
   `);
@@ -5415,7 +5405,7 @@ async function showReach(id) {
         </div>
         ${unreadUsers.map(u => `
           <div class="user-row">
-            <div class="msg-av" style="background:#5B8FE0">${(u.name||'?')[0]}</div>
+            <div class="msg-av" style="background:#D9535E">${(u.name||'?')[0]}</div>
             <div class="user-info">
               <div class="user-name">${escHtml(u.name)}</div>
               <div class="user-meta">${escHtml(getTeamLabel(u.team))} · ${escHtml(u.driverNo)}</div>
@@ -5433,7 +5423,7 @@ async function showReach(id) {
         </div>
         ${readUsers.map(u => `
           <div class="user-row">
-            <div class="msg-av" style="background:linear-gradient(135deg,#0D3D9E,#3F8CEF)">${(u.name||'?')[0]}</div>
+            <div class="msg-av" style="background:linear-gradient(135deg,#8E0E1E,#EF4B5A)">${(u.name||'?')[0]}</div>
             <div class="user-info">
               <div class="user-name">${escHtml(u.name)}</div>
               <div class="user-meta">${escHtml(getTeamLabel(u.team))} · ${escHtml(u.driverNo)}</div>
@@ -5688,9 +5678,9 @@ function renderChat() {
     }
     return `${sep}
     <div class="msg-row${isMe?' me':''}" data-mid="${m.id}">
-      ${!isMe ? `<div class="msg-av" style="background:${isAdminMsg?'linear-gradient(135deg,#0D3D9E,#3F8CEF)':'#5B8FE0'}">${(m.senderName||'?')[0]}</div>` : ''}
+      ${!isMe ? `<div class="msg-av" style="background:${isAdminMsg?'linear-gradient(135deg,#8E0E1E,#EF4B5A)':'#D9535E'}">${(m.senderName||'?')[0]}</div>` : ''}
       <div class="msg-wrap">
-        ${!isMe ? `<div class="msg-name">${escHtml(m.senderName)}${isAdminMsg?'<span style="font-size:9px;background:rgba(13,61,158,.15);color:var(--navy);padding:1px 5px;border-radius:4px;margin-left:5px;letter-spacing:.04em;font-weight:700">管理者</span>':''}</div>` : ''}
+        ${!isMe ? `<div class="msg-name">${escHtml(m.senderName)}${isAdminMsg?'<span style="font-size:9px;background:rgba(142,14,30,.15);color:var(--navy);padding:1px 5px;border-radius:4px;margin-left:5px;letter-spacing:.04em;font-weight:700">管理者</span>':''}</div>` : ''}
         <div class="msg-bubble${isMe?' me':''}${m.deleted?' deleted':''}">${m.deleted ? '<em style="opacity:.6">このメッセージは管理者により削除されました</em>' : escHtml(m.text)}</div>
         <div class="msg-time${isMe?' me':''}">${fmtMsgTime(m.createdAt)}${canDelete ? ` <button onclick="modDeleteMsg('${m.id}')" style="background:none;border:none;color:var(--danger);font-size:11px;font-weight:700;cursor:pointer;padding:0 4px;margin-left:4px">🗑 削除</button>` : ''}</div>
       </div>
@@ -5802,7 +5792,7 @@ function switchCh(id, name) {
 
 /* ===== チャット：管理者機能 ===== */
 
-// チャンネルIDは 'general'/'safety'（全員向け）または teams[].id（'team_a'〜'team_i'）
+// チャンネルIDは 'general'/'safety'（全員向け）または teams[].id（'team_a'・'team_b'）
 // そのままteamIdとして扱えるため、固定マッピング辞書は不要
 function getChannelMembers(channelId) {
   const teamId = (channelId === 'general' || channelId === 'safety') ? 'all' : channelId;
@@ -5810,9 +5800,9 @@ function getChannelMembers(channelId) {
 }
 
 // チャンネルチップを teams マスターから動的生成
-// 全チャンネル（固定2つ＋9班）をボタンとして並べ、.wrap で折り返し表示する
+// 全チャンネル（固定2つ＋2班の計4つ）をボタンとして並べ、.wrap で折り返し表示する
 // （横スクロールにせず、どの班も1タップで直接切替できるようにする）
-// 班長交代・班の増減があっても teams 配列を更新するだけでチップに反映される
+// 呼称の変更・班の増減があっても teams 配列を更新するだけでチップに反映される
 function renderChannelChips() {
   const host = document.getElementById('channel-chips');
   if (!host) return;
@@ -5889,7 +5879,7 @@ function showChannelMembers() {
     const isActive = activeNames.has(u.name);
     return `
       <div style="display:flex;align-items:center;gap:12px;padding:11px 4px;border-bottom:1px solid var(--border)">
-        <div class="msg-av" style="background:#5B8FE0;width:36px;height:36px">${u.name[0]}</div>
+        <div class="msg-av" style="background:#D9535E;width:36px;height:36px">${u.name[0]}</div>
         <div style="flex:1;min-width:0">
           <div style="font-weight:700;font-size:14px;color:var(--navy)">${escHtml(u.name)}</div>
           <div style="font-size:11px;color:var(--text-muted);margin-top:2px">${escHtml(getTeamLabel(u.team))} · ${escHtml(u.driverNo)}</div>
@@ -6027,7 +6017,7 @@ function attachManualReadsListener(manualId) {
             </div>
             ${unreadUsers.map(u => `
               <div class="user-row">
-                <div class="msg-av" style="background:#5B8FE0">${escHtml((u.name||'?')[0])}</div>
+                <div class="msg-av" style="background:#D9535E">${escHtml((u.name||'?')[0])}</div>
                 <div class="user-info">
                   <div class="user-name">${escHtml(u.name)}</div>
                   <div class="user-meta">${getTeamLabel(u.team)} · ${escHtml(u.code)}</div>
@@ -6042,7 +6032,7 @@ function attachManualReadsListener(manualId) {
             <div class="user-list-header"><span>✓ 既読のメンバー（${readUsers.length}名）</span></div>
             ${readUsers.map(u => `
               <div class="user-row">
-                <div class="msg-av" style="background:linear-gradient(135deg,#0D3D9E,#3F8CEF)">${escHtml((u.name||'?')[0])}</div>
+                <div class="msg-av" style="background:linear-gradient(135deg,#8E0E1E,#EF4B5A)">${escHtml((u.name||'?')[0])}</div>
                 <div class="user-info">
                   <div class="user-name">${escHtml(u.name)}</div>
                   <div class="user-meta">${getTeamLabel(u.team)} · ${escHtml(u.code)}</div>
@@ -7170,7 +7160,7 @@ function toggleFbShare(checked) {
 async function subscribeAnonReportIfPossible(reportId) {
   if (!fcmSupported() || Notification.permission !== 'granted' || !FCM_VAPID_KEY) return;
   try {
-    const reg = await navigator.serviceWorker.register('firebase-messaging-sw.js', { scope: '/matomete-app/' });
+    const reg = await navigator.serviceWorker.register('firebase-messaging-sw.js', { scope: '/matomete-alogi/' });
     const token = await firebase.messaging().getToken({ vapidKey: FCM_VAPID_KEY, serviceWorkerRegistration: reg });
     if (!token) return;
     await fbFunctions.httpsCallable('subscribeToReport')({ reportId, token });
@@ -7187,7 +7177,7 @@ async function submitFb() {
 
   const isAnon = st.fbAnonymous;
   const senderName = fbUser.name;
-  // 報告書上の所属表示は「投稿時点」のスナップショットとして固定保存する（班長交代後も過去記録は変えない）
+  // 報告書上の所属表示は「投稿時点」のスナップショットとして固定保存する（班の呼称を変えた後も過去記録は変えない）
   const senderTeam = getTeam(fbUser.team).displayName;
   const visibility = st.fbShareRequested ? 'pending_public' : 'private';
 
@@ -7274,7 +7264,6 @@ async function submitFb() {
     </div>
 
     <button class="btn btn-primary" onclick="resetFb()" style="width:100%">新しいフィードバックを送る</button>
-    <p style="margin-top:32px;font-size:11px;letter-spacing:.32em;color:var(--primary);font-weight:700">未来を、共に。</p>
   `;
   document.getElementById('fb-form').classList.add('hidden');
   successCard.classList.remove('hidden');
@@ -7283,9 +7272,12 @@ async function submitFb() {
 
 // 匿名投稿の自分の報告ID(localStorage)を追跡する。サーバー側に投稿者を紐付けるフィールドは
 // 一切持たないため、この端末のlocalStorageのみが「自分の匿名報告」を辿る手段になる。
+// キー名の接頭辞 alogi_ は外さないこと。HI-LINE版(/matomete-app/)と同じドメインで配信されるため
+// localStorageを共有しており、同名キーだと1台で両方を使う人の記録を互いに上書きしてしまう
+// (FCMトークンIDの 'alogi_fbFcmTokenId' も同じ理由)。
 function getAnonReportIds() {
   try {
-    return JSON.parse(localStorage.getItem('fbMyAnonReportIds') || '[]');
+    return JSON.parse(localStorage.getItem('alogi_fbMyAnonReportIds') || '[]');
   } catch (e) {
     return [];
   }
@@ -7294,7 +7286,7 @@ function getAnonReportIds() {
 function saveAnonReportIdLocally(id) {
   const ids = getAnonReportIds();
   ids.unshift(id);
-  localStorage.setItem('fbMyAnonReportIds', JSON.stringify(ids.slice(0, 200)));
+  localStorage.setItem('alogi_fbMyAnonReportIds', JSON.stringify(ids.slice(0, 200)));
 }
 
 function resetFb() {
@@ -8004,7 +7996,7 @@ const gameContents = [
   { id:4, icon:'🏆', title:'安全達人ランキング', desc:'全国スコア対決', status:'planned', releaseDate:'2026-11' },
 ];
 const gameStatusLabels = {
-  dev: { label:'開発中', color:'var(--primary)', bg:'rgba(26,86,196,.1)' },
+  dev: { label:'開発中', color:'var(--primary)', bg:'rgba(200,16,46,.1)' },
   planned: { label:'計画中', color:'var(--text-sub)', bg:'var(--surface2)' },
   ready: { label:'公開準備中', color:'#B36F00', bg:'rgba(255,179,0,.15)' },
   live: { label:'公開中', color:'var(--safe)', bg:'rgba(31,157,85,.12)' },
@@ -8043,7 +8035,7 @@ function renderGameManagerView() {
     ? '<div style="padding:12px;font-size:13px;color:var(--text-muted)">（なし）</div>'
     : registered.map(u => `
         <div class="user-row">
-          <div class="msg-av" style="background:linear-gradient(135deg,#0D3D9E,#3F8CEF)">${u.name[0]}</div>
+          <div class="msg-av" style="background:linear-gradient(135deg,#8E0E1E,#EF4B5A)">${u.name[0]}</div>
           <div class="user-info">
             <div class="user-name">${escHtml(u.name)}</div>
             <div class="user-meta">${escHtml(getTeamLabel(u.team))}</div>
@@ -8057,7 +8049,7 @@ function renderGameManagerView() {
     ? '<div style="padding:12px;font-size:13px;color:var(--text-muted)">（全員登録済み）</div>'
     : unregistered.map(u => `
         <div class="user-row">
-          <div class="msg-av" style="background:#9AA7BA">${u.name[0]}</div>
+          <div class="msg-av" style="background:#7F6B6F">${u.name[0]}</div>
           <div class="user-info">
             <div class="user-name">${escHtml(u.name)}</div>
             <div class="user-meta">${escHtml(getTeamLabel(u.team))}</div>
@@ -8284,7 +8276,7 @@ function toggleDriverCreateForm() {
     el.innerHTML = `
       <div class="form-group">
         <label class="form-label">乗務員コード（5桁）</label>
-        <input id="um-new-code" class="input-field" maxlength="5" placeholder="例: 10234">
+        <input id="um-new-code" class="input-field" maxlength="5" placeholder="例: 40001">
       </div>
       <div class="form-group">
         <label class="form-label">氏名</label>
@@ -8487,7 +8479,8 @@ async function changeUserRole(code) {
 /* ===== 班編成管理（管理者のみ） =====
    teamsは既にattachTeamsListener()による生きたミラーなので、個別フェッチ不要。
    保存後はonSnapshotで自動的に全画面(チャット・プロフィール・この画面自身)へ反映される。
-   team_a〜team_hは班長名(leaderName)を、team_i(安全指導班)は個人班長を持たないため呼称(label)を直接編集する。 */
+   A-LOGI版の班(昼班・夜班)は班長名を持たないため、どの班も呼称(label)を直接編集する。
+   表示名(displayName)は呼称そのまま。HI-LINE版の「A班（○○班）」のように班コードを前に付けない。 */
 
 function openTeamManagement() {
   closeUserMenu();
@@ -8510,20 +8503,17 @@ function renderTeamManagementList() {
   const rows = teams.filter(t => t.id !== 'all');
   if (rows.length === 0) return `<p style="font-size:13px;color:var(--text-muted)">班データがありません</p>`;
 
-  return rows.map(t => {
-    const isFunctionalTeam = t.id === 'team_i'; // 個人班長を持たない機能班
-    return `
+  return rows.map(t => `
       <div class="card" style="margin-bottom:8px;padding:12px">
-        <div style="font-weight:700;color:var(--navy);margin-bottom:8px">${escHtml(t.code)}班 — 現在: ${escHtml(t.displayName || t.label || '')}</div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:8px">現在: ${escHtml(t.displayName || t.label || '')}</div>
         <div class="form-group" style="margin-bottom:8px">
-          <label class="form-label">${isFunctionalTeam ? '呼称' : '班長名'}</label>
-          <input id="tm-input-${t.id}" class="input-field" value="${escHtml(isFunctionalTeam ? (t.label || '') : (t.leaderName || ''))}"
-                 placeholder="${isFunctionalTeam ? '例: 安全指導班' : '例: 中尾'}">
+          <label class="form-label">呼称</label>
+          <input id="tm-input-${t.id}" class="input-field" value="${escHtml(t.label || '')}"
+                 placeholder="例: 昼班">
         </div>
         <button class="btn btn-primary" style="width:100%" onclick="saveTeamEdit('${t.id}')">保存する</button>
       </div>
-    `;
-  }).join('');
+    `).join('');
 }
 
 async function saveTeamEdit(teamId) {
@@ -8540,15 +8530,14 @@ async function saveTeamEdit(teamId) {
     return;
   }
 
-  // seed-teams.js と同じ計算式で label/displayName を再構成する(以後の乖離を防ぐ)
-  const isFunctionalTeam = teamId === 'team_i';
-  const leaderName = isFunctionalTeam ? null : value;
-  const label = isFunctionalTeam ? value : `${value}班`;
-  const displayName = `${team.code}班（${label}）`;
+  // seed-teams.js と同じ形で保存する(以後の乖離を防ぐ): 呼称=表示名、班長名は持たない
+  const leaderName = null;
+  const label = value;
+  const displayName = value;
 
   try {
     await fbDb.collection('teams').doc(teamId).update({ leaderName, label, displayName });
-    showToast(`✓ ${team.code}班の表示を更新しました`);
+    showToast(`✓ ${label}の表示を更新しました`);
     // teamsローカル配列はonSnapshotで追って更新されるが、モーダルは即時反映のため明示的に再描画
     document.getElementById('tm-list').innerHTML = renderTeamManagementList();
   } catch (err) {
@@ -8744,7 +8733,7 @@ fbAuth.onAuthStateChanged(async (user) => {
     // KYT(シナリオ本体)も同様に全ロール共通でログイン時から購読を開始する
     attachKytScenariosListener();
 
-    // teams(9班マスター)も同様に全ロール共通でログイン時から購読を開始する
+    // teams(班マスター)も同様に全ロール共通でログイン時から購読を開始する
     attachTeamsListener();
     refreshUserMenuHeader();
 
@@ -8909,7 +8898,7 @@ async function diagCopy() {
 /* ===== 初期化 ===== */
 // ヘッダーバッジ・ユーザーメニューのバージョン表記をAPP_VERSION定数から反映(静的HTML直書きの値は初期表示用フォールバック)
 document.getElementById('version-badge').textContent = 'Ver.' + APP_VERSION;
-document.getElementById('um-version-subtitle').textContent = 'Ver. ' + APP_VERSION + ' · 安全配送まとめてアプリ';
+document.getElementById('um-version-subtitle').textContent = 'Ver. ' + APP_VERSION + ' · 安全配送まとめてアプリ A-LOGI';
 renderAnn();
 renderChannelChips();
 renderChat();
