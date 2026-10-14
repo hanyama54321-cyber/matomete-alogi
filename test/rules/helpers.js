@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const { initializeTestEnvironment } = require('@firebase/rules-unit-testing');
 
-const PROJECT_ID = 'anzen-matomete-app';
+const PROJECT_ID = 'matomete-alogi';
 
 // node:test はテストファイルを並列(別プロセス)で実行するため、全ファイルが同じ
 // projectIdを共有すると互いのclearFirestore()が衝突し、テストがフレーキーになる。

@@ -38,13 +38,12 @@
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-functions-compat.js"></script>
 <script>
 const firebaseConfig = {
-  apiKey: "AIzaSyBDEk7luVCDDJooPwG6BU0r1qX8GROc6rY",
-  authDomain: "anzen-matomete-app.firebaseapp.com",
-  projectId: "anzen-matomete-app",
-  storageBucket: "anzen-matomete-app.firebasestorage.app",
-  messagingSenderId: "163103621501",
-  appId: "1:163103621501:web:53410bbe65778f5d154c14",
-  measurementId: "G-FQKRCR30BY"
+  apiKey: "AIzaSyBnsA1HjJaqIxTqZVoJf6PYSxI8kiLs__c",
+  authDomain: "matomete-alogi.firebaseapp.com",
+  projectId: "matomete-alogi",
+  storageBucket: "matomete-alogi.firebasestorage.app",
+  messagingSenderId: "252853368767",
+  appId: "1:252853368767:web:435764e7010e643dfed30a"
 };
 // この設定はfirebase-messaging-sw.jsのfirebaseConfigと同期させること。
 // SW側はこの変数を参照できず、値を変更したら両方直す必要がある
@@ -57,7 +56,7 @@ const fbFunctions = firebase.app().functions('asia-northeast1');
 // FCM Web Push用VAPID公開鍵(Firebase Console → プロジェクト設定 → Cloud Messaging →
 // ウェブ構成 → 鍵ペアの生成、で取得。公開鍵のためリポジトリに含めてよい)。
 // getToken({ vapidKey })に渡す唯一の参照元。ここ以外に直書きしないこと
-const FCM_VAPID_KEY = 'BCd2jTEyxVABwbdktFURmnKhXr0gSvIYxI0rorVPMGcko6gW6zHx_W67ZNPc7VWiC8MIOOWWGdi44nuKKynkZiY';
+const FCM_VAPID_KEY = 'BLopNP5-qviVPzWL7D13Uky4GCl6JFsLH-6WBkcybR_teOc0fNSaZITT746Bdya9IQg3DTG-gdNQMvTp6a1C4rw';
 </script>
 <style>
 /* ===== テーマ変数 ===== */
