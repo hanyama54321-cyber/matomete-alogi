@@ -201,7 +201,7 @@ HI-LINE 本番につながずに画面を確認するため、**リポジトリ�
   ```
 - **Firebase CLI**: `npx firebase-tools`(devDependency。初回は `npm install` が必要)
 - **ローカルで開くとき**: 必ずローカルサーバー経由(`http://localhost:.../index.html`)。`file://` で直接開くと `<script src>` の読み込みに失敗する。
-  **上の「接続先は HI-LINE 本番のまま」の注意を必ず守ること**
+  **ログインすると A-LOGI の本番 Firebase に書き込まれる(上の「接続先」の注意を参照)**
 
 ## テスト
 
