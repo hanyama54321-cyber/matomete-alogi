@@ -270,7 +270,33 @@ Analytics は有効にしていないため、`firebaseConfig` に `measurementI
 | 13 | `firebase deploy --only firestore:rules,firestore:indexes,storage --project matomete-alogi --dry-run` | 成功(ルール2つとも構文エラーなし) |
 | 14 | 宛先 `matomete-alogi` を表示して確認 → `firebase deploy --only firestore:rules,firestore:indexes,storage --project matomete-alogi --non-interactive` | **成功**(2026-10-14 14:35)。Firestore ルール・インデックス・Storage ルールを公開 |
 
-**まだ行っていないこと**: Cloud Functions のデプロイ(課金が発生しうるため、南野さんの確認待ちで止めている)。
+| 15 | Storage のクロスサービス参照の権限を付与(南野さんの許可: 対象は matomete-alogi のみ・この権限1つだけ)。firebase-tools が対話モードで使う関数 `resourceManager.addServiceAccountToRoles("252853368767", "service-252853368767@gcp-sa-firebasestorage.iam.gserviceaccount.com", ["roles/firebaserules.firestoreServiceAgent"], true)` を、ログイン済みのアカウントで実行(= Cloud Resource Manager `setIamPolicy`、`updateMask=bindings`) | **成功**。付与前後の IAM ポリシーを読み取りで比較し、追加1件・削除0件(この1件だけ)を確認 |
+| 16 | Functions のランタイムを `nodejs22` に(`63afda9`)。`(cd functions && npm ci)` → `firebase emulators:exec --only functions,firestore --project matomete-alogi "node -e 0"` | 8関数の定義を読み込めた(`cleanupStaleTokens` は Pub/Sub エミュレーターが無いためエミュレーター上では対象外) |
+| 17 | 宛先 `matomete-alogi` を表示 → `firebase deploy --only functions --project matomete-alogi --dry-run --non-interactive` | 成功。**ただし dry-run でも API の有効化は実行された**(cloudfunctions / cloudbuild / artifactregistry / firebaseextensions / cloudscheduler / run / eventarc。pubsub・storage は有効済み)。あわせて pubsub・eventarc のサービスID が作られた。次回の本番デプロイで付与されるロール3件が表示された(下記) |
+| 18 | IAM ポリシーの読み取り(#17 のあと) | バインディングが #15 直後の10件から **18件に増えていた**。API の有効化に伴って Google が自動で付けたもの(下記) |
+
+**#17 の dry-run で、IAM の設定が自動で増えた(2026-10-14)**
+
+API を有効にすると、Google がその API のサービスエージェントにロールを自動で付ける。#17 のあと、次の8件が増えていた(こちらから付与したものではない)。
+
+- `roles/cloudbuild.builds.builder` ← `252853368767@cloudbuild.gserviceaccount.com`
+- `roles/cloudbuild.serviceAgent` ← `service-252853368767@gcp-sa-cloudbuild`
+- `roles/cloudfunctions.standardServiceAgent` ← `service-252853368767@gcf-admin-robot`
+- `roles/cloudscheduler.serviceAgent` ← `service-252853368767@gcp-sa-cloudscheduler`
+- `roles/containerregistry.ServiceAgent` ← `service-252853368767@containerregistry`
+- `roles/editor` ← 既定の Compute のサービスアカウント・`cloudservices`・`matomete-alogi@appspot`
+- `roles/firebasemods.serviceAgent` ← `service-252853368767@gcp-sa-firebasemods`(Extensions の API)
+- `roles/run.serviceAgent` ← `service-252853368767@serverless-robot-prod`
+
+**本番の Functions デプロイでは、firebase-tools がさらに次の3件を自動で付ける**(Firestore トリガーと定期実行の関数に必要。確認の質問は出ない)。
+
+- `roles/iam.serviceAccountTokenCreator` ← `service-252853368767@gcp-sa-pubsub.iam.gserviceaccount.com`
+- `roles/run.invoker` ← `252853368767-compute@developer.gserviceaccount.com`
+- `roles/eventarc.eventReceiver` ← `252853368767-compute@developer.gserviceaccount.com`
+
+南野さんの指示(「Storage の権限以外の IAM 設定は変更しない」)に関わるため、**Functions の本番デプロイは止めて確認待ち**。
+
+**まだ行っていないこと**: Cloud Functions の本番デプロイ。
 
 **残っている確認事項**
 
