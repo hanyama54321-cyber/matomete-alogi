@@ -53,8 +53,8 @@
 | 4 | デザインの差し替え(赤基調・アイコン・タグライン削除) | 済 |
 | 5 | 班とチャンネルを A-LOGI の構成にする | 済 |
 | 6 | A-LOGI の Firebase につなぐ・デプロイ手順 | 済(下の「ステップ6の実行記録」) |
-| 7 | 初期データ投入の手順書 | 済(**南野さんの確認待ち**。下の「初期データ投入」。投入はまだ実行していない) |
-| 8 | 公開 | 未(南野さんの指示が出てから) |
+| 7 | 初期データ投入の手順書・投入 | 済(投入も完了。下の「初期データ投入」) |
+| 8 | 公開 | **準備済み・公開の直前で停止中**(下の「ステップ8: 公開」) |
 
 **各ステップの終わりで止まって報告し、南野さんの確認を待つ**取り決めです。
 
@@ -475,7 +475,9 @@ python -m http.server 8000
 | 8 | 2026-10-14 | 投入結果の読み取り(Firestore・Auth・Auth の設定) | Auth アカウント **33件**(管理者3・乗務員30、`40000`〜`40094`、無効化0)。Firestore `users` **31件**(admin 1件=`AAAAA`・driver 30件)、**`users/BBBBB`・`users/CCCCC` が無い**。`teams` 2件、`channels` 4件(全体連絡・昼班・夜班・安全報告)、`kyt` 7件、`manuals` 5件、`announcements` 0件、`config/notifications` は `openToAllUsers: true` |
 | 9 | 2026-10-14 | Authentication のサインアップ | 南野さんはオフに戻したと連絡したが、読み取りでは**有効のまま**だった → Claude Code が**無効**に変更し、読み取りで確認 |
 
-**未解決(南野さんの確認待ち)**: `users/BBBBB`・`users/CCCCC` が無いため、`BBBBB`・`CCCCC` でログインすると「ユーザー情報が見つかりません」になる。
+| 10 | 2026-10-14 | `users/BBBBB`・`users/CCCCC` を作成(南野さんの了承のうえ、`users/AAAAA` と同じ方法・同じ内容。既にあれば失敗する方式) | 作成。`users` **33件**(admin 3・driver 30)を読み取りで確認。サインアップは無効のまま |
+
+**投入は完了**(2026-10-14)。
 
 **ここから先(① 管理者の Auth 作成、管理者でのログイン、③⑤⑦⑥、⑧ 乗務員の作成、乗務員でのログイン確認)は南野さんが行う。**
 Claude Code は、本番のログイン画面へのパスワード入力と、本番の Auth へのアカウント作成を代わりに行わないため。
@@ -500,6 +502,50 @@ Claude Code は、本番のログイン画面へのパスワード入力と、�
   選ぶまで所属班は「選択してください」のままで、保存できない。班を選ぶまで班のチャンネルには投稿できない
 - 同じ「プロフィール」でパスワードを変える(5文字以上)
 - 「通知設定」でプッシュ通知を受け取るかを選ぶ
+
+## ステップ8: 公開
+
+### 公開前の確認(2026-10-14、README のリリース手順「1. 事前確認」に準じる)
+
+| 項目 | 結果 |
+|---|---|
+| ルールテスト(`emulators:exec --project matomete-alogi`) | 190件すべて pass |
+| `index.html` のインラインスクリプトの構文 / Service Worker の構文 | エラーなし |
+| CSS のルール数と並び | 派生元 v0.4.5 と同じ 335(値の変更と変数の追加のみで、構造は変えていない。ステップ4で確認、以後は CSS 変数の値と追加だけ) |
+| `APP_VERSION` / `CHANGELOG` | `A-0.1.0` / A-0.1.0 の1件 |
+| `BADGE_EPOCH` | 派生元から変更なし |
+| 公開中のルール | Firestore・Storage とも、リポジトリの内容と一致(読み取りで比較) |
+| Cloud Functions | 8関数とも `asia-northeast1`・`nodejs22` で稼働 |
+| 承認済みドメイン | `hanyama54321-cyber.github.io` あり |
+| サインアップ | 無効 |
+| 初期データ | 管理者3・乗務員30・班2・チャンネル4・KYT 7・手順書5・周知0・`config/notifications` |
+| リポジトリに入れてはいけないもの | 名簿CSV・`seed.html`・鍵ファイルは追跡されていない。HI-LINE の接続情報はコードに無い。名簿の氏名は追跡ファイルに含まれていない(テスト用の仮データに派生元からある一般的な姓が1つ一致するだけ) |
+| `develop` → `main` のマージ | `main`(`51ecdb8`)は `develop` の祖先。`git merge-tree` でコンフリクトなし、マージ後の内容は `develop` と一致 |
+| タグ `A-0.1.0` | まだ無い |
+| 公開URL | 現在 404(Pages は未有効) |
+
+### 公開の手順(南野さんの指示が出てから)
+
+1. `develop` → `main` を `--no-ff` でマージして push する(初回なのでロールバック用タグは作らない。README 参照)
+   ```
+   git checkout main
+   git pull --ff-only origin main
+   git merge --no-ff --no-commit develop
+   git diff --name-only --diff-filter=U      # 空であること
+   git commit -m "Release A-0.1.0: A-LOGI版 初版"
+   git diff develop main --stat               # 空であること
+   git push origin main
+   git tag -a A-0.1.0 -m "A-0.1.0: A-LOGI版 初版(安全配送まとめてアプリ v0.4.5 をもとに作成)"
+   git push origin A-0.1.0
+   git checkout develop
+   ```
+2. GitHub Pages を有効にする(**南野さんがブラウザで行う**。このPCには GitHub CLI が無い):
+   リポジトリ `matomete-alogi` → Settings → Pages → Build and deployment → Source「Deploy from a branch」→ Branch `main` / `/ (root)` → Save
+3. 公開後の確認
+   - `https://hanyama54321-cyber.github.io/matomete-alogi/` が開き、版表記が `A-0.1.0`(反映まで30〜90秒)
+   - コンソールにエラーがない、`hasFirebase` が `true`(診断画面: 版表記を3回タップ)
+   - **HI-LINE版(`https://hanyama54321-cyber.github.io/matomete-app/`)が今までどおり動いている**
+   - iOS 実機での確認(ホーム画面に追加、ログイン、通知)は南野さん
 
 ## コミット時の運用ルール
 
