@@ -34,14 +34,14 @@
 ログイン方式(乗務員コード5桁+パスワード、`AUTH_EMAIL_DOMAIN`=`@matomete.local`、`AUTH_PW_SUFFIX`=`_mtm`)、
 管理者コード(`AAAAA`/`BBBBB`/`CCCCC`)は HI-LINE版と同じ。
 
-## ⚠️ いまの接続先は HI-LINE 本番のままです
+## 接続先は A-LOGI の Firebase プロジェクト `matomete-alogi`(ステップ6で差し替え済み)
 
-`index.html` と `firebase-messaging-sw.js` の `firebaseConfig`、`FCM_VAPID_KEY`、`.firebaserc`、
-`test/rules/helpers.js` の `PROJECT_ID` は、**A-LOGI の Firebase につなぐ作業(ステップ6)まで HI-LINE版の値のまま**です。
+`index.html` と `firebase-messaging-sw.js` の `firebaseConfig`、`FCM_VAPID_KEY`、`.firebaserc`、`test/rules/helpers.js` の `PROJECT_ID` は、
+2026-10-14 に A-LOGI の値へ差し替えた(`7c1e0f4`)。HI-LINE版 `anzen-matomete-app` の値はコードに残っていない。
 
-- **このままの `index.html` をブラウザで開いてログインしないこと。** HI-LINE 本番に利用記録(`sessions`、削除不可)が書き込まれます。
-- 画面確認は Firebase エミュレーター(PC内で動く模擬Firebase)につないで行う。**エミュレーターにつなぐための変更はコミットしない。**
-- **接続を差し替えるまで GitHub Pages を有効にしない。**
+- **ローカルで `index.html` を開いてログインすると、A-LOGI の本番 Firebase に書き込まれる**(利用記録 `sessions` は削除できない)。
+  画面確認は引き続き Firebase エミュレーターで行う(下の「画面の撮影方法」)。エミュレーターにつなぐための変更はコミットしない
+- **GitHub Pages の有効化は南野さんの指示が出てから**(ステップ8)
 
 ## 進み具合(作成指示書のステップ)
 
@@ -212,17 +212,14 @@ npm run test:rules
 
 `test/rules/` に12ファイル・**190件**(2026-10-14 に全件 pass)。
 
-**⚠️ `.firebaserc` と `test/rules/helpers.js` の `PROJECT_ID` が HI-LINE版の値のあいだ(ステップ6まで)は、
-リポジトリの中で `npm run test:rules` をそのまま実行しない。** 実在のプロジェクトIDでエミュレーターを起動することになるため、
-次のように一時コピーで実行する(コミットしない)。
+**ステップ6(2026-10-14)以降は、プロジェクトIDを明示して次のように実行する**(エミュレーターのみ。本番には接続しない)。
 
-1. `firebase.json`・`firestore.rules`・`firestore.indexes.json`・`storage.rules`・`package.json`・`test/` を一時フォルダへコピーし、空の `functions/` を作る
-2. 一時フォルダの `.firebaserc` の `default` と `test/rules/helpers.js` の `PROJECT_ID` を、同じ `demo-` で始まるID(例 `demo-alogi-test`)にする
-   (Storage ルールのテストは、この2つが同じIDでないと失敗する)
-3. 一時フォルダに `node_modules` へのジャンクション(`mklink /J`)を作る
-4. 一時フォルダで `node node_modules/firebase-tools/lib/bin/firebase.js emulators:exec --only firestore,storage --project demo-alogi-test "node --test test/rules/*.test.js"`
+```bash
+export PATH="/c/Program Files/Eclipse Adoptium/jre-21.0.11.10-hotspot/bin:$PATH"
+npx firebase-tools emulators:exec --only firestore,storage --project matomete-alogi "node --test test/rules/*.test.js"
+```
 
-ステップ6で `PROJECT_ID` を A-LOGI のプロジェクトIDに変えたあとは、`npm run test:rules` をそのまま使える。
+(ステップ6より前は `.firebaserc` と `PROJECT_ID` が HI-LINE版の値だったため、一時コピーで `demo-` のIDに差し替えて実行していた。)
 
 テスト用の仮データ(各テストの `seed()`)には `team: 'team_e'` が残っている。ルールは班の値を検証しないため結果に影響しないが、
 A-LOGI版には無い班IDである(見た目の問題。直す場合は `badges.test.js` の `chat.team_e` も含め全ファイルで置き換える)。
@@ -265,22 +262,39 @@ Analytics は有効にしていないため、`firebaseConfig` に `measurementI
 | 6 | `firebase firestore:databases:get "(default)" --project matomete-alogi`、`firebase firestore:databases:list --project matomete-alogi`(南野さんからコンソール作業の完了連絡を受けたあとの確認。数分おいて計4回) | **すべて HTTP 403**(Cloud Firestore API が未有効)。#5 と同じ状態のまま |
 | 7 | 公開エンドポイントでの確認(ウェブ用の公開 API キーを使った読み取りのみ): Firestore の REST / Auth の `getProjectConfig` / Storage バケットの一覧 | Firestore=`SERVICE_DISABLED`、Auth=`CONFIGURATION_NOT_FOUND`、Storage バケット `matomete-alogi.firebasestorage.app`=404。**3つとも、プロジェクトID `matomete-alogi` には設定が入っていない** |
 
-**⚠️ 2026-10-14 時点の食い違い**: 南野さんからは「コンソール作業はすべて `matomete-alogi` で完了」と連絡があったが、プロジェクトID `matomete-alogi` には
-Firestore・認証・Storage のいずれも設定されていない。表示名が同じ別のプロジェクト(IDが違うもの)で作業した可能性がある。
-どのプロジェクトIDで作業したかを南野さんに確認中。**確認が取れるまで、接続情報の差し替えとデプロイは行わない。** VAPID 公開鍵もまだ受け取っていない。
+| 8 | (南野さんがコンソールで Blaze・予算アラート $5・Firestore・Storage・メール/パスワード認証・承認済みドメイン・VAPID 鍵を設定。最初の2回の完了連絡は作業前の下書きだったため、#6・#7 は未設定の状態を見ていた) | — |
+| 9 | `firebase firestore:databases:get "(default)" --project matomete-alogi` | 成功。`FIRESTORE_NATIVE` / `STANDARD` / `asia-northeast1` |
+| 10 | 公開エンドポイントでの確認(読み取りのみ): Auth の `getProjectConfig` / Storage バケットの一覧 | Auth: プロジェクト番号 `252853368767`、承認済みドメインに `hanyama54321-cyber.github.io` あり。Storage: 403(バケットは存在し、ルールで拒否) |
+| 11 | 接続情報の差し替えを1コミットで(`7c1e0f4`): `firebaseConfig`(`index.html`・SW)、`FCM_VAPID_KEY`、`.firebaserc`、`test/rules/helpers.js` の `PROJECT_ID` | コード内に `anzen-matomete-app` の値が残っていないことを全文検索で確認 |
+| 12 | `firebase emulators:exec --only firestore,storage --project matomete-alogi "node --test test/rules/*.test.js"` | 190件すべて pass(エミュレーターのみ) |
+| 13 | `firebase deploy --only firestore:rules,firestore:indexes,storage --project matomete-alogi --dry-run` | 成功(ルール2つとも構文エラーなし) |
+| 14 | 宛先 `matomete-alogi` を表示して確認 → `firebase deploy --only firestore:rules,firestore:indexes,storage --project matomete-alogi --non-interactive` | **成功**(2026-10-14 14:35)。Firestore ルール・インデックス・Storage ルールを公開 |
 
-**まだ行っていないこと**: Firestore の作成、コンソールでの設定(Blaze・予算アラート・Storage・メール/パスワード認証・承認済みドメイン・VAPID 鍵)、
-リポジトリ内の接続情報の差し替え、ルール・インデックス・Functions のデプロイ。
+**まだ行っていないこと**: Cloud Functions のデプロイ(課金が発生しうるため、南野さんの確認待ちで止めている)。
 
-## デプロイ手順
+**残っている確認事項**
 
-**ステップ6で追記する**(新しい Firebase プロジェクトの ID が決まってから)。その際の注意点:
+- **Storage ルールの「クロスサービス参照」の権限**: `storage.rules` は `firestore.get()` で管理者かどうかを判定している。これには Storage の
+  サービスエージェント(`service-252853368767@gcp-sa-firebasestorage.iam.gserviceaccount.com`)に Firestore を読む IAM ロールが必要で、
+  `firebase deploy` は対話モードのときだけ「付与しますか」と尋ねて付与する(`--non-interactive` では確認自体を飛ばす)。
+  #14 は `--non-interactive` で実行したため、付与されているかは未確認。無いと管理者の手順書アップロードが `storage/unauthorized` で失敗する
+  (HI-LINE版で実際に起きた)。確認方法: 南野さんがターミナルで `npx firebase-tools deploy --only storage --project matomete-alogi` を実行し、
+  尋ねられたら `Y`(尋ねられなければ付与済み)
+- **Cloud Functions のランタイム**: `firebase.json` は `nodejs20`。firebase-tools の情報では Node.js 20 は 2026-04-30 に非推奨、**2026-10-30 に廃止**。
+  廃止後はデプロイ・更新ができなくなる。Functions をデプロイする前に、`nodejs22` へ上げるかを南野さんに確認中
 
-- Storage のルールは `firestore.get()` で Firestore の `users/{code}.role` を参照している。新しいプロジェクトでは、
-  Storage のサービスアカウント(`service-<プロジェクト番号>@gcp-sa-firebasestorage.iam.gserviceaccount.com`)に
-  Firestore を読む権限(`roles/datastore.user`)が必要。**無いと手順書のアップロードが `storage/unauthorized` で失敗する**
-  (HI-LINE版で実際に設定が必要だった。Storage ルールの初回デプロイ時に Firebase CLI が付与を尋ねてくる)
-- `functions/` は HI-LINE版のまま(8関数、`asia-northeast1`)。メール送信の処理は含まれていない
+## デプロイ手順(A-LOGI版)
+
+- コマンドは必ず `--project matomete-alogi` を付ける(`firebase use` の既定値に頼らない)。実行前に宛先のプロジェクトIDを表示して確認する
+- ルール・インデックス・Storage ルール:
+  ```
+  npx firebase-tools deploy --only firestore:rules,firestore:indexes,storage --project matomete-alogi
+  ```
+- Cloud Functions(未実施。8関数、`asia-northeast1`。メール送信の処理は含まれていない):
+  ```
+  (cd functions && npm ci)
+  npx firebase-tools deploy --only functions --project matomete-alogi
+  ```
 
 ## 初期データ投入
 
