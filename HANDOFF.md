@@ -294,9 +294,18 @@ API を有効にすると、Google がその API のサービスエージェン�
 - `roles/run.invoker` ← `252853368767-compute@developer.gserviceaccount.com`
 - `roles/eventarc.eventReceiver` ← `252853368767-compute@developer.gserviceaccount.com`
 
-南野さんの指示(「Storage の権限以外の IAM 設定は変更しない」)に関わるため、**Functions の本番デプロイは止めて確認待ち**。
+南野さんが上の3件を了承(2026-10-14)。
 
-**まだ行っていないこと**: Cloud Functions の本番デプロイ。
+| # | コマンド・作業 | 結果 |
+|---|---|---|
+| 19 | IAM ポリシーを読み取って保存(ロールと付与先の組で20件) | — |
+| 20 | 宛先 `matomete-alogi` を表示 → `firebase deploy --only functions --project matomete-alogi --force --non-interactive`(14:47) | **一部失敗**。作成できたのは `sendUnreadReminder` だけ。Firestore トリガーの4関数は「Eventarc のサービスエージェントの権限がまだ反映されていない(初めて第2世代の関数を使うときは数分かかる。数分後に再実行)」で失敗。`subscribeToReport`・`estimateNotifyAudience`・`cleanupStaleTokens` は Cloud Build が「予期しないエラー」で失敗。コンテナのクリーンアップポリシー(1日)は設定された |
+| 21 | IAM ポリシーを読み取って #19 と比較 | 追加5件・削除0件。了承済みの3件に加えて、Google が自動で付けた2件(`roles/artifactregistry.serviceAgent` ← `service-252853368767@gcp-sa-artifactregistry`、`roles/eventarc.serviceAgent` ← `service-252853368767@gcp-sa-eventarc`)があった |
+| 22 | `firebase functions:list --project matomete-alogi` | 4件表示(`sendUnreadReminder` は正常。ほか3件はビルド失敗のためメモリ欄が空)。Firestore トリガーの4関数は無い |
+
+南野さんの条件(「付いた IAM が了承の3件だけでなければ止まって報告」)に当たるため、**ここで止めて報告**。Functions の再デプロイも行っていない。
+
+**まだ行っていないこと**: Cloud Functions の再デプロイ(8関数のうち7関数が未完成)、ステップ7。
 
 **残っている確認事項**
 
