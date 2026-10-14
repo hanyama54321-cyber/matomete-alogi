@@ -471,6 +471,12 @@ python -m http.server 8000
 | 5 | 2026-10-14 | `seed.html` を `localhost:8000` で開き、表示だけ確認(ログイン・ボタン操作なし) | 接続先 `matomete-alogi`、未ログイン、ページのエラーなし |
 | 6 | 2026-10-14 | サインアップを**無効**に変更(Claude Code が止まる前に必ずオフに戻す取り決め) | 変更前: 有効 → 変更後: 無効(読み取りで確認) |
 
+| 7 | 2026-10-14 | (南野さんが `seed.html` で投入。Claude Code が `localhost:8000` でサーバーを起動し、終了後に停止) | — |
+| 8 | 2026-10-14 | 投入結果の読み取り(Firestore・Auth・Auth の設定) | Auth アカウント **33件**(管理者3・乗務員30、`40000`〜`40094`、無効化0)。Firestore `users` **31件**(admin 1件=`AAAAA`・driver 30件)、**`users/BBBBB`・`users/CCCCC` が無い**。`teams` 2件、`channels` 4件(全体連絡・昼班・夜班・安全報告)、`kyt` 7件、`manuals` 5件、`announcements` 0件、`config/notifications` は `openToAllUsers: true` |
+| 9 | 2026-10-14 | Authentication のサインアップ | 南野さんはオフに戻したと連絡したが、読み取りでは**有効のまま**だった → Claude Code が**無効**に変更し、読み取りで確認 |
+
+**未解決(南野さんの確認待ち)**: `users/BBBBB`・`users/CCCCC` が無いため、`BBBBB`・`CCCCC` でログインすると「ユーザー情報が見つかりません」になる。
+
 **ここから先(① 管理者の Auth 作成、管理者でのログイン、③⑤⑦⑥、⑧ 乗務員の作成、乗務員でのログイン確認)は南野さんが行う。**
 Claude Code は、本番のログイン画面へのパスワード入力と、本番の Auth へのアカウント作成を代わりに行わないため。
 
