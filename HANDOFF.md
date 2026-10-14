@@ -52,7 +52,7 @@
 | 3 | 名称・パス・保存キーの差し替え | 済(下記) |
 | 4 | デザインの差し替え(赤基調・アイコン・タグライン削除) | 済 |
 | 5 | 班とチャンネルを A-LOGI の構成にする | 済 |
-| 6 | A-LOGI の Firebase につなぐ・デプロイ手順 | **作業中**(下の「ステップ6の実行記録」) |
+| 6 | A-LOGI の Firebase につなぐ・デプロイ手順 | 済(下の「ステップ6の実行記録」。IAM の1件について確認待ち) |
 | 7 | 初期データ投入の手順書 | 未 |
 | 8 | 公開 | 未(南野さんの指示が出てから) |
 
@@ -303,20 +303,24 @@ API を有効にすると、Google がその API のサービスエージェン�
 | 21 | IAM ポリシーを読み取って #19 と比較 | 追加5件・削除0件。了承済みの3件に加えて、Google が自動で付けた2件(`roles/artifactregistry.serviceAgent` ← `service-252853368767@gcp-sa-artifactregistry`、`roles/eventarc.serviceAgent` ← `service-252853368767@gcp-sa-eventarc`)があった |
 | 22 | `firebase functions:list --project matomete-alogi` | 4件表示(`sendUnreadReminder` は正常。ほか3件はビルド失敗のためメモリ欄が空)。Firestore トリガーの4関数は無い |
 
-南野さんの条件(「付いた IAM が了承の3件だけでなければ止まって報告」)に当たるため、**ここで止めて報告**。Functions の再デプロイも行っていない。
+南野さんの条件(「付いた IAM が了承の3件だけでなければ止まって報告」)に当たったため、いったん止めて報告。
+南野さんが想定外の2件をそのままとし、再デプロイを了承(2回まで。IAM・API の設定は自分で変えない)。
 
-**まだ行っていないこと**: Cloud Functions の再デプロイ(8関数のうち7関数が未完成)、ステップ7。
+| # | コマンド・作業 | 結果 |
+|---|---|---|
+| 23 | IAM ポリシーを読み取って保存(25件)→ 5分待機 | — |
+| 24 | 宛先 `matomete-alogi` を表示 → `firebase deploy --only functions --project matomete-alogi --force --non-interactive`(再デプロイ1回目、14:57) | **成功**。残り7関数を作成・更新(`sendUnreadReminder` は変更なしでスキップ) |
+| 25 | IAM ポリシーを読み取って #23 と比較 | **追加1件・削除0件**: `roles/pubsub.serviceAgent` ← `service-252853368767@gcp-sa-pubsub`(Pub/Sub のサービスID作成に伴って Google が自動で付けたもの)。報告済みの5件以外のため、南野さんの条件どおり止めて報告 |
+| 26 | `firebase functions:list --project matomete-alogi` | **8関数すべて `asia-northeast1`・`nodejs22`・v2**。Firestore トリガー4つ(written / created / created / updated)、呼び出し型3つ、定期実行1つ |
+
+**関数のデプロイ前(#19、20件)からの IAM の増加は計6件**: 了承の3件、了承済みの想定外2件、#25 の1件(`roles/pubsub.serviceAgent`)。削除は0件。
+
+**まだ行っていないこと**: ステップ7(#25 の1件について南野さんの確認待ち)。
 
 **残っている確認事項**
 
-- **Storage ルールの「クロスサービス参照」の権限**: `storage.rules` は `firestore.get()` で管理者かどうかを判定している。これには Storage の
-  サービスエージェント(`service-252853368767@gcp-sa-firebasestorage.iam.gserviceaccount.com`)に Firestore を読む IAM ロールが必要で、
-  `firebase deploy` は対話モードのときだけ「付与しますか」と尋ねて付与する(`--non-interactive` では確認自体を飛ばす)。
-  #14 は `--non-interactive` で実行したため、付与されているかは未確認。無いと管理者の手順書アップロードが `storage/unauthorized` で失敗する
-  (HI-LINE版で実際に起きた)。確認方法: 南野さんがターミナルで `npx firebase-tools deploy --only storage --project matomete-alogi` を実行し、
-  尋ねられたら `Y`(尋ねられなければ付与済み)
-- **Cloud Functions のランタイム**: `firebase.json` は `nodejs20`。firebase-tools の情報では Node.js 20 は 2026-04-30 に非推奨、**2026-10-30 に廃止**。
-  廃止後はデプロイ・更新ができなくなる。Functions をデプロイする前に、`nodejs22` へ上げるかを南野さんに確認中
+- **Storage ルールの「クロスサービス参照」の権限**(解決済み): #15 で付与した
+- **Cloud Functions のランタイム**(解決済み): Node.js 20 は 2026-10-30 に廃止のため、初回デプロイの前に `nodejs22` へ上げた(`63afda9`、#16)
 
 ## デプロイ手順(A-LOGI版)
 
@@ -325,7 +329,7 @@ API を有効にすると、Google がその API のサービスエージェン�
   ```
   npx firebase-tools deploy --only firestore:rules,firestore:indexes,storage --project matomete-alogi
   ```
-- Cloud Functions(未実施。8関数、`asia-northeast1`。メール送信の処理は含まれていない):
+- Cloud Functions(2026-10-14 にデプロイ済み。8関数、`asia-northeast1`、`nodejs22`。メール送信の処理は含まれていない):
   ```
   (cd functions && npm ci)
   npx firebase-tools deploy --only functions --project matomete-alogi
