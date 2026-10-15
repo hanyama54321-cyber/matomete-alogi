@@ -7,9 +7,9 @@
 - **リポジトリ**: `hanyama54321-cyber/matomete-alogi`(**public**)。協力会社 A-LOGI 専用の「安全配送まとめてアプリ」。
 - **派生元**: HI-LINE版 `hanyama54321-cyber/matomete-app` のタグ `v0.4.5`(`34f32c5`)。**履歴は引き継いでいない**(最初のコミットに出どころを記録)。v0.4.5 までの開発経緯・設計判断の詳細は matomete-app 側の `HANDOFF.md` / `TECH_DEBT.md` を参照。
 - **構成**: 単一ファイルSPA([index.html](index.html))+ Firebase(Firestore / Auth / Storage / Cloud Functions / FCM)。機能は v0.4.5 と同一。
-- **公開URL(予定)**: `https://hanyama54321-cyber.github.io/matomete-alogi/`(GitHub Pages、`main` のルート)
+- **公開URL**: `https://hanyama54321-cyber.github.io/matomete-alogi/`(GitHub Pages、`main` のルート)
 - **ブランチ運用**: `main`=公開、`develop`=開発。`develop`→`main` は `--no-ff`。**force push しない**(手順は [README.md](README.md))。
-- **版番号**: `A-x.y.z`(HI-LINE版の `v0.x.y` とは別系統)。現在 `A-0.1.0`(**未公開**)。
+- **版番号**: `A-x.y.z`(HI-LINE版の `v0.x.y` とは別系統)。現在 `A-0.1.0`(**2026-10-14 公開済み**。タグ `A-0.1.0` → `1bfd52b`)。
 - **目的**: A-LOGI での期間限定の試行。新機能の追加や UI の作り直しはしない。
 
 ### HI-LINE版との違い(これ以外は同じ)
@@ -54,7 +54,7 @@
 | 5 | 班とチャンネルを A-LOGI の構成にする | 済 |
 | 6 | A-LOGI の Firebase につなぐ・デプロイ手順 | 済(下の「ステップ6の実行記録」) |
 | 7 | 初期データ投入の手順書・投入 | 済(投入も完了。下の「初期データ投入」) |
-| 8 | 公開 | **準備済み・公開の直前で停止中**(下の「ステップ8: 公開」) |
+| 8 | 公開 | **済**(2026-10-14 公開、2026-10-15 実機確認完了。下の「ステップ8: 公開」) |
 
 **各ステップの終わりで止まって報告し、南野さんの確認を待つ**取り決めです。
 
@@ -546,6 +546,17 @@ Claude Code は、本番のログイン画面へのパスワード入力と、�
    - コンソールにエラーがない、`hasFirebase` が `true`(診断画面: 版表記を3回タップ)
    - **HI-LINE版(`https://hanyama54321-cyber.github.io/matomete-app/`)が今までどおり動いている**
    - iOS 実機での確認(ホーム画面に追加、ログイン、通知)は南野さん
+
+### 公開の記録
+
+| # | 日時 | 作業 | 結果 |
+|---|---|---|---|
+| 1 | 2026-10-14 | `develop` → `main` を `--no-ff` でマージ(`1bfd52b`「Release A-0.1.0: A-LOGI版 初版」)、タグ `A-0.1.0` を作成して push | コンフリクトなし、マージ後の `main` は `develop` と一致。初回のためロールバック用タグは作っていない |
+| 2 | 2026-10-14 | 南野さんが GitHub Pages を有効化(`main` / root) | — |
+| 3 | 2026-10-14 | 公開後の確認(Claude Code、ログインなし) | 公開URLが開き版表記 `A-0.1.0`、接続先 `matomete-alogi`、`hasFirebase` true、コンソールエラー・失敗した通信なし。`manifest.json`・SW・アイコンを配信、`seed.html` は 404。HI-LINE版 `/matomete-app/` は HTTP で取得して 200・`0.4.5` のまま(HI-LINE 側のスクリプトは実行していない) |
+| 4 | 2026-10-15 | 南野さんの実機確認 | 管理者(PC)・乗務員・iPhone(ホーム画面追加、全画面表示、ログイン、プッシュ通知)すべてOK。**Android は未実施**。テスト用のお知らせ・報告・チャットは削除済み |
+
+**ステップ8は完了(2026-10-15)。** これで作成指示書のステップ1〜8はすべて済んだ。
 
 ## コミット時の運用ルール
 
