@@ -2093,7 +2093,7 @@ header {
         <div class="logo-title">安全配送 まとめてアプリ</div>
         <div style="display:flex;align-items:center;gap:5px">
           <div class="logo-sub">SAFETY DELIVERY</div>
-          <span id="version-badge" style="font-size:7px;font-weight:700;background:rgba(200,16,46,.1);color:var(--primary);border:1px solid rgba(200,16,46,.25);border-radius:3px;padding:1px 4px;letter-spacing:.02em;line-height:1.6;white-space:nowrap">Ver.A-0.1.1</span>
+          <span id="version-badge" style="font-size:7px;font-weight:700;background:rgba(200,16,46,.1);color:var(--primary);border:1px solid rgba(200,16,46,.25);border-radius:3px;padding:1px 4px;letter-spacing:.02em;line-height:1.6;white-space:nowrap">Ver.A-0.1.2</span>
         </div>
       </div>
     </div>
@@ -2142,7 +2142,7 @@ header {
         <span class="um-icon">ℹ️</span>
         <div style="flex:1">
           <div style="font-weight:700">このアプリについて</div>
-          <div id="um-version-subtitle" style="font-size:11px;color:var(--text-muted);margin-top:1px">Ver. A-0.1.1 · 安全配送まとめてアプリ A-LOGI</div>
+          <div id="um-version-subtitle" style="font-size:11px;color:var(--text-muted);margin-top:1px">Ver. A-0.1.2 · 安全配送まとめてアプリ A-LOGI</div>
         </div>
       </button>
       <button id="um-user-mgmt-btn" class="user-menu-item hidden" onclick="openUserManagement()">
@@ -2603,7 +2603,7 @@ header {
 // ヘッダーバッジ・ユーザーメニュー・アプリ情報画面・利用状況計測(sessions.appVersion)は
 // すべてこの定数を参照する(#version-badge/#um-version-subtitleへは初期化処理でJSから反映、
 // アプリ情報画面・recordSession()は関数内で直接参照)
-const APP_VERSION = 'A-0.1.1';
+const APP_VERSION = 'A-0.1.2';
 
 /* ===== データ ===== */
 
@@ -3969,6 +3969,7 @@ async function saveNotifPrefs() {
 // 更新履歴(画面の「このアプリについて」に出る)。A-LOGI版の版番号(A-x.y.z)は HI-LINE版(matomete-app)とは
 // 別系統のため、派生元 v0.4.5 までの履歴はここに載せない(経緯は matomete-app 側の記録を参照)
 const CHANGELOG = [
+  { version: 'A-0.1.2', items: ['周知の一覧で、本文を2行まで表示', 'お知らせ・KYT・手順書などに入力した記号(< や & など)が、そのままの文字で表示されるよう修正'] },
   { version: 'A-0.1.1', items: ['チャットのメンバー一覧を、登録されている乗務員で表示(管理者)', 'チャットの「オンライン」表示と、ゲームタブの仮の登録状況(管理者)を削除', 'チャットの「最終投稿」を日時で表示(管理者)'] },
   { version: 'A-0.1.0', items: ['初版(安全配送まとめてアプリ v0.4.5 をもとに作成)'] },
 ];
