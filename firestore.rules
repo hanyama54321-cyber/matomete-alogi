@@ -25,8 +25,14 @@ service cloud.firestore {
       return get(/databases/$(database)/documents/users/$(myCode())).data;
     }
 
-    // チャンネル閲覧可否: general/safety等(teamId:'all')は全員、
-    // 班チャンネルは自分の所属班のみ、adminは常に全チャンネル閲覧可
+    // 管理者専用チャンネル(teamId:'admin')は管理者だけが読める。それ以外はログイン済み全員(v0.2)
+    function channelReadable(channelId) {
+      return get(/databases/$(database)/documents/channels/$(channelId)).data.teamId != 'admin' || isAdmin();
+    }
+
+    // チャンネル投稿可否: general(teamId:'all')は全員、
+    // 班チャンネルは自分の所属班のみ、adminは常に全チャンネル(管理者専用 teamId:'admin' は管理者だけ。
+    // users.team に 'admin' は入らない=許可リストは team_a/team_b のみ)
     function channelVisible(channelId) {
       let ch = get(/databases/$(database)/documents/channels/$(channelId)).data;
       return ch.teamId == 'all' || ch.teamId == myUserDoc().team || isAdmin();
@@ -127,8 +133,10 @@ service cloud.firestore {
 
     match /channels/{channelId} {
       // 閲覧(一覧・個別取得とも)はログイン済み全員に開放(v0.2: 他班チャンネルも閲覧可能に)。
+      // ただし管理者専用(teamId:'admin')は管理者だけ(lastMessage に本文の一部が入るため、文書自体を読ませない)。
+      // 一覧は、乗務員は teamId != 'admin' の条件付きでのみ取得できる。
       // 書き込みは従来どおり所属班+adminのみ(下記 messages/allow create, update 参照)
-      allow get, list: if isSignedIn();
+      allow get, list: if isSignedIn() && (resource.data.teamId != 'admin' || isAdmin());
       // チャンネル自体の作成・削除、teamId/name等の変更はadminのみ。
       // ただし lastMessage フィールドのみは、投稿権限(所属班+admin)があるユーザーなら
       // 誰でも更新可(メッセージ送信時に併記更新するため)
@@ -139,8 +147,9 @@ service cloud.firestore {
             && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['lastMessage']));
 
       match /messages/{messageId} {
-        // 閲覧はログイン済み全員に開放(v0.2)。投稿はchannelVisible()(所属班+admin)のまま維持
-        allow read: if isSignedIn();
+        // 閲覧はログイン済み全員に開放(v0.2)。ただし管理者専用チャンネルは管理者だけ。
+        // 投稿はchannelVisible()(所属班+admin)のまま維持
+        allow read: if isSignedIn() && channelReadable(channelId);
 
         // 投稿: チャンネルが見えるユーザーのみ。senderUid/senderName/senderRoleは
         // リクエスト者本人のusersドキュメントと一致する値のみ許可(なりすまし防止)

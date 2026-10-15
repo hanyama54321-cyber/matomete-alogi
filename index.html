@@ -2706,7 +2706,7 @@ let kytExpandedCode = null;       // 管理者ダッシュボードのアコー�
 /* ===== チャットメッセージ（Firestore接続） =====
    Firestore スキーマ: channels/{channelId}/messages/{messageId}
      senderUid / senderName / senderRole / text / createdAt / deleted / deletedBy / deletedAt
-   channelId は 'general' | 'safety' | teams[].id（'team_a'・'team_b'）
+   channelId は 'general' | teams[].id（'team_a'・'team_b'）| 'admin'（管理者専用。teamId も 'admin'）
    chatMessages は現在開いているチャンネルの onSnapshot 結果をそのまま保持する */
 let chatMessages = [];               // 現在のチャンネルのメッセージ(Firestoreからリアルタイム反映)
 let currentChannel = 'general';
@@ -2964,10 +2964,11 @@ async function recordSession() {
 // state/badgesが未作成のユーザーを初期化するときの足切り値としてのみ使われる)。
 const BADGE_EPOCH = new Date('2026-07-30T03:30:00+09:00');
 
-// チャンネル別の最終閲覧時刻を持つ対象。'general'/'safety' + 2班(team_a・team_b)
+// チャンネル別の最終閲覧時刻を持つ対象。全体連絡 + 2班(team_a・team_b) + 管理者専用(admin)
 const BADGE_CHANNEL_IDS = [
-  'general', 'safety',
+  'general',
   'team_a', 'team_b',
+  'admin',
 ];
 
 let badgeState = null;        // users/{code}/state/badges のミラー
@@ -3063,7 +3064,7 @@ function getBadgeServerSeenAt(field) {
   if (!badgeState) return null;
   if (field.startsWith('chat.')) {
     const id = field.slice(5);
-    return (badgeState.chat && badgeState.chat[id]) ? toDateOrNull(badgeState.chat[id]) : null;
+    return (badgeState.chat && badgeState.chat[id]) ? toDateOrNull(badgeState.chat[id]) : toDateOrNull(badgeState.since); // 未オープンのチャンネルは利用開始時点を基準にする
   }
   return badgeState[field] ? toDateOrNull(badgeState[field]) : null;
 }
@@ -3141,7 +3142,13 @@ let reportsHighlightSince = null;
 
 function attachChatChannelsListener() {
   if (chatChannelsUnsub) { chatChannelsUnsub(); chatChannelsUnsub = null; }
-  chatChannelsUnsub = fbDb.collection('channels').onSnapshot(snap => {
+  // 管理者専用チャンネル(teamId: 'admin')はルール上、管理者しか読めない。乗務員が条件なしで
+  // 全件を取りに行くとルールに拒否されて一覧ごと取れなくなるため、管理者専用を除く条件を付ける
+  const isAdminUser = !!(fbUser && fbUser.role === 'admin');
+  const channelsQuery = isAdminUser
+    ? fbDb.collection('channels')
+    : fbDb.collection('channels').where('teamId', '!=', 'admin');
+  chatChannelsUnsub = channelsQuery.onSnapshot(snap => {
     const next = {};
     snap.forEach(d => {
       const lm = d.data().lastMessage;
@@ -3280,6 +3287,7 @@ function unreadReportsForAdmin() {
 function unreadChatChannelIds() {
   if (!fbUser) return [];
   return Object.keys(chatChannelsMeta).filter(id => {
+    if (!BADGE_CHANNEL_IDS.includes(id)) return false;   // 廃止したチャンネルの文書が残っていても新着にしない
     if (!canViewChannel(id)) return false;
     const last = chatChannelsMeta[id].lastMessageAt;
     if (!last) return false;
@@ -3288,13 +3296,13 @@ function unreadChatChannelIds() {
   });
 }
 
-// 閲覧可否(firestore.rulesのchannelVisible()と同じ考え方: general/safetyは全員、
-// 班チャンネルは所属班のみ、adminは全チャンネル)
+// 閲覧可否(firestore.rulesのchannelVisible()と同じ考え方: generalは全員、
+// 班チャンネルは所属班のみ、adminは全チャンネル。管理者専用(admin)は管理者だけ)
 function canViewChannel(id) {
   if (!fbUser) return false;
-  if (id === 'general' || id === 'safety') return true;
+  if (id === 'general') return true;
   if (fbUser.role === 'admin') return true;
-  return fbUser.team === id;
+  return fbUser.team === id;   // users.team に 'admin' は入らない(ルールの許可リスト)ので、乗務員は admin を見られない
 }
 
 // タブごとの新着有無。ゲームタブは対象外
@@ -5666,7 +5674,7 @@ function scrollChatBot() {
 function canWriteToCurrentChannel() {
   if (!fbUser) return false;
   return st.role === 'manager'
-    || currentChannel === 'general' || currentChannel === 'safety'
+    || currentChannel === 'general'
     || currentChannel === fbUser.team;
 }
 
@@ -5766,8 +5774,8 @@ function switchCh(id, name) {
    ログアウトでクリアする(手順書・KYT の fetchXxxAllDrivers と同じ one-shot の考え方)。
    メンテナンス用の管理者コード(MASTER_EXCLUDED_CODES)は含めない。role が admin の乗務員は含め、
    一覧で「管理者」の印を付ける。
-   チャンネルIDは 'general'/'safety'(全員向け)または teams[].id('team_a'・'team_b')で、
-   班チャンネルはそのまま users.team と突き合わせる */
+   チャンネルIDは 'general'(全員向け)、teams[].id('team_a'・'team_b')、'admin'(管理者専用)。
+   班チャンネルはそのまま users.team と突き合わせ、管理者専用は role が admin の人(保守用コードを除く)にする */
 let chatDirectory = [];          // [{ code, name, team, role }] 乗務員コード順
 let chatDirectoryLoaded = false;
 let chatDirectoryLoading = null; // 取得中の Promise(同時に何度も取りに行かないため)
@@ -5793,12 +5801,13 @@ async function fetchChatDirectory() {
 }
 
 function getChannelMembers(channelId) {
-  if (channelId === 'general' || channelId === 'safety') return chatDirectory;
+  if (channelId === 'general') return chatDirectory;
+  if (channelId === 'admin') return chatDirectory.filter(u => u.role === 'admin');
   return chatDirectory.filter(u => u.team === channelId);
 }
 
 // チャンネルチップを teams マスターから動的生成
-// 全チャンネル（固定2つ＋2班の計4つ）をボタンとして並べ、.wrap で折り返し表示する
+// 全体連絡・昼班・夜班・管理者(管理者だけに表示)をボタンとして並べ、.wrap で折り返し表示する
 // （横スクロールにせず、どの班も1タップで直接切替できるようにする）
 // 呼称の変更・班の増減があっても teams 配列を更新するだけでチップに反映される
 function renderChannelChips() {
@@ -5807,7 +5816,8 @@ function renderChannelChips() {
   const channelList = [
     { id:'general', label:'全体連絡' },
     ...teams.filter(t => t.id !== 'all').map(t => ({ id:t.id, label:t.displayName })),
-    { id:'safety', label:'安全報告' },
+    // 管理者専用は管理者にだけ表示する(読み書きの制限は firestore.rules 側で行う)
+    ...(fbUser && fbUser.role === 'admin' ? [{ id:'admin', label:'管理者' }] : []),
   ];
   const unreadIds = new Set(unreadChatChannelIds());
   host.innerHTML = channelList.map(c => {
