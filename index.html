@@ -4280,7 +4280,7 @@ function renderAnnCard(a, opts={}) {
             <span style="font-size:12px;color:var(--text-muted)">${escHtml(a.from)}</span>
           </div>
           <div style="font-weight:${isRead && !isManager && !mustPending?500:700};font-size:16px;margin-bottom:4px;color:var(--navy);line-height:1.5">${titleHtml}</div>
-          <div style="font-size:14px;color:var(--text-sub);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${bodyHtml}</div>
+          <div style="font-size:14px;color:var(--text-sub);display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;overflow-wrap:anywhere">${bodyHtml}</div>
           ${dl ? `<div class="deadline-text ${dl.level}" style="margin-top:6px"><span>⏱️</span>${dl.text}</div>` : ''}
           ${(a.tags||[]).length ? `<div style="display:flex;gap:5px;margin-top:8px;flex-wrap:wrap">
             ${a.tags.map(t => `<button class="tag-pill${st.annTagFilter===t?' active':''}" data-ann-tag="${escHtml(t)}">${escHtml(t)}</button>`).join('')}
