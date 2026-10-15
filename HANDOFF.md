@@ -671,7 +671,7 @@ Claude Code は、本番のログイン画面へのパスワード入力と、�
 | 4 | 2026-10-15 23:40 | `develop` → `main` を `--no-ff` でマージ(`15f483f`「Release A-0.1.3」)、タグ `A-0.1.3` を作成して push | コンフリクトなし、マージ後の `main` は `develop` と一致。23:41:46 に Pages へ反映 |
 | 5 | 2026-10-15 23:41 | 宛先 `matomete-alogi` を表示 → `firebase deploy --only firestore:rules --project matomete-alogi --dry-run` → 本番 | 公開。公開中の Firestore・Storage のルールがリポジトリと一致することを読み取りで確認 |
 | 6 | 2026-10-15 | 公開後の確認(Claude Code、ログインなし) | 版表記 `A-0.1.3`、接続先 `matomete-alogi`、コンソールエラー・失敗した通信なし。#安全報告 のボタンなし。未ログインでの `channels/admin` の読み取りは拒否。`seed.html` は 404。HI-LINE版 `/matomete-app/` は HTTP で取得して 200・`0.4.7`(南野さんの側の更新) |
-| 7 | 2026-10-16 | 南野さんの実機確認 | 乗務員(`40000`)・保守用(`AAAAA`)はチェックリストどおりOK。**admin にした乗務員での確認は、実施状況を南野さんに確認中**。テスト投稿は削除済み |
+| 7 | 2026-10-16 | 南野さんの実機確認 | 乗務員(`40000`)・保守用(`AAAAA`)はチェックリストどおりOK。**admin にした乗務員での確認は未実施**(保守用 `AAAAA` での確認で代えた。南野さんの判断、2026-10-16)。テスト投稿は削除済み |
 
 **A-0.1.3 の公開は完了。** 切り戻す場合はロールバック用タグ `A-0.1.2-pre-admin-channel` を起点にする。
 ルールも切り戻す場合は、ロールバック用タグの `firestore.rules` を `--project matomete-alogi` でデプロイする
