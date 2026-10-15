@@ -9,7 +9,7 @@
 - **構成**: 単一ファイルSPA([index.html](index.html))+ Firebase(Firestore / Auth / Storage / Cloud Functions / FCM)。機能は v0.4.5 と同一。
 - **公開URL**: `https://hanyama54321-cyber.github.io/matomete-alogi/`(GitHub Pages、`main` のルート)
 - **ブランチ運用**: `main`=公開、`develop`=開発。`develop`→`main` は `--no-ff`。**force push しない**(手順は [README.md](README.md))。
-- **版番号**: `A-x.y.z`(HI-LINE版の `v0.x.y` とは別系統)。現在 `A-0.1.0`(**2026-10-14 公開済み**。タグ `A-0.1.0` → `1bfd52b`)。
+- **版番号**: `A-x.y.z`(HI-LINE版の `v0.x.y` とは別系統)。現在 `A-0.1.1`(2026-10-15 公開。`A-0.1.0` は 2026-10-14 公開、タグ `A-0.1.0` → `1bfd52b`)。
 - **目的**: A-LOGI での期間限定の試行。新機能の追加や UI の作り直しはしない。
 
 ### HI-LINE版との違い(これ以外は同じ)
