@@ -9,7 +9,7 @@
 - **構成**: 単一ファイルSPA([index.html](index.html))+ Firebase(Firestore / Auth / Storage / Cloud Functions / FCM)。機能は v0.4.5 と同一。
 - **公開URL**: `https://hanyama54321-cyber.github.io/matomete-alogi/`(GitHub Pages、`main` のルート)
 - **ブランチ運用**: `main`=公開、`develop`=開発。`develop`→`main` は `--no-ff`。**force push しない**(手順は [README.md](README.md))。
-- **版番号**: `A-x.y.z`(HI-LINE版の `v0.x.y` とは別系統)。現在 `A-0.1.3`(2026-10-15 公開。`A-0.1.1`・`A-0.1.2` も同日、`A-0.1.0` は 2026-10-14 公開)。
+- **版番号**: `A-x.y.z`(HI-LINE版の `v0.x.y` とは別系統)。現在 `A-0.1.4`(2026-10-16 公開。`A-0.1.1`〜`A-0.1.3` は 2026-10-15、`A-0.1.0` は 2026-10-14 公開)。
 - **目的**: A-LOGI での期間限定の試行。新機能の追加や UI の作り直しはしない。
 
 ### HI-LINE版との違い(これ以外は同じ)
@@ -660,6 +660,49 @@ Claude Code は、本番のログイン画面へのパスワード入力と、�
 
 **反映の順番**: 本番データ → アプリの公開(A-0.1.3)→ Firestore のルールの公開。ルールを先に公開すると、A-0.1.2 の乗務員の
 チャンネル一覧(条件なし)が拒否されるため。アプリ公開からルール公開までの数分は #管理者 がルールで守られないが、#管理者 は空のため影響なし。
+
+### A-0.1.3 の公開の記録
+
+| # | 日時 | 作業 | 結果 |
+|---|---|---|---|
+| 1 | 2026-10-15 23:39 | 本番データ: `channels/admin` を作成、`channels/safety` とテスト投稿1件を削除(所有者の権限) | 前後を読み取りで確認(上の表) |
+| 2 | 2026-10-15 | `APP_VERSION` と `CHANGELOG` を `A-0.1.3` に(`d64d58a`)。事前確認 | ルールテスト198件 pass。`BADGE_EPOCH`・`<style>` は A-0.1.2 から変更なし。サインアップ無効 |
+| 3 | 2026-10-15 | ロールバック用タグ `A-0.1.2-pre-admin-channel` をマージ前の `main` 先端(`770dc87`)に作成して push | — |
+| 4 | 2026-10-15 23:40 | `develop` → `main` を `--no-ff` でマージ(`15f483f`「Release A-0.1.3」)、タグ `A-0.1.3` を作成して push | コンフリクトなし、マージ後の `main` は `develop` と一致。23:41:46 に Pages へ反映 |
+| 5 | 2026-10-15 23:41 | 宛先 `matomete-alogi` を表示 → `firebase deploy --only firestore:rules --project matomete-alogi --dry-run` → 本番 | 公開。公開中の Firestore・Storage のルールがリポジトリと一致することを読み取りで確認 |
+| 6 | 2026-10-15 | 公開後の確認(Claude Code、ログインなし) | 版表記 `A-0.1.3`、接続先 `matomete-alogi`、コンソールエラー・失敗した通信なし。#安全報告 のボタンなし。未ログインでの `channels/admin` の読み取りは拒否。`seed.html` は 404。HI-LINE版 `/matomete-app/` は HTTP で取得して 200・`0.4.7`(南野さんの側の更新) |
+| 7 | 2026-10-16 | 南野さんの実機確認 | 乗務員(`40000`)・保守用(`AAAAA`)はチェックリストどおりOK。**admin にした乗務員での確認は未実施**(保守用 `AAAAA` での確認で代えた。南野さんの判断、2026-10-16)。テスト投稿は削除済み |
+
+**A-0.1.3 の公開は完了。** 切り戻す場合はロールバック用タグ `A-0.1.2-pre-admin-channel` を起点にする。
+ルールも切り戻す場合は、ロールバック用タグの `firestore.rules` を `--project matomete-alogi` でデプロイする
+(アプリだけ戻してルールを戻さないと、A-0.1.2 の乗務員のチャンネル一覧がルールで拒否される)。
+
+## パスワードを初期値に戻す機能(保守用の管理者のみ、A-0.1.4 として 2026-10-16 公開)
+
+- **保守用の管理者(`AAAAA`/`BBBBB`/`CCCCC`)だけ**が、乗務員マスタの各行の「🔑 パスワードを初期値に戻す」から、ほかの利用者の
+  パスワードを初期値(乗務員コードと同じ)に戻せる。保守用の管理者どうしも互いに戻せる(自分自身は不可。プロフィールから変更する)。
+  `passwordChanged` は `false` に戻る。実行前に「○○(コード)のパスワードを初期値に戻します」の確認を出す
+- **権限の判定は role ではなくコード**で、Cloud Functions の呼び出し型の関数 `resetUserPassword`(`functions/callable/resetUserPassword.js`)で行う。
+  admin にした乗務員・一般の乗務員にはボタンを出さず、関数を直接呼んでも `permission-denied` になる
+- **記録**: `passwordResets/{自動ID}` に `targetCode`・`byCode`・`at` を残す(書くのは関数だけ)。読めるのは保守用の管理者だけ(`firestore.rules` の
+  `isMaintenance()`)。乗務員マスタの下に新しい順に30件を表示する
+- 保守用のコードは3か所で一致させる: `index.html` の `MASTER_EXCLUDED_CODES`、`functions/lib/constants.js` の `MAINTENANCE_CODES`、`firestore.rules` の `isMaintenance()`
+- **外部メンテナンス用アカウント(`AAAAA`/`BBBBB`/`CCCCC`)の扱いを見直す際には、この権限(パスワードを初期値に戻す権限)も見直す前提**(南野さんの指示、2026-10-16)
+
+### AAAAA のアカウントの作り直し(2026-10-16)
+
+`AAAAA` が初期パスワードでログインできなくなっていたため(パスワードは 2026/10/15 23:04:29 に変更されていた)、南野さんが Firebase コンソールで
+Auth アカウントを削除して作り直した(コンソールではパスワードを直接書き換えられないため)。Claude Code は本番のパスワードを設定していない。
+作り直し後のパスワード最終更新は **2026/10/16 15:14:41**。`users/AAAAA`(Firestore)はそのまま使われている
+(アプリは Auth の UID ではなくメールの@より前=コードで利用者を判断するため)。
+
+### A-0.1.4 の公開の記録
+
+| # | 日時 | 作業 | 結果 |
+|---|---|---|---|
+| 1 | 2026-10-16 15:17 | 宛先 `matomete-alogi` を表示 → `firebase deploy --only functions:resetUserPassword --project matomete-alogi`(dry-run のあと本番) | 作成(`asia-northeast1`・`nodejs22`)。関数は計9つ。IAM の比較: 追加0件・削除0件 |
+| 2 | 2026-10-16 15:19 | ルールテスト(204件 pass)→ 宛先を表示 → `firebase deploy --only firestore:rules --project matomete-alogi`(dry-run のあと本番) | 公開。公開中のルールがリポジトリと一致することを読み取りで確認 |
+| 3 | 2026-10-16 | `APP_VERSION` と `CHANGELOG` を `A-0.1.4` に。ロールバック用タグ → `--no-ff` マージ → タグ `A-0.1.4` | (公開後に追記) |
 
 ## コミット時の運用ルール
 

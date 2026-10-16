@@ -2093,7 +2093,7 @@ header {
         <div class="logo-title">安全配送 まとめてアプリ</div>
         <div style="display:flex;align-items:center;gap:5px">
           <div class="logo-sub">SAFETY DELIVERY</div>
-          <span id="version-badge" style="font-size:7px;font-weight:700;background:rgba(200,16,46,.1);color:var(--primary);border:1px solid rgba(200,16,46,.25);border-radius:3px;padding:1px 4px;letter-spacing:.02em;line-height:1.6;white-space:nowrap">Ver.A-0.1.3</span>
+          <span id="version-badge" style="font-size:7px;font-weight:700;background:rgba(200,16,46,.1);color:var(--primary);border:1px solid rgba(200,16,46,.25);border-radius:3px;padding:1px 4px;letter-spacing:.02em;line-height:1.6;white-space:nowrap">Ver.A-0.1.4</span>
         </div>
       </div>
     </div>
@@ -2142,7 +2142,7 @@ header {
         <span class="um-icon">ℹ️</span>
         <div style="flex:1">
           <div style="font-weight:700">このアプリについて</div>
-          <div id="um-version-subtitle" style="font-size:11px;color:var(--text-muted);margin-top:1px">Ver. A-0.1.3 · 安全配送まとめてアプリ A-LOGI</div>
+          <div id="um-version-subtitle" style="font-size:11px;color:var(--text-muted);margin-top:1px">Ver. A-0.1.4 · 安全配送まとめてアプリ A-LOGI</div>
         </div>
       </button>
       <button id="um-user-mgmt-btn" class="user-menu-item hidden" onclick="openUserManagement()">
@@ -2603,7 +2603,7 @@ header {
 // ヘッダーバッジ・ユーザーメニュー・アプリ情報画面・利用状況計測(sessions.appVersion)は
 // すべてこの定数を参照する(#version-badge/#um-version-subtitleへは初期化処理でJSから反映、
 // アプリ情報画面・recordSession()は関数内で直接参照)
-const APP_VERSION = 'A-0.1.3';
+const APP_VERSION = 'A-0.1.4';
 
 /* ===== データ ===== */
 
@@ -3977,6 +3977,7 @@ async function saveNotifPrefs() {
 // 更新履歴(画面の「このアプリについて」に出る)。A-LOGI版の版番号(A-x.y.z)は HI-LINE版(matomete-app)とは
 // 別系統のため、派生元 v0.4.5 までの履歴はここに載せない(経緯は matomete-app 側の記録を参照)
 const CHANGELOG = [
+  { version: 'A-0.1.4', items: ['保守用の管理者が、乗務員マスタから利用者のパスワードを初期値に戻せるように'] },
   { version: 'A-0.1.3', items: ['チャットの #安全報告 を廃止し、管理者専用の #管理者 を追加'] },
   { version: 'A-0.1.2', items: ['周知の一覧で、本文を2行まで表示', 'お知らせ・KYT・手順書などに入力した記号(< や & など)が、そのままの文字で表示されるよう修正'] },
   { version: 'A-0.1.1', items: ['チャットのメンバー一覧を、登録されている乗務員で表示(管理者)', 'チャットの「オンライン」表示と、ゲームタブの仮の登録状況(管理者)を削除', 'チャットの「最終投稿」を日時で表示(管理者)'] },
@@ -8193,6 +8194,11 @@ function showAppScreen() {
 const MASTER_EXCLUDED_CODES = ['AAAAA', 'BBBBB', 'CCCCC'];
 
 let umAllUsers = [];      // openUserManagement中に取得した全ユーザーのキャッシュ(メンテナンス用コード除外済み)
+// 保守用の管理者だけが使う: ほかの保守用の管理者(パスワードを初期値に戻す対象。編集・削除・権限変更の対象にはしない)
+let umMaintUsers = [];
+// 保守用の管理者(外部メンテナンス用のコード)か。role ではなくコードで判定する
+// (パスワードを初期値に戻す権限はこのコードだけ。実際の判定は Cloud Functions の resetUserPassword で行う)
+const isMaintenanceUser = () => !!(fbUser && MASTER_EXCLUDED_CODES.includes(fbUser.code));
 let umEditingCode = null; // インライン編集フォームを開いている行のコード(同時に1件のみ)
 
 async function openUserManagement() {
@@ -8213,6 +8219,7 @@ async function openUserManagement() {
         </div>
         <div id="um-error" class="login-error" style="display:none"></div>
         <div id="um-list">読み込み中...</div>
+        ${isMaintenanceUser() ? '<div id="um-reset-log" style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border)"></div>' : ''}
       </div>
     </div>
   `);
@@ -8220,12 +8227,18 @@ async function openUserManagement() {
   try {
     const snap = await fbDb.collection('users').get();
     umAllUsers = [];
+    umMaintUsers = [];
     umEditingCode = null;
     snap.forEach(doc => {
-      if (MASTER_EXCLUDED_CODES.includes(doc.id)) return;
+      if (MASTER_EXCLUDED_CODES.includes(doc.id)) {
+        // 保守用の管理者どうしは、互いのパスワードを初期値に戻せる(一覧の先頭に、初期化のボタンだけを出す)
+        if (isMaintenanceUser() && doc.id !== fbUser.code) umMaintUsers.push({ code: doc.id, ...doc.data() });
+        return;
+      }
       umAllUsers.push({ code: doc.id, ...doc.data() });
     });
     renderUserManagementList();
+    if (isMaintenanceUser()) loadPasswordResetLog();
   } catch (err) {
     const list = document.getElementById('um-list');
     if (list) list.innerHTML = `<p style="font-size:13px;color:var(--danger)">読み込みに失敗しました（${err.code || err.message}）</p>`;
@@ -8320,16 +8333,24 @@ function renderUserManagementList() {
   const listEl = document.getElementById('um-list');
   if (!listEl) return;
   const kw = (document.getElementById('um-search').value || '').trim().toUpperCase();
-  const filtered = umAllUsers.filter(u =>
-    !kw || u.code.toUpperCase().includes(kw) || (u.name || '').toUpperCase().includes(kw)
-  );
+  const match = u => !kw || u.code.toUpperCase().includes(kw) || (u.name || '').toUpperCase().includes(kw);
+  const filtered = umAllUsers.filter(match);
+  const maintFiltered = isMaintenanceUser() ? umMaintUsers.filter(match) : [];
 
-  if (filtered.length === 0) {
+  if (filtered.length === 0 && maintFiltered.length === 0) {
     listEl.innerHTML = `<p style="font-size:13px;color:var(--text-muted)">該当するユーザーがいません</p>`;
     return;
   }
 
-  listEl.innerHTML = filtered.map(u => {
+  const resetBtn = code => `<button class="btn btn-ghost" style="width:100%;padding:6px;font-size:12px;margin-top:6px" onclick="confirmResetPassword('${code}')">🔑 パスワードを初期値に戻す</button>`;
+  const maintHtml = maintFiltered.map(u => `
+      <div class="card" style="margin-bottom:8px;padding:12px">
+        <div style="font-weight:700;color:var(--navy)">${escHtml(u.name || '(氏名未設定)')} <span style="font-size:11px;color:var(--text-muted);font-weight:400">${escHtml(u.code)}</span></div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:2px">保守用の管理者</div>
+        ${resetBtn(u.code)}
+      </div>`).join('');
+
+  listEl.innerHTML = maintHtml + filtered.map(u => {
     const isSelf = u.code === fbUser.code;
     const isEditing = umEditingCode === u.code;
     return `
@@ -8355,6 +8376,7 @@ function renderUserManagementList() {
           <button class="btn btn-ghost" style="flex:1;padding:6px;font-size:12px" onclick="toggleDriverEditForm('${u.code}')">${isEditing ? '編集を閉じる' : '編集'}</button>
           <button class="btn btn-ghost" style="flex:1;padding:6px;font-size:12px;color:var(--danger)" ${isSelf ? 'disabled' : ''} onclick="deleteDriver('${u.code}')">削除</button>
         </div>
+        ${isMaintenanceUser() && !isSelf ? resetBtn(u.code) : ''}
         ${isEditing ? `
           <div style="background:var(--surface2);border-radius:8px;padding:10px;margin-top:8px">
             <div class="form-group">
@@ -8406,6 +8428,49 @@ async function updateDriverInfo(code) {
 
 // usersドキュメントを削除する(退職対応)。Authアカウントは削除されないが、
 // 次回ログイン試行時に認証ゲート(users doc不在チェック)で自動的にブロックされる
+/* ===== パスワードを初期値に戻す(保守用の管理者のみ) =====
+   権限の判定は Cloud Functions(resetUserPassword)で、呼び出した人のコードが保守用(AAAAA/BBBBB/CCCCC)かで行う。
+   画面のボタンも保守用の管理者にだけ出す。初期値は乗務員コードと同じで、passwordChanged は false に戻る。
+   ※ 外部メンテナンス用アカウントの扱いを見直す際は、この権限も見直すこと(HANDOFF.md) */
+async function confirmResetPassword(code) {
+  if (!isMaintenanceUser()) return;
+  const target = umAllUsers.find(u => u.code === code) || umMaintUsers.find(u => u.code === code);
+  if (!target) return;
+  if (!confirm(`${target.name || ''}（${code}）のパスワードを初期値に戻します。\n初期値は乗務員コードと同じです。よろしいですか？`)) return;
+
+  const errEl = document.getElementById('um-error');
+  errEl.style.display = 'none';
+  try {
+    await fbFunctions.httpsCallable('resetUserPassword')({ code });
+    target.passwordChanged = false;
+    showToast(`✓ ${target.name || ''}（${code}）のパスワードを初期値に戻しました`);
+    loadPasswordResetLog();
+  } catch (err) {
+    errEl.textContent = `初期値に戻せませんでした（${err.message || err.code}）`;
+    errEl.style.display = 'block';
+  }
+}
+
+// パスワードを初期値に戻した記録(新しい順に30件)。読めるのは保守用の管理者だけ(firestore.rules)
+async function loadPasswordResetLog() {
+  const el = document.getElementById('um-reset-log');
+  if (!el || !isMaintenanceUser()) return;
+  const nameOf = c => ((umAllUsers.find(u => u.code === c) || umMaintUsers.find(u => u.code === c) || (fbUser && fbUser.code === c ? fbUser : {})).name) || '';
+  try {
+    const snap = await fbDb.collection('passwordResets').orderBy('at', 'desc').limit(30).get();
+    el.innerHTML = `<div style="font-weight:700;font-size:13px;color:var(--navy);margin-bottom:6px">🔑 パスワードを初期値に戻した記録</div>
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px">保守用の管理者だけに表示されます(新しい順に30件)</div>`
+      + (snap.empty
+        ? '<p style="font-size:12px;color:var(--text-muted)">記録はありません</p>'
+        : snap.docs.map(d => {
+            const r = d.data();
+            return `<div style="font-size:12px;color:var(--text-sub);padding:6px 0;border-bottom:1px solid var(--border)">${escHtml(fmtLastPostDateTime(r.at) || '—')}　${escHtml(r.byCode)} が ${escHtml(nameOf(r.targetCode))}（${escHtml(r.targetCode)}）を初期値に</div>`;
+          }).join(''));
+  } catch (e) {
+    el.innerHTML = `<p style="font-size:12px;color:var(--danger)">記録を読み込めませんでした（${escHtml(e.code || e.message)}）</p>`;
+  }
+}
+
 async function deleteDriver(code) {
   const target = umAllUsers.find(u => u.code === code);
   if (!target) return;
