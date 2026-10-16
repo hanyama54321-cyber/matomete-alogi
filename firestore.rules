@@ -12,6 +12,12 @@ service cloud.firestore {
       return request.auth.token.email.split('@')[0].upper();
     }
 
+    // 保守用の管理者(外部メンテナンス用のコード)。role ではなくコードで判定する。
+    // index.html の MASTER_EXCLUDED_CODES、functions/lib/constants.js の MAINTENANCE_CODES と一致させること
+    function isMaintenance() {
+      return isSignedIn() && myCode() in ['AAAAA', 'BBBBB', 'CCCCC'];
+    }
+
     // admin判定: 自分のusersドキュメントのroleをget()で参照
     function isAdmin() {
       return isSignedIn()
@@ -92,6 +98,13 @@ service cloud.firestore {
       match /state/{docId} {
         allow read, write: if isSignedIn() && myCode() == code;
       }
+    }
+
+    // パスワードを初期値に戻した記録(誰が・いつ・誰を)。Cloud Functions(resetUserPassword、Admin SDK)だけが書く。
+    // 読めるのは保守用の管理者だけ(admin にした乗務員・一般の乗務員は読めない)
+    match /passwordResets/{id} {
+      allow read: if isMaintenance();
+      allow write: if false;
     }
 
     // アプリ全体設定。現状は config/notifications ({openToAllUsers:bool}) のみ使用。

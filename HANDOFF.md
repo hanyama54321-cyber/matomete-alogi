@@ -677,6 +677,18 @@ Claude Code は、本番のログイン画面へのパスワード入力と、�
 ルールも切り戻す場合は、ロールバック用タグの `firestore.rules` を `--project matomete-alogi` でデプロイする
 (アプリだけ戻してルールを戻さないと、A-0.1.2 の乗務員のチャンネル一覧がルールで拒否される)。
 
+## パスワードを初期値に戻す機能(保守用の管理者のみ、2026-10-16 実装・未公開)
+
+- **保守用の管理者(`AAAAA`/`BBBBB`/`CCCCC`)だけ**が、乗務員マスタの各行の「🔑 パスワードを初期値に戻す」から、ほかの利用者の
+  パスワードを初期値(乗務員コードと同じ)に戻せる。保守用の管理者どうしも互いに戻せる(自分自身は不可。プロフィールから変更する)。
+  `passwordChanged` は `false` に戻る。実行前に「○○(コード)のパスワードを初期値に戻します」の確認を出す
+- **権限の判定は role ではなくコード**で、Cloud Functions の呼び出し型の関数 `resetUserPassword`(`functions/callable/resetUserPassword.js`)で行う。
+  admin にした乗務員・一般の乗務員にはボタンを出さず、関数を直接呼んでも `permission-denied` になる
+- **記録**: `passwordResets/{自動ID}` に `targetCode`・`byCode`・`at` を残す(書くのは関数だけ)。読めるのは保守用の管理者だけ(`firestore.rules` の
+  `isMaintenance()`)。乗務員マスタの下に新しい順に30件を表示する
+- 保守用のコードは3か所で一致させる: `index.html` の `MASTER_EXCLUDED_CODES`、`functions/lib/constants.js` の `MAINTENANCE_CODES`、`firestore.rules` の `isMaintenance()`
+- **外部メンテナンス用アカウント(`AAAAA`/`BBBBB`/`CCCCC`)の扱いを見直す際には、この権限(パスワードを初期値に戻す権限)も見直す前提**(南野さんの指示、2026-10-16)
+
 ## コミット時の運用ルール
 
 - 作業開始時は必ず `git branch` で `develop` にいることを確認する

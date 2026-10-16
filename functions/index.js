@@ -5,6 +5,7 @@ const { onManualCreated } = require('./triggers/onManualCreated');
 const { sendUnreadReminder } = require('./callable/sendUnreadReminder');
 const { subscribeToReport } = require('./callable/subscribeToReport');
 const { estimateNotifyAudience } = require('./callable/estimateNotifyAudience');
+const { resetUserPassword } = require('./callable/resetUserPassword');
 const { cleanupStaleTokens } = require('./scheduled/cleanupStaleTokens');
 
 exports.onAnnouncementNotify = onAnnouncementNotify;
@@ -14,4 +15,5 @@ exports.onManualCreated = onManualCreated;
 exports.sendUnreadReminder = sendUnreadReminder;
 exports.subscribeToReport = subscribeToReport;
 exports.estimateNotifyAudience = estimateNotifyAudience;
+exports.resetUserPassword = resetUserPassword;
 exports.cleanupStaleTokens = cleanupStaleTokens;

@@ -17,6 +17,14 @@ const NOTIFY_PREF_KEYS = {
 // 長期未使用トークンの掃除しきい値(日数)
 const STALE_TOKEN_DAYS = 180;
 
+// 保守用の管理者コード(外部メンテナンス用)。パスワードを初期値に戻す権限はこのコードだけに与える。
+// index.html の MASTER_EXCLUDED_CODES、firestore.rules の isMaintenance() と一致させること
+const MAINTENANCE_CODES = ['AAAAA', 'BBBBB', 'CCCCC'];
+
+// ログインの疑似メールのドメインと、パスワードに付ける文字。index.html の AUTH_EMAIL_DOMAIN / AUTH_PW_SUFFIX と一致させること
+const AUTH_EMAIL_DOMAIN = '@matomete.local';
+const AUTH_PW_SUFFIX = '_mtm';
+
 module.exports = {
   REGION,
   MAX_INSTANCES_TRIGGER,
@@ -24,4 +32,7 @@ module.exports = {
   MAX_INSTANCES_SCHEDULED,
   NOTIFY_PREF_KEYS,
   STALE_TOKEN_DAYS,
+  MAINTENANCE_CODES,
+  AUTH_EMAIL_DOMAIN,
+  AUTH_PW_SUFFIX,
 };
