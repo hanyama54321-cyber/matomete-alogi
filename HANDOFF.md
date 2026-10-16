@@ -9,7 +9,7 @@
 - **構成**: 単一ファイルSPA([index.html](index.html))+ Firebase(Firestore / Auth / Storage / Cloud Functions / FCM)。機能は v0.4.5 と同一。
 - **公開URL**: `https://hanyama54321-cyber.github.io/matomete-alogi/`(GitHub Pages、`main` のルート)
 - **ブランチ運用**: `main`=公開、`develop`=開発。`develop`→`main` は `--no-ff`。**force push しない**(手順は [README.md](README.md))。
-- **版番号**: `A-x.y.z`(HI-LINE版の `v0.x.y` とは別系統)。現在 `A-0.1.3`(2026-10-15 公開。`A-0.1.1`・`A-0.1.2` も同日、`A-0.1.0` は 2026-10-14 公開)。
+- **版番号**: `A-x.y.z`(HI-LINE版の `v0.x.y` とは別系統)。現在 `A-0.1.4`(2026-10-16 公開。`A-0.1.1`〜`A-0.1.3` は 2026-10-15、`A-0.1.0` は 2026-10-14 公開)。
 - **目的**: A-LOGI での期間限定の試行。新機能の追加や UI の作り直しはしない。
 
 ### HI-LINE版との違い(これ以外は同じ)
@@ -677,7 +677,7 @@ Claude Code は、本番のログイン画面へのパスワード入力と、�
 ルールも切り戻す場合は、ロールバック用タグの `firestore.rules` を `--project matomete-alogi` でデプロイする
 (アプリだけ戻してルールを戻さないと、A-0.1.2 の乗務員のチャンネル一覧がルールで拒否される)。
 
-## パスワードを初期値に戻す機能(保守用の管理者のみ、2026-10-16 実装・未公開)
+## パスワードを初期値に戻す機能(保守用の管理者のみ、A-0.1.4 として 2026-10-16 公開)
 
 - **保守用の管理者(`AAAAA`/`BBBBB`/`CCCCC`)だけ**が、乗務員マスタの各行の「🔑 パスワードを初期値に戻す」から、ほかの利用者の
   パスワードを初期値(乗務員コードと同じ)に戻せる。保守用の管理者どうしも互いに戻せる(自分自身は不可。プロフィールから変更する)。
@@ -688,6 +688,21 @@ Claude Code は、本番のログイン画面へのパスワード入力と、�
   `isMaintenance()`)。乗務員マスタの下に新しい順に30件を表示する
 - 保守用のコードは3か所で一致させる: `index.html` の `MASTER_EXCLUDED_CODES`、`functions/lib/constants.js` の `MAINTENANCE_CODES`、`firestore.rules` の `isMaintenance()`
 - **外部メンテナンス用アカウント(`AAAAA`/`BBBBB`/`CCCCC`)の扱いを見直す際には、この権限(パスワードを初期値に戻す権限)も見直す前提**(南野さんの指示、2026-10-16)
+
+### AAAAA のアカウントの作り直し(2026-10-16)
+
+`AAAAA` が初期パスワードでログインできなくなっていたため(パスワードは 2026/10/15 23:04:29 に変更されていた)、南野さんが Firebase コンソールで
+Auth アカウントを削除して作り直した(コンソールではパスワードを直接書き換えられないため)。Claude Code は本番のパスワードを設定していない。
+作り直し後のパスワード最終更新は **2026/10/16 15:14:41**。`users/AAAAA`(Firestore)はそのまま使われている
+(アプリは Auth の UID ではなくメールの@より前=コードで利用者を判断するため)。
+
+### A-0.1.4 の公開の記録
+
+| # | 日時 | 作業 | 結果 |
+|---|---|---|---|
+| 1 | 2026-10-16 15:17 | 宛先 `matomete-alogi` を表示 → `firebase deploy --only functions:resetUserPassword --project matomete-alogi`(dry-run のあと本番) | 作成(`asia-northeast1`・`nodejs22`)。関数は計9つ。IAM の比較: 追加0件・削除0件 |
+| 2 | 2026-10-16 15:19 | ルールテスト(204件 pass)→ 宛先を表示 → `firebase deploy --only firestore:rules --project matomete-alogi`(dry-run のあと本番) | 公開。公開中のルールがリポジトリと一致することを読み取りで確認 |
+| 3 | 2026-10-16 | `APP_VERSION` と `CHANGELOG` を `A-0.1.4` に。ロールバック用タグ → `--no-ff` マージ → タグ `A-0.1.4` | (公開後に追記) |
 
 ## コミット時の運用ルール
 
