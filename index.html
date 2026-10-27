@@ -1544,65 +1544,31 @@ header {
 }
 
 /* ===== タグ ===== */
-.tag-pill {
-  display: inline-flex; align-items: center;
-  background: var(--surface2);
-  color: var(--text-sub);
-  font-size: 12px; font-weight: 600;
-  padding: 3px 8px;
-  border-radius: 4px;
-  border: 1px solid transparent;
-  cursor: pointer;
-  white-space: nowrap;
-  font-family: inherit;
-  line-height: 1.4;
-}
-.tag-pill::before { content: '#'; opacity: .55; margin-right: 1px; }
-.tag-pill:active,
-.tag-pill.active {
-  background: rgba(200,16,46,.1);
-  color: var(--primary);
-  border-color: rgba(200,16,46,.3);
-}
-.tag-input-wrap {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 8px 10px;
-  display: flex; flex-wrap: wrap; gap: 6px;
-  align-items: center;
-  min-height: 44px;
-}
-.tag-input-wrap:focus-within { border-color: var(--primary); }
-.tag-chip-edit {
+/* 周知エディタのタグボタン(複数選択)。選択中は塗り+チェック */
+.ed-tag-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.ed-tag-btn {
   display: inline-flex; align-items: center; gap: 4px;
-  background: rgba(200,16,46,.1);
-  color: var(--primary);
-  font-size: 12px; font-weight: 600;
-  padding: 4px 4px 4px 9px;
-  border-radius: 12px;
-}
-.tag-chip-edit::before { content: '#'; opacity: .6; }
-.tag-chip-remove {
-  background: transparent;
-  border: none;
-  color: var(--primary);
-  font-size: 14px;
+  min-height: 38px; padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface); color: var(--text-sub);
+  font-size: 13px; font-weight: 700;
+  font-family: inherit;
   cursor: pointer;
-  padding: 0 4px;
-  line-height: 1;
-  font-family: inherit;
 }
-.tag-input-field {
-  flex: 1;
-  min-width: 80px;
-  border: none;
-  background: transparent;
-  font-size: 14px;
-  outline: none;
-  font-family: inherit;
-  padding: 4px 0;
+.ed-tag-btn.active {
+  background: var(--primary); border-color: var(--primary); color: #fff;
 }
+.ed-tag-btn.active::before { content: '✓'; }
+/* 一覧・詳細のタグのバッジ(タップでそのタグのお知らせを表示) */
+.ann-tag-badge {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  font-family: inherit;
+  line-height: inherit;
+  cursor: pointer;
+}
+.ann-tag-badge.active { border-color: currentColor; }
 
 /* ===== セクション（階層化） ===== */
 .ann-section-header {
@@ -2093,7 +2059,7 @@ header {
         <div class="logo-title">安全配送 まとめてアプリ</div>
         <div style="display:flex;align-items:center;gap:5px">
           <div class="logo-sub">SAFETY DELIVERY</div>
-          <span id="version-badge" style="font-size:7px;font-weight:700;background:rgba(200,16,46,.1);color:var(--primary);border:1px solid rgba(200,16,46,.25);border-radius:3px;padding:1px 4px;letter-spacing:.02em;line-height:1.6;white-space:nowrap">Ver.A-0.1.4</span>
+          <span id="version-badge" style="font-size:7px;font-weight:700;background:rgba(200,16,46,.1);color:var(--primary);border:1px solid rgba(200,16,46,.25);border-radius:3px;padding:1px 4px;letter-spacing:.02em;line-height:1.6;white-space:nowrap">Ver.A-0.1.5</span>
         </div>
       </div>
     </div>
@@ -2142,7 +2108,7 @@ header {
         <span class="um-icon">ℹ️</span>
         <div style="flex:1">
           <div style="font-weight:700">このアプリについて</div>
-          <div id="um-version-subtitle" style="font-size:11px;color:var(--text-muted);margin-top:1px">Ver. A-0.1.4 · 安全配送まとめてアプリ A-LOGI</div>
+          <div id="um-version-subtitle" style="font-size:11px;color:var(--text-muted);margin-top:1px">Ver. A-0.1.5 · 安全配送まとめてアプリ A-LOGI</div>
         </div>
       </button>
       <button id="um-user-mgmt-btn" class="user-menu-item hidden" onclick="openUserManagement()">
@@ -2603,7 +2569,7 @@ header {
 // ヘッダーバッジ・ユーザーメニュー・アプリ情報画面・利用状況計測(sessions.appVersion)は
 // すべてこの定数を参照する(#version-badge/#um-version-subtitleへは初期化処理でJSから反映、
 // アプリ情報画面・recordSession()は関数内で直接参照)
-const APP_VERSION = 'A-0.1.4';
+const APP_VERSION = 'A-0.1.5';
 
 /* ===== データ ===== */
 
@@ -2656,6 +2622,12 @@ const annCategories = [
   { id:'system',  label:'設備',  color:'var(--purple)' },
   { id:'other',   label:'その他', color:'var(--text-sub)' },
 ];
+// 周知のタグ(A-0.1.5 でカテゴリから置き換え。新しい投稿は category を書かず tags だけ持つ)。
+// 画面に出すのはこの5語だけで、並びはエディタのボタンの順
+const ANN_TAGS = ['安全', '業務', '設備', 'その他', 'センター'];
+const ANN_TAG_COLORS = { '安全':'var(--danger)', '業務':'var(--amber)', '設備':'var(--purple)', 'その他':'var(--text-sub)', 'センター':'var(--safe)' };
+// category だけの旧投稿を編集するとき、画面の表示と同じタグを選んだ状態で開くための対応
+const ANN_CAT_TO_TAG = { safety:'安全', work:'業務', system:'設備', other:'その他' };
 
 
 /* ===== 周知(お知らせ) =====
@@ -2799,7 +2771,8 @@ const st = {
   kytDone: false,
   editingAnnId: null,
   annDetailId: null,       // 周知：詳細表示中のID(readsリスナー再描画の対象判定用)
-  edTags: [],              // エディタ内のタグ
+  edTags: [],              // エディタで選んでいるタグ(ANN_TAGS の5語)
+  edOtherTags: [],         // 編集中の投稿が持つ5語以外のタグ(表示せず、保存時に残す)
 };
 
 /* ===== ヘルパー ===== */
@@ -3977,6 +3950,7 @@ async function saveNotifPrefs() {
 // 更新履歴(画面の「このアプリについて」に出る)。A-LOGI版の版番号(A-x.y.z)は HI-LINE版(matomete-app)とは
 // 別系統のため、派生元 v0.4.5 までの履歴はここに載せない(経緯は matomete-app 側の記録を参照)
 const CHANGELOG = [
+  { version: 'A-0.1.5', items: ['周知のカテゴリをやめ、タグ(安全・業務・設備・その他・センター)を複数選べるように', '管理者は、チャットを「管理者」チャンネルから開くように'] },
   { version: 'A-0.1.4', items: ['保守用の管理者が、乗務員マスタから利用者のパスワードを初期値に戻せるように'] },
   { version: 'A-0.1.3', items: ['チャットの #安全報告 を廃止し、管理者専用の #管理者 を追加'] },
   { version: 'A-0.1.2', items: ['周知の一覧で、本文を2行まで表示', 'お知らせ・KYT・手順書などに入力した記号(< や & など)が、そのままの文字で表示されるよう修正'] },
@@ -4231,16 +4205,30 @@ function matchesSearch(a, q) {
   const lower = q.toLowerCase();
   const haystacks = [
     a.title, a.body, a.from,
-    getCat(a.category).label,
-    (a.tags || []).join(' '),
+    annDisplayTags(a).join(' '),
   ];
   return haystacks.some(h => (h || '').toLowerCase().includes(lower));
+}
+
+// 表示するタグ: tags のうち5語(ANN_TAGS)だけ。5語が1つもなければ(category だけの旧投稿など)カテゴリ名を出す。
+// 5語以外のタグ(A-0.1.4 までの自由入力)はデータに残したまま表示しない。絞り込み・関連・検索もこの値で行う
+function annDisplayTags(a) {
+  const tags = (a.tags || []).filter(t => ANN_TAGS.includes(t));
+  return tags.length ? tags : [getCat(a.category).label];
+}
+
+// タグのバッジ。attr の data-* 属性にタグを持たせ、呼び出し側で bindDataClick する
+function annTagBadges(a, attr, activeTag) {
+  return annDisplayTags(a).map(t => {
+    const color = ANN_TAG_COLORS[t] || getCat(a.category).color;
+    return `<button type="button" class="tag ann-tag-badge${activeTag === t ? ' active' : ''}" style="color:${color}" ${attr}="${escHtml(t)}">${escHtml(t)}</button>`;
+  }).join('');
 }
 
 // タグでフィルタ
 function matchesTag(a, tag) {
   if (!tag) return true;
-  return (a.tags || []).includes(tag);
+  return annDisplayTags(a).includes(tag);
 }
 
 // 検索結果に <mark> を付与
@@ -4263,7 +4251,6 @@ function highlight(text, q) {
 // お知らせのHTML生成（1件分）
 function renderAnnCard(a, opts={}) {
   const isManager = st.role === 'manager';
-  const cat = getCat(a.category);
   const team = getTeam(a.target);
   const reach = calcReach(a);
   const isScheduled = a.status === 'scheduled';
@@ -4296,7 +4283,7 @@ function renderAnnCard(a, opts={}) {
             ${a.mustRead ? '<span class="must-read-badge">✋ 必読</span>' : ''}
             ${isScheduled ? `<span class="scheduled-badge">⏰ ${fmtSchedDate(a.scheduledAt)} 配信予定</span>` : ''}
             ${!isRead && !isManager && !isScheduled && !mustPending ? '<span class="ann-unread-dot" aria-label="未読"></span>' : ''}
-            ${mkTag(cat.label, cat.color)}
+            ${annTagBadges(a, 'data-ann-tag', st.annTagFilter)}
             ${isManager && a.priority==='high' ? mkTag('🔴 重要','var(--danger)') : ''}
             ${isManager ? mkTag('対象: '+escHtml(team.label), 'var(--text-sub)') : ''}
             <span style="font-size:12px;color:var(--text-muted)">${escHtml(a.from)}</span>
@@ -4304,9 +4291,6 @@ function renderAnnCard(a, opts={}) {
           <div style="font-weight:${isRead && !isManager && !mustPending?500:700};font-size:16px;margin-bottom:4px;color:var(--navy);line-height:1.5">${titleHtml}</div>
           <div style="font-size:14px;color:var(--text-sub);display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;overflow-wrap:anywhere">${bodyHtml}</div>
           ${dl ? `<div class="deadline-text ${dl.level}" style="margin-top:6px"><span>⏱️</span>${dl.text}</div>` : ''}
-          ${(a.tags||[]).length ? `<div style="display:flex;gap:5px;margin-top:8px;flex-wrap:wrap">
-            ${a.tags.map(t => `<button class="tag-pill${st.annTagFilter===t?' active':''}" data-ann-tag="${escHtml(t)}">${escHtml(t)}</button>`).join('')}
-          </div>` : ''}
         </div>
         <div style="font-size:12px;color:var(--text-muted);white-space:nowrap">${annTimeLabel(a)}</div>
       </div>
@@ -4461,7 +4445,7 @@ function renderAnn() {
   }
 
   document.getElementById('ann-list').innerHTML = html;
-  // タグは自由入力のため、値はdata-*属性に退避してここで結線する(理由はbindDataClick参照)。
+  // タグの値はdata-*属性に退避してここで結線する(理由はbindDataClick参照)。
   // カード側のonclick="showAnn(...)"が先に発火しないようstopPropagationが要る
   bindDataClick(document.getElementById('ann-list'), 'data-ann-tag', (tag, ev) => {
     ev.stopPropagation();
@@ -4568,21 +4552,18 @@ function renderAnnDetailBody(id) {
   const a = findAnn(id);
   if (!a) return;
   const isManager = st.role === 'manager';
-  const cat = getCat(a.category);
   const team = getTeam(a.target);
   const dl = deadlineInfo(a.readDeadline);
 
   const { reach, ackedCount } = buildAnnReadStatus(annCurrentReads);
 
-  // 関連お知らせ（同じタグを持つ別投稿）
-  let related = [];
-  if (a.tags && a.tags.length > 0) {
-    related = announcements.filter(x =>
-      String(x.id) !== String(a.id) &&
-      x.status === 'published' &&
-      x.tags && x.tags.some(t => a.tags.includes(t))
-    );
-  }
+  // 関連お知らせ（表示しているタグが同じ別投稿）
+  const myTags = annDisplayTags(a);
+  const related = announcements.filter(x =>
+    String(x.id) !== String(a.id) &&
+    x.status === 'published' &&
+    annDisplayTags(x).some(t => myTags.includes(t))
+  );
 
   const acked = !!(fbUser && annCurrentReads[fbUser.code] && annCurrentReads[fbUser.code].acked);
 
@@ -4613,13 +4594,6 @@ function renderAnnDetailBody(id) {
     }
   }
 
-  // タグ表示（タップでスレッドへ）
-  const tagsBlock = (a.tags && a.tags.length > 0) ? `
-    <div style="display:flex;gap:5px;margin-top:10px;flex-wrap:wrap">
-      ${a.tags.map(t => `<button class="tag-pill" data-ann-thread-tag="${escHtml(t)}">${escHtml(t)}</button>`).join('')}
-    </div>
-  ` : '';
-
   // 関連お知らせブロック
   const relatedBlock = related.length > 0 ? `
     <div class="related-list">
@@ -4629,7 +4603,7 @@ function renderAnnDetailBody(id) {
       </div>
       ${related.slice(0,5).map(r => `
         <div class="related-item" onclick="showAnn('${r.id}')">
-          <div style="font-size:18px">${getCat(r.category).label === '安全' ? '🛡️' : getCat(r.category).label === '業務' ? '📋' : getCat(r.category).label === '人事' ? '👥' : '📌'}</div>
+          <div style="font-size:18px">${({ '安全':'🛡️', '業務':'📋', '人事':'👥' })[annDisplayTags(r)[0]] || '📌'}</div>
           <div class="related-item-content">
             <div class="related-item-title">${escHtml(r.title)}</div>
             <div class="related-item-meta">${escHtml(r.from)} · ${annTimeLabel(r)}</div>
@@ -4645,14 +4619,13 @@ function renderAnnDetailBody(id) {
       <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap">
         ${a.pinned?mkTag('📌 固定','var(--primary)'):''}
         ${a.mustRead ? '<span class="must-read-badge">✋ 必読</span>' : ''}
-        ${mkTag(cat.label, cat.color)}
+        ${annTagBadges(a, 'data-ann-thread-tag')}
         ${a.priority==='high'?mkTag('🔴 重要','var(--danger)'):''}
         ${isManager ? mkTag('対象: '+escHtml(team.label), 'var(--text-sub)') : ''}
       </div>
       <div style="font-size:19px;font-weight:700;color:var(--navy);margin-bottom:8px;line-height:1.5">${escHtml(a.title)}</div>
       <div style="color:var(--text-sub);font-size:13px;margin-bottom:4px">${escHtml(a.from)} · ${annTimeLabel(a)}</div>
       ${dl ? `<div class="deadline-text ${dl.level}" style="margin-top:6px"><span>⏱️</span>${dl.text}</div>` : ''}
-      ${tagsBlock}
       <div class="divider"></div>
       <p style="line-height:1.9;font-size:16px;margin:0;white-space:pre-wrap">${escHtml(a.body)}</p>
       ${ackBlock}
@@ -4750,7 +4723,6 @@ function openAnnEditor(id) {
   const init = a || {
     title: '',
     body: '',
-    category: 'work',
     priority: 'normal',
     target: 'all',
     pinned: false,
@@ -4761,8 +4733,12 @@ function openAnnEditor(id) {
     scheduledAt: null,
   };
 
-  // タグ初期化
-  st.edTags = (init.tags || []).slice();
+  // タグ初期化: 保存済みの5語を選んだ状態にする(新規は「安全」)。5語が1つもない旧投稿は、
+  // 画面に出ているカテゴリと同じ語を選ぶ。5語以外のタグは画面に出さず、保存時にそのまま残す
+  const savedTags = init.tags || [];
+  st.edTags = isEdit ? ANN_TAGS.filter(t => savedTags.includes(t)) : ['安全'];
+  if (isEdit && !st.edTags.length && ANN_CAT_TO_TAG[init.category]) st.edTags = [ANN_CAT_TO_TAG[init.category]];
+  st.edOtherTags = savedTags.filter(t => !ANN_TAGS.includes(t));
 
   // 予約日時の初期値（編集中なら既存値、新規なら現在＋1時間）
   let schedDate = '', schedTime = '';
@@ -4810,25 +4786,15 @@ function openAnnEditor(id) {
         </div>
 
         <div class="form-group">
-          <label class="form-label">カテゴリ</label>
-          <div id="ed-cats" style="display:flex;flex-wrap:wrap;gap:8px">
-            ${annCategories.map(c => `
-              <button class="chip${init.category===c.id?' active':''}" data-cat="${c.id}"
-                onclick="selEdCat('${c.id}')">${c.label}</button>
+          <label class="form-label">タグ <span style="font-weight:500;color:var(--text-muted);font-size:11px">（いくつでも選べます）</span></label>
+          <div id="ed-tags" class="ed-tag-row">
+            ${ANN_TAGS.map((t, i) => `
+              <button type="button" class="ed-tag-btn" data-ed-tag="${escHtml(t)}" aria-pressed="false"
+                onclick="toggleEdTag(${i})">${escHtml(t)}</button>
             `).join('')}
           </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">タグ <span style="font-weight:500;color:var(--text-muted);font-size:11px">（関連お知らせのスレッド化に利用）</span></label>
-          <div class="tag-input-wrap" id="ed-tag-wrap" onclick="document.getElementById('ed-tag-input').focus()">
-            <span id="ed-tag-chips"></span>
-            <input type="text" id="ed-tag-input" class="tag-input-field"
-              placeholder="タグを入力してEnter（例: シフト）"
-              onkeydown="onTagKey(event)">
-          </div>
           <div style="font-size:11px;color:var(--text-muted);margin-top:6px">
-            💡 同じタグを持つお知らせは自動的にスレッド表示されます
+            💡 選ばずに投稿すると「安全」が付きます。一覧でタグをタップすると、同じタグのお知らせをまとめて表示します
           </div>
         </div>
 
@@ -4927,7 +4893,6 @@ function openAnnEditor(id) {
 
   // エディタの選択状態を保持
   st.edState = {
-    category: init.category,
     priority: init.priority,
     pinned:   init.pinned,
     timing:   isScheduledInit ? 'scheduled' : 'now',
@@ -4938,53 +4903,18 @@ function openAnnEditor(id) {
   updateEditorState();
 }
 
-/* === エディタ タグ入力 === */
+/* === エディタ タグ(5語のボタン・複数選択) === */
 function renderEdTags() {
-  const wrap = document.getElementById('ed-tag-chips');
-  if (!wrap) return;
-  wrap.innerHTML = st.edTags.map((t,i) => `
-    <span class="tag-chip-edit">
-      ${escHtml(t)}
-      <button class="tag-chip-remove" onclick="removeEdTag(${i})">✕</button>
-    </span>
-  `).join('');
+  document.querySelectorAll('#ed-tags .ed-tag-btn').forEach(b => {
+    const on = st.edTags.includes(b.dataset.edTag);
+    b.classList.toggle('active', on);
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
 }
 
-function onTagKey(e) {
-  if (e.key === 'Enter' || e.key === ',') {
-    e.preventDefault();
-    addEdTagFromInput();
-  } else if (e.key === 'Backspace' && !e.target.value && st.edTags.length > 0) {
-    st.edTags.pop();
-    renderEdTags();
-  }
-}
-
-function addEdTagFromInput() {
-  const inp = document.getElementById('ed-tag-input');
-  if (!inp) return;
-  const val = inp.value.trim().replace(/^#+/, '');
-  if (!val) return;
-  if (val.length > 20) {
-    showToast('⚠️ タグは20文字以内です');
-    return;
-  }
-  if (st.edTags.includes(val)) {
-    showToast('⚠️ 同じタグは追加できません');
-    inp.value = '';
-    return;
-  }
-  if (st.edTags.length >= 5) {
-    showToast('⚠️ タグは最大5個までです');
-    return;
-  }
-  st.edTags.push(val);
-  inp.value = '';
-  renderEdTags();
-}
-
-function removeEdTag(i) {
-  st.edTags.splice(i, 1);
+function toggleEdTag(i) {
+  const t = ANN_TAGS[i];
+  st.edTags = st.edTags.includes(t) ? st.edTags.filter(x => x !== t) : [...st.edTags, t];
   renderEdTags();
 }
 
@@ -4998,13 +4928,6 @@ function toggleEdDeadline() {
   st.edState.hasDeadline = !st.edState.hasDeadline;
   document.getElementById('ed-deadline-toggle').classList.toggle('on', st.edState.hasDeadline);
   document.getElementById('ed-deadline-fields').classList.toggle('hidden', !st.edState.hasDeadline);
-}
-
-function selEdCat(id) {
-  st.edState.category = id;
-  document.querySelectorAll('#ed-cats .chip').forEach(b => {
-    b.classList.toggle('active', b.dataset.cat === id);
-  });
 }
 
 function selEdPrio(id) {
@@ -5104,10 +5027,6 @@ function cancelNotifySendConfirm() {
 }
 
 async function saveAnn() {
-  // 入力中のタグも保存
-  const tagInp = document.getElementById('ed-tag-input');
-  if (tagInp && tagInp.value.trim()) addEdTagFromInput();
-
   const title = document.getElementById('ed-title').value.trim();
   const body  = document.getElementById('ed-body').value.trim();
   if (!title || !body) return;
@@ -5137,11 +5056,12 @@ async function saveAnn() {
     if (date) readDeadline = `${date} ${time}`;
   }
 
-  const tags = st.edTags.slice();
+  // タグはボタンの順に並べる。1つも選ばれていなければ「安全」を付ける。5語以外のタグ(以前の自由入力)は残す
+  const picked = ANN_TAGS.filter(t => st.edTags.includes(t));
+  const tags = [...(picked.length ? picked : ['安全']), ...st.edOtherTags];
 
   const payload = {
     title, body,
-    category: ed.category,
     priority: ed.priority,
     target: 'all', // 配信範囲は全員向けのみ(班別配信は設けない)
     pinned: ed.pinned,
@@ -5458,7 +5378,6 @@ async function exportAnnCsv(id) {
   const status = await fetchAnnReadStatus(a.id);
   const { reach, ackedCount } = status;
 
-  const cat = getCat(a.category);
   const prio = priorityMap[a.priority];
   const team = getTeam(a.target);
   const targets = reach.targets;
@@ -5468,7 +5387,7 @@ async function exportAnnCsv(id) {
   // ヘッダ部（メタ情報）
   const meta = [
     ['お知らせタイトル', a.title],
-    ['カテゴリ',         cat.label],
+    ['タグ',             annDisplayTags(a).join('・')],
     ['優先度',           prio.label],
     ['必読',             a.mustRead ? 'はい' : 'いいえ'],
     ['既読期限',         a.readDeadline || '—'],
@@ -5816,10 +5735,10 @@ function renderChannelChips() {
   const host = document.getElementById('channel-chips');
   if (!host) return;
   const channelList = [
+    // 管理者専用は管理者にだけ、先頭に表示する(読み書きの制限は firestore.rules 側で行う)
+    ...(fbUser && fbUser.role === 'admin' ? [{ id:'admin', label:'管理者' }] : []),
     { id:'general', label:'全体連絡' },
     ...teams.filter(t => t.id !== 'all').map(t => ({ id:t.id, label:t.displayName })),
-    // 管理者専用は管理者にだけ表示する(読み書きの制限は firestore.rules 側で行う)
-    ...(fbUser && fbUser.role === 'admin' ? [{ id:'admin', label:'管理者' }] : []),
   ];
   const unreadIds = new Set(unreadChatChannelIds());
   host.innerHTML = channelList.map(c => {
@@ -8783,9 +8702,11 @@ fbAuth.onAuthStateChanged(async (user) => {
 
     showAppScreen();
 
-    // ログイン成功時にチャットチャンネル(既定: general)のリスナーを開始
-    currentChannel = 'general';
-    document.getElementById('ch-title').textContent = '全体連絡';
+    // ログイン成功時にチャットチャンネルのリスナーを開始(既定: 管理者は「管理者」、それ以外は general)。
+    // 最後に開いたチャンネルは覚えないので、ログインのたびにここから始まる
+    const startsAtAdminCh = fbUser.role === 'admin';
+    currentChannel = startsAtAdminCh ? 'admin' : 'general';
+    document.getElementById('ch-title').textContent = startsAtAdminCh ? '管理者' : '全体連絡';
     attachChannelListener(currentChannel);
     renderChannelChips();
   } catch (err) {
