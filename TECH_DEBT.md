@@ -456,3 +456,46 @@ HI-LINE版の TECH_DEBT 項目23 と同じ設計。要点:
 - **端末側の縮小**: 長辺1600px・JPEG品質0.8(`ANN_IMG_LONG_EDGE`・`ANN_IMG_QUALITY`)。上限3枚は `ANN_IMG_MAX` と `firestore.rules` の `images.size() <= 3` を一致させること
 - **全画面表示**: `meta viewport` は変えず、全画面の要素の中だけで拡大する。**アプリ全体の透かし(`#watermark`)が全画面表示の上にも薄く重なる**(HI-LINE と同じ。
   図が読みにくいという声があれば、全画面表示の間だけ透かしを隠すかを判断する)
+
+## 21. 手順書の「開く」「ダウンロード」が、ファイル名に `'` があると無反応になる(未対応・記録のみ)
+
+> **記録のみ(2026-10-30)**。項目12(インライン`onclick`への文字列埋め込み)と同じ形の残り。直すときの方針も項目12と同じ。__NOTE__
+
+### 症状
+
+手順書の詳細(`showMan()`)の「開く」「ダウンロード」ボタンが、`fileUrl` をインライン`onclick`に文字列のまま埋め込んでいる。
+
+```
+onclick="window.open('${m.fileUrl}','_blank')"
+```
+
+`fileUrl` は Storage の `getDownloadURL()` の値で、パスは `encodeURIComponent` で作られる。`encodeURIComponent` は
+`A-Z a-z 0-9 - _ . ! ~ * ' ( )` をそのまま残すため、**ファイル名に`'`があると URL に生の`'`が残り、JS の文字列がそこで切れる**。
+ハンドラが構文エラーでコンパイルされず `el.onclick === null` になり、**エラーも出ないまま、押しても何も起きない**。
+(`"`・`<`・`>`・`\` は `%22` などに変わるので、URL に生で残って壊すのは`'`だけ)
+
+### 実測(2026-10-30、HI-LINE `63fe267` のエミュレーター)
+
+管理者として、アプリの「新規マニュアル追加」から `normal.pdf` と `it's.pdf` を登録し、詳細画面のボタンを調べた。
+
+| ファイル名 | `onclick` 属性 | `typeof button.onclick` | 押したとき |
+|---|---|---|---|
+| `normal.pdf` | `window.open('…/manuals%2F…%2Fnormal.pdf?alt=media&token=…','_blank')` | `function` | 開く処理が呼ばれる |
+| `it's.pdf` | `window.open('…/manuals%2F…%2Fit's.pdf?alt=media&token=…','_blank')` | `object`(`null`) | **何も起きない** |
+
+`showMan()` は3社(HI-LINE `63fe267`・A-LOGI `d851b87`・名豊興運 `c5810cd`)で同じ内容。
+
+### 影響
+
+- 登録(アプリの新規追加・一括投稿ツール)はできてしまい、**開けないことに後で気づく**。既に`'`を含むファイル名で登録された手順書があれば、直すまで開けない(本番のデータは確かめていない)
+- 手順書の登録は管理者だけ(Storage・Firestore のルール)なので、外からの入力で壊されるものではない
+
+### 直す場合
+
+項目12と同じく、URL を `data-*` 属性に `escHtml()` で入れ、描画の直後に `addEventListener`(`bindDataClick()`)で `window.open(url, '_blank')` を結線する。
+`m.icon` も同じ行で HTML のまま埋め込まれているが、選べるのは `manualIcons` の固定の6種だけなので、今回の対象外。
+
+### 一括投稿ツール(matomete-broadcast)との関係
+
+ツールは 0.5.0 から、ファイル名に `'` `"` `` ` `` `\` `<` `>`・制御文字を含む手順書を送らないようにしている(`MANUAL_BAD_NAME_CHARS`)。
+3社ともこの件を直したら、ツール側の制限もゆるめられる(ツールの README「申し送り」に記載)。
